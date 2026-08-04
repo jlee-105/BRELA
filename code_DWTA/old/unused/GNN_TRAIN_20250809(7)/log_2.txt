@@ -1,0 +1,18 @@
+[2025-08-09 22:06:09] 🚀 GNN PPO Training Started
+[2025-08-09 22:06:09] 📁 Output directory: ./TRAIN/GNN_TRAIN_20250809(7)
+[2025-08-09 22:06:10] 📊 Loaded 100 test instances
+[2025-08-09 22:06:10] 🤖 Initializing GNN models...
+[2025-08-09 22:06:10] 📊 Models initialized on device: mps
+[2025-08-09 22:06:10] 🎭 GNN Actor parameters: 1,291,394
+[2025-08-09 22:06:10] 🎯 GNN Critic parameters: 1,274,113
+[2025-08-09 22:06:10] 📋 Loaded 100 test instances
+[2025-08-09 22:06:10] 🏁 Starting GNN PPO training...
+[2025-08-09 22:06:10] 📈 Training for 50 epochs with 5 episodes each
+[2025-08-09 22:06:10] 🎯 Starting GNN training: 50 epochs, 5 episodes each
+[2025-08-09 22:06:10] [2025-08-09 22:06:10] Epoch 1: Actor LR 0.000500, Critic LR 0.000100
+[2025-08-09 22:06:32] [2025-08-09 22:06:32] Epoch 001 - Actor Loss: 1.312064, Critic Loss: 55.639660
+[2025-08-09 22:06:55] [2025-08-09 22:06:55] Epoch: 000 | Objective: 15.098943 | Actor Loss: 1.312064 | Critic Loss: 55.639660 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.833 | Critic Grad: 5.154 | Epoch Time: 44.76s | Total Time: 00:00:44
+[2025-08-09 22:06:55] [2025-08-09 22:06:55] Epoch 2: Actor LR 0.000500, Critic LR 0.000100
+[2025-08-09 22:07:11] [2025-08-09 22:07:11] Epoch 002 - Actor Loss: 0.196194, Critic Loss: 24.772594
+[2025-08-09 22:07:33] [2025-08-09 22:07:33] Epoch: 001 | Objective: 14.098134 | Actor Loss: 0.196194 | Critic Loss: 24.772594 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.371 | Critic Grad: 4.948 | Epoch Time: 37.92s | Total Time: 00:01:22
+[2025-08-09 22:07:33] [2025-08-09 22:07:33] Epoch 3: Actor LR 0.000500, Critic LR 0.000100

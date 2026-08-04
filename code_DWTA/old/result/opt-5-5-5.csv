@@ -1,0 +1,2 @@
+instance,objective,status,status_category,average_obj,total_instances,optimal_count,feasible_count,solution_not_found_count,infeasible_count,optimal_percentage,feasible_percentage,solution_not_found_percentage,infeasible_percentage,unknown_gaplimit_count,unknown_gaplimit_percentage
+0,8.31385886304,unknown_gaplimit,unknown,8.31385886304,1,0,0,0,0,0.0,0.0,0.0,0.0,1,100.0

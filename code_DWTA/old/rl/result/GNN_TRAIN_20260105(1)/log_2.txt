@@ -1,0 +1,295 @@
+[2026-01-05 21:14:44] GNN REINFORCE Trainer initialized
+[2026-01-05 21:14:44] Output directory: ./result/GNN_TRAIN_20260105(1)
+[2026-01-05 21:14:44] Multi-scale training: Random 5-7W × 5-7T × 5-7T per epoch
+[2026-01-05 21:14:44] Model: EMBEDDING_DIM=128, HEAD_NUM=8
+[2026-01-05 21:14:44] Training: 300 epochs, 5 episodes/epoch
+[2026-01-05 21:14:44] Starting GNN-based DWTA REINFORCE Training...
+[2026-01-05 21:14:44] Target time windows (batch0): start=[2.0, 3.0, 1.0, 1.0, 0.0, 0.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:14:48] Episode 1/5 | Actor Loss: 0.073444 | Critic Loss: 33.489197
+[2026-01-05 21:14:48] Target time windows (batch0): start=[0.0, 2.0, 2.0, 0.0, 2.0, 0.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:14:51] Episode 2/5 | Actor Loss: 0.232083 | Critic Loss: 14.722189
+[2026-01-05 21:14:51] Target time windows (batch0): start=[2.0, 1.0, 2.0, 0.0, 0.0, 0.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:14:57] Episode 3/5 | Actor Loss: 4.313612 | Critic Loss: 14.597898
+[2026-01-05 21:14:57] Target time windows (batch0): start=[2.0, 0.0, 2.0, 2.0, 1.0], end=[5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:15:00] Episode 4/5 | Actor Loss: 1.127956 | Critic Loss: 2.989246
+[2026-01-05 21:15:00] Target time windows (batch0): start=[2.0, 1.0, 0.0, 2.0, 1.0, 0.0, 1.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:15:06] Episode 5/5 | Actor Loss: 0.173746 | Critic Loss: 3.820748
+[2026-01-05 21:15:06] Epoch 1: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:15:06] [2026-01-05 21:15:06] Epoch: 001 | Objective: 13.694357 | Actor Loss: 1.184168 | Critic Loss: 13.923857 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.5502 | Critic Grad: 5.2523 | Time: 00:00:21
+[2026-01-05 21:15:06] Target time windows (batch0): start=[2.0, 1.0, 0.0, 2.0, 3.0, 0.0, 2.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:15:10] Episode 1/5 | Actor Loss: 0.205784 | Critic Loss: 2.170270
+[2026-01-05 21:15:10] Target time windows (batch0): start=[0.0, 0.0, 1.0, 2.0, 1.0], end=[7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:15:14] Episode 2/5 | Actor Loss: 0.470227 | Critic Loss: 3.018750
+[2026-01-05 21:15:14] Target time windows (batch0): start=[3.0, 2.0, 2.0, 0.0, 3.0, 3.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:15:19] Episode 3/5 | Actor Loss: 0.101679 | Critic Loss: 3.563525
+[2026-01-05 21:15:19] Target time windows (batch0): start=[3.0, 3.0, 1.0, 2.0, 2.0], end=[7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:15:23] Episode 4/5 | Actor Loss: 0.297433 | Critic Loss: 2.996181
+[2026-01-05 21:15:23] Target time windows (batch0): start=[1.0, 1.0, 1.0, 1.0, 0.0, 2.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:15:27] Episode 5/5 | Actor Loss: 3.184839 | Critic Loss: 1.423592
+[2026-01-05 21:15:27] Epoch 2: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:15:27] [2026-01-05 21:15:27] Epoch: 002 | Objective: 12.539366 | Actor Loss: 0.851992 | Critic Loss: 2.634464 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.1534 | Critic Grad: 4.5884 | Time: 00:00:43
+[2026-01-05 21:15:27] Target time windows (batch0): start=[2.0, 0.0, 1.0, 0.0, 1.0, 1.0, 3.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:15:35] Episode 1/5 | Actor Loss: 1.689488 | Critic Loss: 1.518395
+[2026-01-05 21:15:35] Target time windows (batch0): start=[1.0, 2.0, 1.0, 0.0, 0.0], end=[5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:15:38] Episode 2/5 | Actor Loss: 0.776275 | Critic Loss: 0.863726
+[2026-01-05 21:15:38] Target time windows (batch0): start=[2.0, 3.0, 0.0, 1.0, 3.0, 3.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:15:44] Episode 3/5 | Actor Loss: 0.327980 | Critic Loss: 2.357916
+[2026-01-05 21:15:44] Target time windows (batch0): start=[3.0, 0.0, 1.0, 2.0, 2.0, 0.0, 1.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:15:51] Episode 4/5 | Actor Loss: 0.375627 | Critic Loss: 1.115104
+[2026-01-05 21:15:51] Target time windows (batch0): start=[1.0, 1.0, 0.0, 2.0, 1.0], end=[5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:15:53] Episode 5/5 | Actor Loss: -0.011386 | Critic Loss: 0.914386
+[2026-01-05 21:15:53] Epoch 3: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:15:53] [2026-01-05 21:15:53] Epoch: 003 | Objective: 9.607105 | Actor Loss: 0.631597 | Critic Loss: 1.353905 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.3323 | Critic Grad: 4.4713 | Time: 00:01:09
+[2026-01-05 21:15:54] Target time windows (batch0): start=[2.0, 1.0, 2.0, 3.0, 0.0, 3.0, 3.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:15:58] Episode 1/5 | Actor Loss: 0.072603 | Critic Loss: 0.866027
+[2026-01-05 21:15:58] Target time windows (batch0): start=[0.0, 1.0, 3.0, 1.0, 2.0], end=[7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:16:04] Episode 2/5 | Actor Loss: -0.302718 | Critic Loss: 3.092681
+[2026-01-05 21:16:04] Target time windows (batch0): start=[3.0, 2.0, 1.0, 3.0, 0.0, 1.0, 0.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:16:09] Episode 3/5 | Actor Loss: -0.244393 | Critic Loss: 0.678605
+[2026-01-05 21:16:09] Target time windows (batch0): start=[2.0, 2.0, 0.0, 2.0, 1.0, 2.0, 0.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:16:15] Episode 4/5 | Actor Loss: -0.115717 | Critic Loss: 0.626449
+[2026-01-05 21:16:15] Target time windows (batch0): start=[0.0, 2.0, 1.0, 1.0, 0.0, 2.0, 1.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:16:18] Episode 5/5 | Actor Loss: -0.207628 | Critic Loss: 1.003540
+[2026-01-05 21:16:18] Epoch 4: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:16:18] [2026-01-05 21:16:18] Epoch: 004 | Objective: 12.069573 | Actor Loss: -0.159570 | Critic Loss: 1.253461 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.4809 | Critic Grad: 4.3861 | Time: 00:01:33
+[2026-01-05 21:16:18] Target time windows (batch0): start=[2.0, 0.0, 2.0, 2.0, 0.0], end=[5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:16:20] Episode 1/5 | Actor Loss: 0.531859 | Critic Loss: 0.498360
+[2026-01-05 21:16:20] Target time windows (batch0): start=[2.0, 0.0, 0.0, 3.0, 0.0], end=[7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:16:25] Episode 2/5 | Actor Loss: 0.871222 | Critic Loss: 3.466996
+[2026-01-05 21:16:25] Target time windows (batch0): start=[0.0, 0.0, 2.0, 0.0, 1.0], end=[6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:16:29] Episode 3/5 | Actor Loss: -0.251098 | Critic Loss: 0.842326
+[2026-01-05 21:16:29] Target time windows (batch0): start=[2.0, 2.0, 0.0, 0.0, 0.0, 0.0, 0.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:16:34] Episode 4/5 | Actor Loss: -0.185764 | Critic Loss: 0.672578
+[2026-01-05 21:16:34] Target time windows (batch0): start=[2.0, 1.0, 2.0, 3.0, 2.0, 3.0, 0.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:16:38] Episode 5/5 | Actor Loss: -0.286831 | Critic Loss: 3.734738
+[2026-01-05 21:16:38] Epoch 5: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:16:38] [2026-01-05 21:16:38] Epoch: 005 | Objective: 9.379231 | Actor Loss: 0.135878 | Critic Loss: 1.843000 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.4816 | Critic Grad: 4.3052 | Time: 00:01:54
+[2026-01-05 21:16:38] Target time windows (batch0): start=[3.0, 0.0, 2.0, 2.0, 0.0], end=[7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:16:41] Episode 1/5 | Actor Loss: -0.116551 | Critic Loss: 6.263998
+[2026-01-05 21:16:42] Target time windows (batch0): start=[1.0, 2.0, 2.0, 1.0, 0.0, 1.0, 0.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:16:46] Episode 2/5 | Actor Loss: -0.228643 | Critic Loss: 4.839217
+[2026-01-05 21:16:46] Target time windows (batch0): start=[2.0, 0.0, 2.0, 3.0, 0.0, 1.0, 2.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:16:50] Episode 3/5 | Actor Loss: 0.022696 | Critic Loss: 3.222133
+[2026-01-05 21:16:50] Target time windows (batch0): start=[1.0, 2.0, 3.0, 3.0, 2.0, 3.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:16:56] Episode 4/5 | Actor Loss: -0.054701 | Critic Loss: 0.627025
+[2026-01-05 21:16:56] Target time windows (batch0): start=[2.0, 1.0, 0.0, 1.0, 1.0], end=[5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:17:00] Episode 5/5 | Actor Loss: 0.509044 | Critic Loss: 1.995969
+[2026-01-05 21:17:00] Epoch 6: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:17:00] [2026-01-05 21:17:00] Epoch: 006 | Objective: 9.075148 | Actor Loss: 0.026369 | Critic Loss: 3.389668 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.2826 | Critic Grad: 4.1826 | Time: 00:02:15
+[2026-01-05 21:17:00] Target time windows (batch0): start=[2.0, 3.0, 1.0, 1.0, 3.0, 2.0, 3.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:17:06] Episode 1/5 | Actor Loss: -0.333926 | Critic Loss: 2.340465
+[2026-01-05 21:17:06] Target time windows (batch0): start=[0.0, 0.0, 0.0, 1.0, 1.0], end=[5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:17:09] Episode 2/5 | Actor Loss: -0.104212 | Critic Loss: 1.122330
+[2026-01-05 21:17:09] Target time windows (batch0): start=[3.0, 0.0, 0.0, 3.0, 1.0, 2.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:17:13] Episode 3/5 | Actor Loss: -0.211702 | Critic Loss: 1.848172
+[2026-01-05 21:17:13] Target time windows (batch0): start=[0.0, 0.0, 3.0, 3.0, 2.0, 0.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:17:19] Episode 4/5 | Actor Loss: -0.493126 | Critic Loss: 0.699556
+[2026-01-05 21:17:19] Target time windows (batch0): start=[1.0, 1.0, 2.0, 0.0, 2.0], end=[5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:17:23] Episode 5/5 | Actor Loss: 0.950991 | Critic Loss: 0.602283
+[2026-01-05 21:17:23] Epoch 7: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:17:23] [2026-01-05 21:17:23] Epoch: 007 | Objective: 5.929377 | Actor Loss: -0.038395 | Critic Loss: 1.322561 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.3336 | Critic Grad: 3.9709 | Time: 00:02:38
+[2026-01-05 21:17:23] Target time windows (batch0): start=[1.0, 1.0, 2.0, 0.0, 1.0, 1.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:17:26] Episode 1/5 | Actor Loss: 0.433476 | Critic Loss: 2.295682
+[2026-01-05 21:17:26] Target time windows (batch0): start=[2.0, 1.0, 1.0, 1.0, 1.0], end=[7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:17:30] Episode 2/5 | Actor Loss: -1.131128 | Critic Loss: 2.347979
+[2026-01-05 21:17:30] Target time windows (batch0): start=[0.0, 1.0, 3.0, 3.0, 2.0], end=[6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:17:33] Episode 3/5 | Actor Loss: -0.142145 | Critic Loss: 1.100928
+[2026-01-05 21:17:33] Target time windows (batch0): start=[1.0, 2.0, 1.0, 1.0, 3.0], end=[6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:17:37] Episode 4/5 | Actor Loss: -0.590464 | Critic Loss: 0.350590
+[2026-01-05 21:17:37] Target time windows (batch0): start=[0.0, 1.0, 1.0, 1.0, 0.0, 2.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:17:41] Episode 5/5 | Actor Loss: 0.574975 | Critic Loss: 0.396039
+[2026-01-05 21:17:41] Epoch 8: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:17:41] [2026-01-05 21:17:41] Epoch: 008 | Objective: 6.864734 | Actor Loss: -0.171057 | Critic Loss: 1.298244 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 4.6866 | Critic Grad: 3.8593 | Time: 00:02:57
+[2026-01-05 21:17:41] Target time windows (batch0): start=[3.0, 0.0, 3.0, 1.0, 3.0, 3.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:17:48] Episode 1/5 | Actor Loss: -0.199210 | Critic Loss: 0.516013
+[2026-01-05 21:17:48] Target time windows (batch0): start=[3.0, 1.0, 3.0, 3.0, 1.0, 3.0, 2.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:17:52] Episode 2/5 | Actor Loss: -0.391797 | Critic Loss: 0.372674
+[2026-01-05 21:17:52] Target time windows (batch0): start=[1.0, 2.0, 1.0, 2.0, 1.0, 2.0, 2.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:17:56] Episode 3/5 | Actor Loss: -0.325670 | Critic Loss: 0.748440
+[2026-01-05 21:17:56] Target time windows (batch0): start=[2.0, 0.0, 1.0, 2.0, 1.0, 2.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:18:01] Episode 4/5 | Actor Loss: -0.487118 | Critic Loss: 0.682832
+[2026-01-05 21:18:01] Target time windows (batch0): start=[1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:18:04] Episode 5/5 | Actor Loss: -0.175442 | Critic Loss: 0.405224
+[2026-01-05 21:18:04] Epoch 9: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:18:04] [2026-01-05 21:18:04] Epoch: 009 | Objective: 10.181750 | Actor Loss: -0.315847 | Critic Loss: 0.545037 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.1828 | Critic Grad: 3.7674 | Time: 00:03:20
+[2026-01-05 21:18:04] Target time windows (batch0): start=[1.0, 2.0, 1.0, 3.0, 1.0, 3.0, 0.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:18:08] Episode 1/5 | Actor Loss: 0.292368 | Critic Loss: 0.432199
+[2026-01-05 21:18:08] Target time windows (batch0): start=[1.0, 2.0, 1.0, 1.0, 2.0, 2.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:18:13] Episode 2/5 | Actor Loss: 0.173836 | Critic Loss: 0.728125
+[2026-01-05 21:18:13] Target time windows (batch0): start=[1.0, 1.0, 0.0, 1.0, 2.0, 0.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:18:18] Episode 3/5 | Actor Loss: 0.276600 | Critic Loss: 0.354114
+[2026-01-05 21:18:18] Target time windows (batch0): start=[2.0, 1.0, 0.0, 0.0, 0.0, 1.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:18:23] Episode 4/5 | Actor Loss: -0.215583 | Critic Loss: 0.685205
+[2026-01-05 21:18:23] Target time windows (batch0): start=[3.0, 1.0, 0.0, 1.0, 1.0, 0.0, 2.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:18:27] Episode 5/5 | Actor Loss: 0.207535 | Critic Loss: 0.659902
+[2026-01-05 21:18:27] Epoch 10: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:18:27] [2026-01-05 21:18:27] Epoch: 010 | Objective: 6.778037 | Actor Loss: 0.146951 | Critic Loss: 0.571909 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.0232 | Critic Grad: 3.7403 | Time: 00:03:42
+[2026-01-05 21:18:27] Target time windows (batch0): start=[0.0, 1.0, 0.0, 3.0, 0.0, 3.0, 1.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:18:32] Episode 1/5 | Actor Loss: -0.188536 | Critic Loss: 0.230016
+[2026-01-05 21:18:32] Target time windows (batch0): start=[1.0, 3.0, 3.0, 2.0, 3.0, 2.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:18:37] Episode 2/5 | Actor Loss: -0.030806 | Critic Loss: 0.674240
+[2026-01-05 21:18:37] Target time windows (batch0): start=[3.0, 2.0, 3.0, 2.0, 0.0, 0.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:18:42] Episode 3/5 | Actor Loss: -0.316943 | Critic Loss: 0.343757
+[2026-01-05 21:18:42] Target time windows (batch0): start=[2.0, 2.0, 3.0, 2.0, 0.0], end=[6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:18:45] Episode 4/5 | Actor Loss: -0.075150 | Critic Loss: 0.342759
+[2026-01-05 21:18:45] Target time windows (batch0): start=[1.0, 2.0, 1.0, 3.0, 2.0], end=[7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:18:50] Episode 5/5 | Actor Loss: -0.736580 | Critic Loss: 0.287815
+[2026-01-05 21:18:50] Epoch 11: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:18:51] [2026-01-05 21:18:51] Epoch: 011 | Objective: 4.801328 | Actor Loss: -0.269603 | Critic Loss: 0.375717 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.0691 | Critic Grad: 3.7336 | Time: 00:04:06
+[2026-01-05 21:18:51] Target time windows (batch0): start=[0.0, 0.0, 0.0, 2.0, 1.0, 1.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:18:54] Episode 1/5 | Actor Loss: -0.143403 | Critic Loss: 1.404141
+[2026-01-05 21:18:54] Target time windows (batch0): start=[0.0, 0.0, 2.0, 1.0, 0.0], end=[5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:18:57] Episode 2/5 | Actor Loss: -0.491110 | Critic Loss: 0.879014
+[2026-01-05 21:18:57] Target time windows (batch0): start=[0.0, 0.0, 1.0, 3.0, 0.0, 3.0, 2.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:19:01] Episode 3/5 | Actor Loss: 0.185369 | Critic Loss: 2.707628
+[2026-01-05 21:19:01] Target time windows (batch0): start=[2.0, 0.0, 2.0, 0.0, 2.0, 3.0, 0.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:19:05] Episode 4/5 | Actor Loss: -0.151838 | Critic Loss: 1.140283
+[2026-01-05 21:19:05] Target time windows (batch0): start=[2.0, 1.0, 2.0, 0.0, 2.0], end=[5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:19:07] Episode 5/5 | Actor Loss: -0.364410 | Critic Loss: 0.615240
+[2026-01-05 21:19:07] Epoch 12: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:19:07] [2026-01-05 21:19:07] Epoch: 012 | Objective: 8.582870 | Actor Loss: -0.193078 | Critic Loss: 1.349261 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.3825 | Critic Grad: 3.6798 | Time: 00:04:23
+[2026-01-05 21:19:07] Target time windows (batch0): start=[0.0, 0.0, 2.0, 3.0, 3.0], end=[6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:19:12] Episode 1/5 | Actor Loss: -1.039713 | Critic Loss: 1.317650
+[2026-01-05 21:19:12] Target time windows (batch0): start=[1.0, 2.0, 3.0, 3.0, 3.0, 0.0, 3.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:19:16] Episode 2/5 | Actor Loss: 0.045790 | Critic Loss: 0.422522
+[2026-01-05 21:19:16] Target time windows (batch0): start=[0.0, 1.0, 3.0, 3.0, 3.0, 2.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:19:21] Episode 3/5 | Actor Loss: -0.309625 | Critic Loss: 0.404732
+[2026-01-05 21:19:21] Target time windows (batch0): start=[0.0, 3.0, 2.0, 3.0, 2.0, 2.0, 2.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:19:26] Episode 4/5 | Actor Loss: -0.102623 | Critic Loss: 0.942764
+[2026-01-05 21:19:26] Target time windows (batch0): start=[1.0, 0.0, 2.0, 0.0, 0.0, 0.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:19:33] Episode 5/5 | Actor Loss: 0.190408 | Critic Loss: 5.602741
+[2026-01-05 21:19:33] Epoch 13: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:19:33] [2026-01-05 21:19:33] Epoch: 013 | Objective: 8.328770 | Actor Loss: -0.243153 | Critic Loss: 1.738082 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 4.7311 | Critic Grad: 3.7800 | Time: 00:04:48
+[2026-01-05 21:19:33] Target time windows (batch0): start=[0.0, 3.0, 2.0, 0.0, 2.0, 1.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:19:37] Episode 1/5 | Actor Loss: 0.012810 | Critic Loss: 1.491053
+[2026-01-05 21:19:37] Target time windows (batch0): start=[3.0, 1.0, 0.0, 2.0, 0.0, 0.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:19:41] Episode 2/5 | Actor Loss: 1.482193 | Critic Loss: 0.774762
+[2026-01-05 21:19:41] Target time windows (batch0): start=[1.0, 0.0, 0.0, 2.0, 2.0], end=[5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:19:45] Episode 3/5 | Actor Loss: 0.793595 | Critic Loss: 0.836147
+[2026-01-05 21:19:45] Target time windows (batch0): start=[1.0, 0.0, 2.0, 0.0, 1.0], end=[5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:19:47] Episode 4/5 | Actor Loss: -0.370087 | Critic Loss: 0.452464
+[2026-01-05 21:19:47] Target time windows (batch0): start=[1.0, 0.0, 1.0, 2.0, 2.0, 2.0, 2.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:19:51] Episode 5/5 | Actor Loss: -0.121051 | Critic Loss: 0.936659
+[2026-01-05 21:19:51] Epoch 14: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:19:51] [2026-01-05 21:19:51] Epoch: 014 | Objective: 8.925505 | Actor Loss: 0.359492 | Critic Loss: 0.898217 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.2093 | Critic Grad: 3.6915 | Time: 00:05:07
+[2026-01-05 21:19:51] Target time windows (batch0): start=[1.0, 1.0, 0.0, 1.0, 2.0, 2.0, 1.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:19:56] Episode 1/5 | Actor Loss: -0.392284 | Critic Loss: 0.641365
+[2026-01-05 21:19:56] Target time windows (batch0): start=[1.0, 1.0, 1.0, 0.0, 2.0, 2.0, 1.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:20:00] Episode 2/5 | Actor Loss: -0.379459 | Critic Loss: 0.899288
+[2026-01-05 21:20:00] Target time windows (batch0): start=[3.0, 3.0, 0.0, 3.0, 2.0, 1.0, 3.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:20:05] Episode 3/5 | Actor Loss: -0.118222 | Critic Loss: 3.006509
+[2026-01-05 21:20:05] Target time windows (batch0): start=[2.0, 0.0, 2.0, 1.0, 3.0, 1.0, 1.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:20:13] Episode 4/5 | Actor Loss: -0.286097 | Critic Loss: 0.662191
+[2026-01-05 21:20:13] Target time windows (batch0): start=[2.0, 3.0, 1.0, 2.0, 1.0, 2.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:20:16] Episode 5/5 | Actor Loss: -0.651039 | Critic Loss: 1.249255
+[2026-01-05 21:20:16] Epoch 15: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:20:16] [2026-01-05 21:20:16] Epoch: 015 | Objective: 9.324590 | Actor Loss: -0.365420 | Critic Loss: 1.291722 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 4.8582 | Critic Grad: 3.5036 | Time: 00:05:32
+[2026-01-05 21:20:16] Target time windows (batch0): start=[1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:20:22] Episode 1/5 | Actor Loss: -0.248534 | Critic Loss: 2.381251
+[2026-01-05 21:20:22] Target time windows (batch0): start=[2.0, 1.0, 1.0, 0.0, 1.0, 2.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:20:25] Episode 2/5 | Actor Loss: 0.792311 | Critic Loss: 1.919687
+[2026-01-05 21:20:25] Target time windows (batch0): start=[3.0, 1.0, 2.0, 2.0, 2.0, 2.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:20:28] Episode 3/5 | Actor Loss: -0.178024 | Critic Loss: 1.806856
+[2026-01-05 21:20:28] Target time windows (batch0): start=[1.0, 0.0, 0.0, 0.0, 0.0, 2.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:20:33] Episode 4/5 | Actor Loss: 0.380730 | Critic Loss: 2.389062
+[2026-01-05 21:20:33] Target time windows (batch0): start=[0.0, 2.0, 3.0, 0.0, 3.0, 3.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:20:38] Episode 5/5 | Actor Loss: -0.257856 | Critic Loss: 2.102072
+[2026-01-05 21:20:38] Epoch 16: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:20:38] [2026-01-05 21:20:38] Epoch: 016 | Objective: 6.557035 | Actor Loss: 0.097725 | Critic Loss: 2.119786 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.2297 | Critic Grad: 3.4408 | Time: 00:05:54
+[2026-01-05 21:20:39] Target time windows (batch0): start=[0.0, 0.0, 1.0, 0.0, 2.0], end=[7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:20:44] Episode 1/5 | Actor Loss: 0.109908 | Critic Loss: 1.216550
+[2026-01-05 21:20:44] Target time windows (batch0): start=[0.0, 2.0, 2.0, 1.0, 2.0, 0.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:20:51] Episode 2/5 | Actor Loss: -0.223312 | Critic Loss: 0.383493
+[2026-01-05 21:20:51] Target time windows (batch0): start=[1.0, 1.0, 0.0, 2.0, 0.0], end=[5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:20:54] Episode 3/5 | Actor Loss: 0.209431 | Critic Loss: 0.563263
+[2026-01-05 21:20:54] Target time windows (batch0): start=[1.0, 1.0, 1.0, 2.0, 2.0, 0.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:20:58] Episode 4/5 | Actor Loss: 0.187725 | Critic Loss: 1.745907
+[2026-01-05 21:20:58] Target time windows (batch0): start=[0.0, 3.0, 1.0, 3.0, 0.0, 0.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:21:01] Episode 5/5 | Actor Loss: -0.466641 | Critic Loss: 9.094586
+[2026-01-05 21:21:01] Epoch 17: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:21:02] [2026-01-05 21:21:02] Epoch: 017 | Objective: 6.217217 | Actor Loss: -0.036578 | Critic Loss: 2.600760 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.4431 | Critic Grad: 3.3271 | Time: 00:06:17
+[2026-01-05 21:21:02] Target time windows (batch0): start=[1.0, 2.0, 1.0, 2.0, 0.0, 2.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:21:05] Episode 1/5 | Actor Loss: -0.597292 | Critic Loss: 4.901271
+[2026-01-05 21:21:05] Target time windows (batch0): start=[0.0, 1.0, 2.0, 3.0, 0.0], end=[6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:21:08] Episode 2/5 | Actor Loss: 0.198293 | Critic Loss: 2.217261
+[2026-01-05 21:21:08] Target time windows (batch0): start=[0.0, 1.0, 1.0, 2.0, 3.0], end=[7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:21:11] Episode 3/5 | Actor Loss: 1.031216 | Critic Loss: 2.075119
+[2026-01-05 21:21:11] Target time windows (batch0): start=[2.0, 1.0, 2.0, 3.0, 0.0], end=[7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:21:16] Episode 4/5 | Actor Loss: 0.568543 | Critic Loss: 0.475230
+[2026-01-05 21:21:16] Target time windows (batch0): start=[2.0, 2.0, 2.0, 2.0, 0.0, 2.0, 2.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:21:21] Episode 5/5 | Actor Loss: -0.577736 | Critic Loss: 0.460696
+[2026-01-05 21:21:21] Epoch 18: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:21:21] [2026-01-05 21:21:21] Epoch: 018 | Objective: 6.280724 | Actor Loss: 0.124605 | Critic Loss: 2.025915 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.3946 | Critic Grad: 3.3347 | Time: 00:06:36
+[2026-01-05 21:21:21] Target time windows (batch0): start=[3.0, 0.0, 3.0, 1.0, 0.0, 2.0, 0.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:21:26] Episode 1/5 | Actor Loss: -0.262423 | Critic Loss: 0.699929
+[2026-01-05 21:21:26] Target time windows (batch0): start=[1.0, 0.0, 2.0, 1.0, 1.0], end=[7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:21:32] Episode 2/5 | Actor Loss: 0.218145 | Critic Loss: 3.524116
+[2026-01-05 21:21:32] Target time windows (batch0): start=[0.0, 1.0, 3.0, 3.0, 0.0], end=[7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:21:35] Episode 3/5 | Actor Loss: 0.985622 | Critic Loss: 2.370319
+[2026-01-05 21:21:35] Target time windows (batch0): start=[1.0, 0.0, 1.0, 2.0, 2.0], end=[5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:21:38] Episode 4/5 | Actor Loss: 0.910100 | Critic Loss: 2.453863
+[2026-01-05 21:21:38] Target time windows (batch0): start=[1.0, 1.0, 0.0, 1.0, 1.0, 2.0, 0.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:21:44] Episode 5/5 | Actor Loss: 0.403815 | Critic Loss: 1.757319
+[2026-01-05 21:21:44] Epoch 19: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:21:44] [2026-01-05 21:21:44] Epoch: 019 | Objective: 7.999316 | Actor Loss: 0.451052 | Critic Loss: 2.161109 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.1487 | Critic Grad: 3.3366 | Time: 00:06:59
+[2026-01-05 21:21:44] Target time windows (batch0): start=[3.0, 2.0, 3.0, 2.0, 1.0], end=[6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:21:49] Episode 1/5 | Actor Loss: 0.782878 | Critic Loss: 5.689564
+[2026-01-05 21:21:49] Target time windows (batch0): start=[2.0, 2.0, 0.0, 0.0, 1.0, 0.0, 1.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:21:53] Episode 2/5 | Actor Loss: -0.415518 | Critic Loss: 0.524052
+[2026-01-05 21:21:53] Target time windows (batch0): start=[3.0, 0.0, 0.0, 1.0, 0.0, 2.0, 0.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:22:01] Episode 3/5 | Actor Loss: -0.957319 | Critic Loss: 2.763537
+[2026-01-05 21:22:01] Target time windows (batch0): start=[0.0, 0.0, 0.0, 1.0, 0.0], end=[7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:22:04] Episode 4/5 | Actor Loss: -0.080832 | Critic Loss: 1.863735
+[2026-01-05 21:22:04] Target time windows (batch0): start=[0.0, 2.0, 0.0, 1.0, 2.0, 0.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:22:07] Episode 5/5 | Actor Loss: -0.548098 | Critic Loss: 0.469669
+[2026-01-05 21:22:07] Epoch 20: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:22:07] [2026-01-05 21:22:07] Epoch: 020 | Objective: 8.246858 | Actor Loss: -0.243778 | Critic Loss: 2.262112 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.1587 | Critic Grad: 3.1072 | Time: 00:07:22
+[2026-01-05 21:22:07] Target time windows (batch0): start=[3.0, 3.0, 0.0, 0.0, 3.0, 3.0, 1.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:22:13] Episode 1/5 | Actor Loss: -0.046107 | Critic Loss: 0.974985
+[2026-01-05 21:22:13] Target time windows (batch0): start=[3.0, 0.0, 2.0, 0.0, 2.0, 1.0, 2.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:22:21] Episode 2/5 | Actor Loss: 0.677909 | Critic Loss: 0.366117
+[2026-01-05 21:22:21] Target time windows (batch0): start=[0.0, 3.0, 1.0, 1.0, 1.0], end=[7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:22:25] Episode 3/5 | Actor Loss: 0.083406 | Critic Loss: 0.398672
+[2026-01-05 21:22:25] Target time windows (batch0): start=[1.0, 1.0, 1.0, 0.0, 0.0, 2.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:22:29] Episode 4/5 | Actor Loss: 0.639267 | Critic Loss: 0.787982
+[2026-01-05 21:22:29] Target time windows (batch0): start=[3.0, 1.0, 3.0, 1.0, 2.0, 0.0, 3.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:22:35] Episode 5/5 | Actor Loss: -0.528925 | Critic Loss: 0.689449
+[2026-01-05 21:22:35] Epoch 21: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:22:35] [2026-01-05 21:22:35] Epoch: 021 | Objective: 7.324931 | Actor Loss: 0.165110 | Critic Loss: 0.643441 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.6463 | Critic Grad: 3.1059 | Time: 00:07:51
+[2026-01-05 21:22:35] Target time windows (batch0): start=[0.0, 2.0, 1.0, 0.0, 1.0, 0.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:22:39] Episode 1/5 | Actor Loss: 0.183915 | Critic Loss: 0.196006
+[2026-01-05 21:22:39] Target time windows (batch0): start=[0.0, 1.0, 0.0, 2.0, 0.0], end=[7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:22:46] Episode 2/5 | Actor Loss: -0.360228 | Critic Loss: 0.563632
+[2026-01-05 21:22:46] Target time windows (batch0): start=[2.0, 2.0, 0.0, 3.0, 1.0, 0.0, 1.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:22:50] Episode 3/5 | Actor Loss: -0.059181 | Critic Loss: 0.598884
+[2026-01-05 21:22:50] Target time windows (batch0): start=[3.0, 2.0, 1.0, 2.0, 2.0, 2.0, 0.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:22:54] Episode 4/5 | Actor Loss: -0.488255 | Critic Loss: 2.189117
+[2026-01-05 21:22:54] Target time windows (batch0): start=[3.0, 0.0, 1.0, 0.0, 3.0, 1.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:22:57] Episode 5/5 | Actor Loss: -0.845476 | Critic Loss: 0.835314
+[2026-01-05 21:22:57] Epoch 22: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:22:58] [2026-01-05 21:22:58] Epoch: 022 | Objective: 7.797842 | Actor Loss: -0.313845 | Critic Loss: 0.876591 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.1809 | Critic Grad: 3.0190 | Time: 00:08:13
+[2026-01-05 21:22:58] Target time windows (batch0): start=[1.0, 1.0, 0.0, 0.0, 1.0, 2.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:23:01] Episode 1/5 | Actor Loss: -0.555169 | Critic Loss: 0.256031
+[2026-01-05 21:23:01] Target time windows (batch0): start=[0.0, 2.0, 3.0, 1.0, 0.0, 0.0, 1.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:23:06] Episode 2/5 | Actor Loss: -0.179738 | Critic Loss: 0.449406
+[2026-01-05 21:23:06] Target time windows (batch0): start=[2.0, 0.0, 2.0, 1.0, 3.0, 2.0, 3.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:23:10] Episode 3/5 | Actor Loss: -0.634846 | Critic Loss: 0.186080
+[2026-01-05 21:23:10] Target time windows (batch0): start=[3.0, 0.0, 3.0, 3.0, 3.0], end=[7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:23:17] Episode 4/5 | Actor Loss: 1.761877 | Critic Loss: 2.200654
+[2026-01-05 21:23:17] Target time windows (batch0): start=[0.0, 0.0, 3.0, 0.0, 0.0], end=[7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:23:23] Episode 5/5 | Actor Loss: 1.038123 | Critic Loss: 1.661733
+[2026-01-05 21:23:23] Epoch 23: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:23:24] [2026-01-05 21:23:24] Epoch: 023 | Objective: 6.645508 | Actor Loss: 0.286049 | Critic Loss: 0.950781 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.2893 | Critic Grad: 3.0199 | Time: 00:08:39
+[2026-01-05 21:23:24] Target time windows (batch0): start=[0.0, 0.0, 1.0, 0.0, 0.0, 2.0, 1.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:23:31] Episode 1/5 | Actor Loss: 1.412611 | Critic Loss: 0.778582
+[2026-01-05 21:23:31] Target time windows (batch0): start=[2.0, 2.0, 0.0, 2.0, 1.0, 2.0], end=[5.0, 5.0, 5.0, 5.0, 5.0, 5.0]
+[2026-01-05 21:23:34] Episode 2/5 | Actor Loss: 0.197014 | Critic Loss: 1.178515
+[2026-01-05 21:23:34] Target time windows (batch0): start=[2.0, 2.0, 3.0, 1.0, 2.0, 1.0], end=[6.0, 6.0, 6.0, 6.0, 6.0, 6.0]
+[2026-01-05 21:23:38] Episode 3/5 | Actor Loss: -0.018370 | Critic Loss: 0.402143
+[2026-01-05 21:23:38] Target time windows (batch0): start=[3.0, 1.0, 1.0, 0.0, 2.0], end=[7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:23:44] Episode 4/5 | Actor Loss: -0.586761 | Critic Loss: 1.147941
+[2026-01-05 21:23:44] Target time windows (batch0): start=[3.0, 3.0, 1.0, 0.0, 1.0, 0.0, 0.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]
+[2026-01-05 21:23:52] Episode 5/5 | Actor Loss: -0.831284 | Critic Loss: 0.552446
+[2026-01-05 21:23:52] Epoch 24: mixedW×mixedT×mixedT, AMM=mixed
+[2026-01-05 21:23:52] [2026-01-05 21:23:52] Epoch: 024 | Objective: 9.024327 | Actor Loss: 0.034642 | Critic Loss: 0.811925 | Actor LR: 5.00e-04 | Critic LR: 1.00e-04 | Actor Grad: 5.3861 | Critic Grad: 3.5934 | Time: 00:09:08
+[2026-01-05 21:23:52] Target time windows (batch0): start=[0.0, 2.0, 1.0, 3.0, 0.0, 0.0, 0.0], end=[7.0, 7.0, 7.0, 7.0, 7.0, 7.0, 7.0]

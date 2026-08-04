@@ -1,0 +1,6 @@
+[2026-01-05 21:14:06] GNN REINFORCE Trainer initialized
+[2026-01-05 21:14:06] Output directory: ./result/GNN_TRAIN_20260105
+[2026-01-05 21:14:06] Multi-scale training: Random 5-7W × 5-7T × 5-7T per epoch
+[2026-01-05 21:14:06] Model: EMBEDDING_DIM=128, HEAD_NUM=8
+[2026-01-05 21:14:06] Training: 300 epochs, 5 episodes/epoch
+[2026-01-05 21:14:06] Starting GNN-based DWTA REINFORCE Training...

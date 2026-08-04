@@ -1,0 +1,2 @@
+instance,objective,status,status_category,average_obj,total_instances,optimal_count,feasible_count,solution_not_found_count,infeasible_count,optimal_percentage,feasible_percentage,solution_not_found_percentage,infeasible_percentage,2_feasible_count,2_feasible_percentage
+0,68.77084600202373,2_feasible,2,68.77084600202373,1,0,1,0,0,0.0,100.0,0.0,0.0,1,100.0

@@ -1,0 +1,12 @@
+[2025-08-09 20:12:15] 🚀 GNN PPO Training Started
+[2025-08-09 20:12:15] 📁 Output directory: ./TRAIN/GNN_TRAIN_20250809
+[2025-08-09 20:12:15] 📊 Loaded 100 test instances
+[2025-08-09 20:12:15] 🤖 Initializing GNN models...
+[2025-08-09 20:12:16] 📊 Models initialized on device: mps
+[2025-08-09 20:12:16] 🎭 GNN Actor parameters: 1,291,394
+[2025-08-09 20:12:16] 🎯 GNN Critic parameters: 1,274,113
+[2025-08-09 20:12:16] 📋 Loaded 100 test instances
+[2025-08-09 20:12:16] 🏁 Starting GNN PPO training...
+[2025-08-09 20:12:16] 📈 Training for 50 epochs with 5 episodes each
+[2025-08-09 20:12:16] 🎯 Starting GNN training: 50 epochs, 5 episodes each
+[2025-08-09 20:12:16] [2025-08-09 20:12:16] Epoch 1: Actor LR 0.000500, Critic LR 0.000100
