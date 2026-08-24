@@ -1,0 +1,72 @@
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+Using CUDA GPU
+RESULT 5M_5N_5T.xlsx 0.131187 0.55
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+Using CUDA GPU
+RESULT 5M_7N_5T.xlsx 0.254190 0.44
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+Using CUDA GPU
+RESULT 10M_15N_5T.xlsx 0.265145 0.63
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+Using CUDA GPU
+RESULT 15M_15N_5T.xlsx 0.060838 1.17
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+Using CUDA GPU
+RESULT 15M_20N_5T.xlsx 0.117149 1.26
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+Using CUDA GPU
+RESULT 20M_30N_5T.xlsx 0.197280 1.71
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+Using CUDA GPU
+RESULT 30M_30N_10T.xlsx 0.041918 3.78
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+Using CUDA GPU
+RESULT 30M_40N_10T.xlsx 0.102722 5.30
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+Using CUDA GPU
+RESULT 40M_50N_10T.xlsx 0.074023 5.68
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+Using CUDA GPU
+RESULT 50M_50N_15T.xlsx 0.006231 9.96
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+Using CUDA GPU
+RESULT 50M_70N_15T.xlsx 0.036887 12.51
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+Using CUDA GPU
+RESULT 70M_100N_15T.xlsx 0.037249 28.40

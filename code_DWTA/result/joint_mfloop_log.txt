@@ -1,0 +1,331 @@
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+Using CUDA GPU
+[JOINT] proposer trained from scratch
+[JOINT] auction=multifire
+[JOINT] curriculum=moderate  M,N,T ~ U[5,7]
+[JOINT] proposer+auditor co-trained in one loop, n_edits=2 (train) / 10 (eval), batch=15x10
+[JOINT] step 10/400 proposer_loss=2.5389 auditor_loss=0.0969 destr=0.5158 base=0.1928->audited=0.2167 (51s)
+[JOINT] step 20/400 proposer_loss=1.0743 auditor_loss=0.0026 destr=0.4620 base=0.2676->audited=0.2755 (121s)
+--- [JOINT] zero-shot eval at step 20 ---
+    5M_5N_5T: proposer=0.4955  audited=0.3020
+    5M_7N_5T: proposer=0.5186  audited=0.4103
+    10M_15N_5T: proposer=0.5006  audited=0.3911
+    15M_15N_5T: proposer=0.3536  audited=0.2766
+    15M_20N_5T: proposer=0.4453  audited=0.3960
+    20M_30N_5T: proposer=0.5230  audited=0.5040
+    30M_30N_10T: proposer=0.2116  audited=0.1994
+    30M_40N_10T: proposer=0.2917  audited=0.2914
+    40M_50N_10T: proposer=0.2139  audited=0.2139
+    50M_50N_15T: proposer=0.2102  audited=0.2089
+    50M_70N_15T: proposer=0.2217  audited=0.2195
+    70M_100N_15T: proposer=0.2323  audited=0.2285
+    mean_proposer=0.3515  mean_audited=0.3034  (best so far: 0.3034 at step 20)
+[JOINT] step 30/400 proposer_loss=0.1651 auditor_loss=-0.0549 destr=0.7930 base=0.1554->audited=0.1732 (667s)
+[JOINT] step 40/400 proposer_loss=1.5667 auditor_loss=0.1248 destr=0.7944 base=0.2224->audited=0.2501 (737s)
+--- [JOINT] zero-shot eval at step 40 ---
+    5M_5N_5T: proposer=0.3096  audited=0.2861
+    5M_7N_5T: proposer=0.4771  audited=0.4520
+    10M_15N_5T: proposer=0.3897  audited=0.3897
+    15M_15N_5T: proposer=0.2897  audited=0.2888
+    15M_20N_5T: proposer=0.3916  audited=0.3915
+    20M_30N_5T: proposer=0.4429  audited=0.4424
+    30M_30N_10T: proposer=0.1316  audited=0.1082
+    30M_40N_10T: proposer=0.2368  audited=0.1868
+    40M_50N_10T: proposer=0.1768  audited=0.1166
+    50M_50N_15T: proposer=0.1890  audited=0.1890
+    50M_70N_15T: proposer=0.1666  audited=0.1648
+    70M_100N_15T: proposer=0.1879  audited=0.1827
+    mean_proposer=0.2824  mean_audited=0.2665  (best so far: 0.2665 at step 40)
+[JOINT] step 50/400 proposer_loss=2.2318 auditor_loss=-0.0267 destr=0.7728 base=0.3279->audited=0.3504 (1292s)
+[JOINT] step 60/400 proposer_loss=2.6942 auditor_loss=-0.1531 destr=0.8320 base=0.1825->audited=0.1724 (1360s)
+--- [JOINT] zero-shot eval at step 60 ---
+    5M_5N_5T: proposer=0.2486  audited=0.1794
+    5M_7N_5T: proposer=0.3213  audited=0.2696
+    10M_15N_5T: proposer=0.2911  audited=0.2640
+    15M_15N_5T: proposer=0.1215  audited=0.1108
+    15M_20N_5T: proposer=0.2150  audited=0.1831
+    20M_30N_5T: proposer=0.2599  audited=0.2302
+    30M_30N_10T: proposer=0.0153  audited=0.0122
+    30M_40N_10T: proposer=0.0361  audited=0.0331
+    40M_50N_10T: proposer=0.0298  audited=0.0287
+    50M_50N_15T: proposer=0.0972  audited=0.0917
+    50M_70N_15T: proposer=0.0869  audited=0.0811
+    70M_100N_15T: proposer=0.1103  audited=0.1063
+    mean_proposer=0.1528  mean_audited=0.1325  (best so far: 0.1325 at step 60)
+[JOINT] step 70/400 proposer_loss=0.8100 auditor_loss=0.0735 destr=0.6587 base=0.2091->audited=0.2269 (1861s)
+[JOINT] step 80/400 proposer_loss=0.3448 auditor_loss=-0.1238 destr=0.7942 base=0.2466->audited=0.2482 (1933s)
+--- [JOINT] zero-shot eval at step 80 ---
+    5M_5N_5T: proposer=0.2403  audited=0.2026
+    5M_7N_5T: proposer=0.3780  audited=0.3175
+    10M_15N_5T: proposer=0.3505  audited=0.2856
+    15M_15N_5T: proposer=0.2400  audited=0.1651
+    15M_20N_5T: proposer=0.3456  audited=0.3033
+    20M_30N_5T: proposer=0.4243  audited=0.3829
+    30M_30N_10T: proposer=0.0614  audited=0.0604
+    30M_40N_10T: proposer=0.1301  audited=0.1265
+    40M_50N_10T: proposer=0.1150  audited=0.1118
+    50M_50N_15T: proposer=0.1730  audited=0.1730
+    50M_70N_15T: proposer=0.1711  audited=0.1711
+    70M_100N_15T: proposer=0.1968  audited=0.1961
+    mean_proposer=0.2355  mean_audited=0.2080  (best so far: 0.1325 at step 60)
+[JOINT] step 90/400 proposer_loss=0.5224 auditor_loss=-0.0661 destr=0.8647 base=0.0721->audited=0.0837 (2382s)
+[JOINT] step 100/400 proposer_loss=-0.3126 auditor_loss=-0.0822 destr=0.7973 base=0.2089->audited=0.2105 (2453s)
+--- [JOINT] zero-shot eval at step 100 ---
+    5M_5N_5T: proposer=0.2890  audited=0.2467
+    5M_7N_5T: proposer=0.3945  audited=0.3291
+    10M_15N_5T: proposer=0.3844  audited=0.3547
+    15M_15N_5T: proposer=0.2850  audited=0.2148
+    15M_20N_5T: proposer=0.3694  audited=0.3283
+    20M_30N_5T: proposer=0.4736  audited=0.3958
+    30M_30N_10T: proposer=0.1154  audited=0.1057
+    30M_40N_10T: proposer=0.2162  audited=0.1990
+    40M_50N_10T: proposer=0.1798  audited=0.1714
+    50M_50N_15T: proposer=0.1816  audited=0.1815
+    50M_70N_15T: proposer=0.1755  audited=0.1748
+    70M_100N_15T: proposer=0.2118  audited=0.2110
+    mean_proposer=0.2730  mean_audited=0.2427  (best so far: 0.1325 at step 60)
+[JOINT] step 110/400 proposer_loss=-0.5827 auditor_loss=-0.0435 destr=0.7453 base=0.1644->audited=0.1653 (2962s)
+[JOINT] step 120/400 proposer_loss=-0.1843 auditor_loss=0.0137 destr=0.8134 base=0.2143->audited=0.2131 (3034s)
+--- [JOINT] zero-shot eval at step 120 ---
+    5M_5N_5T: proposer=0.2871  audited=0.2256
+    5M_7N_5T: proposer=0.4209  audited=0.2984
+    10M_15N_5T: proposer=0.3615  audited=0.3267
+    15M_15N_5T: proposer=0.2638  audited=0.2161
+    15M_20N_5T: proposer=0.3730  audited=0.3322
+    20M_30N_5T: proposer=0.4551  audited=0.4548
+    30M_30N_10T: proposer=0.1052  audited=0.1052
+    30M_40N_10T: proposer=0.1660  audited=0.1660
+    40M_50N_10T: proposer=0.1360  audited=0.1360
+    50M_50N_15T: proposer=0.2009  audited=0.2009
+    50M_70N_15T: proposer=0.1913  audited=0.1913
+    70M_100N_15T: proposer=0.2062  audited=0.2062
+    mean_proposer=0.2639  mean_audited=0.2383  (best so far: 0.1325 at step 60)
+[JOINT] step 130/400 proposer_loss=0.3254 auditor_loss=-0.1997 destr=0.8257 base=0.2227->audited=0.2234 (3493s)
+[JOINT] step 140/400 proposer_loss=0.6417 auditor_loss=-0.2874 destr=0.9415 base=0.0425->audited=0.0439 (3562s)
+--- [JOINT] zero-shot eval at step 140 ---
+    5M_5N_5T: proposer=0.2803  audited=0.2587
+    5M_7N_5T: proposer=0.4168  audited=0.3658
+    10M_15N_5T: proposer=0.3917  audited=0.3653
+    15M_15N_5T: proposer=0.2925  audited=0.2847
+    15M_20N_5T: proposer=0.4066  audited=0.4008
+    20M_30N_5T: proposer=0.4992  audited=0.4979
+    30M_30N_10T: proposer=0.1429  audited=0.1429
+    30M_40N_10T: proposer=0.2424  audited=0.2424
+    40M_50N_10T: proposer=0.1698  audited=0.1698
+    50M_50N_15T: proposer=0.1754  audited=0.1754
+    50M_70N_15T: proposer=0.1768  audited=0.1768
+    70M_100N_15T: proposer=0.2045  audited=0.2045
+    mean_proposer=0.2832  mean_audited=0.2737  (best so far: 0.1325 at step 60)
+[JOINT] step 150/400 proposer_loss=0.0422 auditor_loss=0.0019 destr=0.8338 base=0.0966->audited=0.1126 (4069s)
+[JOINT] step 160/400 proposer_loss=-0.2273 auditor_loss=0.0000 destr=0.7739 base=0.0604->audited=0.0604 (4145s)
+--- [JOINT] zero-shot eval at step 160 ---
+    5M_5N_5T: proposer=0.2124  audited=0.2017
+    5M_7N_5T: proposer=0.3202  audited=0.3012
+    10M_15N_5T: proposer=0.2929  audited=0.2877
+    15M_15N_5T: proposer=0.1513  audited=0.1513
+    15M_20N_5T: proposer=0.2579  audited=0.2521
+    20M_30N_5T: proposer=0.3311  audited=0.3311
+    30M_30N_10T: proposer=0.0188  audited=0.0188
+    30M_40N_10T: proposer=0.0462  audited=0.0462
+    40M_50N_10T: proposer=0.0576  audited=0.0576
+    50M_50N_15T: proposer=0.1197  audited=0.1197
+    50M_70N_15T: proposer=0.1304  audited=0.1304
+    70M_100N_15T: proposer=0.1482  audited=0.1482
+    mean_proposer=0.1739  mean_audited=0.1705  (best so far: 0.1325 at step 60)
+[JOINT] step 170/400 proposer_loss=-0.1564 auditor_loss=0.0000 destr=0.7601 base=0.3231->audited=0.3231 (4598s)
+[JOINT] step 180/400 proposer_loss=0.5190 auditor_loss=0.0217 destr=0.9035 base=0.1590->audited=0.1584 (4672s)
+--- [JOINT] zero-shot eval at step 180 ---
+    5M_5N_5T: proposer=0.1990  audited=0.1905
+    5M_7N_5T: proposer=0.3617  audited=0.2933
+    10M_15N_5T: proposer=0.4111  audited=0.3727
+    15M_15N_5T: proposer=0.3498  audited=0.3344
+    15M_20N_5T: proposer=0.4760  audited=0.4672
+    20M_30N_5T: proposer=0.5636  audited=0.5613
+    30M_30N_10T: proposer=0.1560  audited=0.1560
+    30M_40N_10T: proposer=0.2663  audited=0.2663
+    40M_50N_10T: proposer=0.1890  audited=0.1890
+    50M_50N_15T: proposer=0.1885  audited=0.1885
+    50M_70N_15T: proposer=0.1899  audited=0.1899
+    70M_100N_15T: proposer=0.2246  audited=0.2246
+    mean_proposer=0.2980  mean_audited=0.2861  (best so far: 0.1325 at step 60)
+[JOINT] step 190/400 proposer_loss=-0.2693 auditor_loss=0.0000 destr=0.8702 base=0.1120->audited=0.1120 (5212s)
+[JOINT] step 200/400 proposer_loss=-0.4209 auditor_loss=-0.0600 destr=0.8915 base=0.1851->audited=0.1930 (5297s)
+--- [JOINT] zero-shot eval at step 200 ---
+    5M_5N_5T: proposer=0.1846  audited=0.1775
+    5M_7N_5T: proposer=0.2760  audited=0.2437
+    10M_15N_5T: proposer=0.2969  audited=0.2923
+    15M_15N_5T: proposer=0.1698  audited=0.1630
+    15M_20N_5T: proposer=0.2798  audited=0.2714
+    20M_30N_5T: proposer=0.3613  audited=0.3613
+    30M_30N_10T: proposer=0.0496  audited=0.0496
+    30M_40N_10T: proposer=0.0741  audited=0.0741
+    40M_50N_10T: proposer=0.0960  audited=0.0960
+    50M_50N_15T: proposer=0.1494  audited=0.1494
+    50M_70N_15T: proposer=0.1467  audited=0.1467
+    70M_100N_15T: proposer=0.1670  audited=0.1670
+    mean_proposer=0.1876  mean_audited=0.1827  (best so far: 0.1325 at step 60)
+[JOINT] step 210/400 proposer_loss=0.3687 auditor_loss=0.0000 destr=0.8061 base=0.1875->audited=0.1875 (5798s)
+[JOINT] step 220/400 proposer_loss=-0.3928 auditor_loss=-0.2182 destr=0.7847 base=0.1309->audited=0.1349 (5863s)
+--- [JOINT] zero-shot eval at step 220 ---
+    5M_5N_5T: proposer=0.2399  audited=0.1772
+    5M_7N_5T: proposer=0.3474  audited=0.2908
+    10M_15N_5T: proposer=0.2733  audited=0.2468
+    15M_15N_5T: proposer=0.1694  audited=0.1275
+    15M_20N_5T: proposer=0.2243  audited=0.1960
+    20M_30N_5T: proposer=0.3005  audited=0.2723
+    30M_30N_10T: proposer=0.0216  audited=0.0216
+    30M_40N_10T: proposer=0.0393  audited=0.0393
+    40M_50N_10T: proposer=0.0379  audited=0.0379
+    50M_50N_15T: proposer=0.1146  audited=0.1146
+    50M_70N_15T: proposer=0.0946  audited=0.0946
+    70M_100N_15T: proposer=0.1152  audited=0.1152
+    mean_proposer=0.1648  mean_audited=0.1445  (best so far: 0.1325 at step 60)
+[JOINT] step 230/400 proposer_loss=-0.1477 auditor_loss=-0.2142 destr=0.7418 base=0.2388->audited=0.2392 (6368s)
+[JOINT] step 240/400 proposer_loss=-0.4598 auditor_loss=-0.3920 destr=0.8704 base=0.0752->audited=0.0763 (6441s)
+--- [JOINT] zero-shot eval at step 240 ---
+    5M_5N_5T: proposer=0.2059  audited=0.1859
+    5M_7N_5T: proposer=0.3639  audited=0.2955
+    10M_15N_5T: proposer=0.3483  audited=0.3023
+    15M_15N_5T: proposer=0.1943  audited=0.1771
+    15M_20N_5T: proposer=0.2738  audited=0.2624
+    20M_30N_5T: proposer=0.3866  audited=0.3866
+    30M_30N_10T: proposer=0.0396  audited=0.0396
+    30M_40N_10T: proposer=0.0900  audited=0.0900
+    40M_50N_10T: proposer=0.0679  audited=0.0679
+    50M_50N_15T: proposer=0.1756  audited=0.1756
+    50M_70N_15T: proposer=0.1575  audited=0.1575
+    70M_100N_15T: proposer=0.1759  audited=0.1759
+    mean_proposer=0.2066  mean_audited=0.1930  (best so far: 0.1325 at step 60)
+[JOINT] step 250/400 proposer_loss=-0.4342 auditor_loss=0.0000 destr=0.7322 base=0.1029->audited=0.1029 (6915s)
+[JOINT] step 260/400 proposer_loss=0.3605 auditor_loss=0.0000 destr=0.8127 base=0.0813->audited=0.0813 (6989s)
+--- [JOINT] zero-shot eval at step 260 ---
+    5M_5N_5T: proposer=0.1948  audited=0.1816
+    5M_7N_5T: proposer=0.3281  audited=0.2820
+    10M_15N_5T: proposer=0.2966  audited=0.2734
+    15M_15N_5T: proposer=0.1410  audited=0.1322
+    15M_20N_5T: proposer=0.2447  audited=0.2257
+    20M_30N_5T: proposer=0.2921  audited=0.2865
+    30M_30N_10T: proposer=0.0202  audited=0.0202
+    30M_40N_10T: proposer=0.0597  audited=0.0597
+    40M_50N_10T: proposer=0.0430  audited=0.0430
+    50M_50N_15T: proposer=0.1300  audited=0.1300
+    50M_70N_15T: proposer=0.1240  audited=0.1240
+    70M_100N_15T: proposer=0.1419  audited=0.1419
+    mean_proposer=0.1680  mean_audited=0.1583  (best so far: 0.1325 at step 60)
+[JOINT] step 270/400 proposer_loss=0.2797 auditor_loss=-0.0915 destr=0.8794 base=0.2295->audited=0.2302 (7458s)
+[JOINT] step 280/400 proposer_loss=-0.1729 auditor_loss=0.0119 destr=0.9436 base=0.2266->audited=0.2265 (7541s)
+--- [JOINT] zero-shot eval at step 280 ---
+    5M_5N_5T: proposer=0.2846  audited=0.2164
+    5M_7N_5T: proposer=0.3773  audited=0.2829
+    10M_15N_5T: proposer=0.3595  audited=0.3248
+    15M_15N_5T: proposer=0.2304  audited=0.2205
+    15M_20N_5T: proposer=0.3314  audited=0.3117
+    20M_30N_5T: proposer=0.3931  audited=0.3931
+    30M_30N_10T: proposer=0.0400  audited=0.0400
+    30M_40N_10T: proposer=0.0992  audited=0.0992
+    40M_50N_10T: proposer=0.0700  audited=0.0700
+    50M_50N_15T: proposer=0.1985  audited=0.1985
+    50M_70N_15T: proposer=0.1787  audited=0.1787
+    70M_100N_15T: proposer=0.1970  audited=0.1970
+    mean_proposer=0.2300  mean_audited=0.2111  (best so far: 0.1325 at step 60)
+[JOINT] step 290/400 proposer_loss=-0.1640 auditor_loss=0.0035 destr=0.9561 base=0.2404->audited=0.2404 (8247s)
+[JOINT] step 300/400 proposer_loss=-0.8671 auditor_loss=-0.1297 destr=0.7579 base=0.1636->audited=0.1638 (8438s)
+--- [JOINT] zero-shot eval at step 300 ---
+    5M_5N_5T: proposer=0.3122  audited=0.3006
+    5M_7N_5T: proposer=0.3772  audited=0.3016
+    10M_15N_5T: proposer=0.3607  audited=0.3315
+    15M_15N_5T: proposer=0.2227  audited=0.2136
+    15M_20N_5T: proposer=0.3464  audited=0.3350
+    20M_30N_5T: proposer=0.3835  audited=0.3835
+    30M_30N_10T: proposer=0.0427  audited=0.0427
+    30M_40N_10T: proposer=0.0830  audited=0.0830
+    40M_50N_10T: proposer=0.0747  audited=0.0747
+    50M_50N_15T: proposer=0.1703  audited=0.1703
+    50M_70N_15T: proposer=0.1664  audited=0.1664
+    70M_100N_15T: proposer=0.1836  audited=0.1836
+    mean_proposer=0.2270  mean_audited=0.2155  (best so far: 0.1325 at step 60)
+[JOINT] step 310/400 proposer_loss=0.2209 auditor_loss=0.0000 destr=0.8289 base=0.2309->audited=0.2309 (9414s)
+[JOINT] step 320/400 proposer_loss=-0.2845 auditor_loss=0.0000 destr=0.6721 base=0.2230->audited=0.2230 (9586s)
+--- [JOINT] zero-shot eval at step 320 ---
+    5M_5N_5T: proposer=0.2850  audited=0.2594
+    5M_7N_5T: proposer=0.3853  audited=0.3364
+    10M_15N_5T: proposer=0.3689  audited=0.3254
+    15M_15N_5T: proposer=0.2300  audited=0.2207
+    15M_20N_5T: proposer=0.3553  audited=0.3410
+    20M_30N_5T: proposer=0.3871  audited=0.3871
+    30M_30N_10T: proposer=0.0408  audited=0.0408
+    30M_40N_10T: proposer=0.1023  audited=0.1023
+    40M_50N_10T: proposer=0.0809  audited=0.0809
+    50M_50N_15T: proposer=0.1869  audited=0.1869
+    50M_70N_15T: proposer=0.1732  audited=0.1732
+    70M_100N_15T: proposer=0.1938  audited=0.1938
+    mean_proposer=0.2324  mean_audited=0.2206  (best so far: 0.1325 at step 60)
+[JOINT] step 330/400 proposer_loss=-0.3902 auditor_loss=-0.1135 destr=0.8877 base=0.0812->audited=0.0833 (10545s)
+[JOINT] step 340/400 proposer_loss=-0.5029 auditor_loss=0.0000 destr=0.7659 base=0.2193->audited=0.2193 (10714s)
+--- [JOINT] zero-shot eval at step 340 ---
+    5M_5N_5T: proposer=0.2559  audited=0.2060
+    5M_7N_5T: proposer=0.3742  audited=0.2863
+    10M_15N_5T: proposer=0.3731  audited=0.3389
+    15M_15N_5T: proposer=0.2372  audited=0.2190
+    15M_20N_5T: proposer=0.3576  audited=0.3387
+    20M_30N_5T: proposer=0.4074  audited=0.3998
+    30M_30N_10T: proposer=0.0531  audited=0.0531
+    30M_40N_10T: proposer=0.1051  audited=0.1051
+    40M_50N_10T: proposer=0.0880  audited=0.0880
+    50M_50N_15T: proposer=0.1823  audited=0.1823
+    50M_70N_15T: proposer=0.1627  audited=0.1627
+    70M_100N_15T: proposer=0.1775  audited=0.1775
+    mean_proposer=0.2312  mean_audited=0.2131  (best so far: 0.1325 at step 60)
+[JOINT] step 350/400 proposer_loss=0.1379 auditor_loss=-0.0222 destr=0.8839 base=0.1366->audited=0.1317 (11715s)
+[JOINT] step 360/400 proposer_loss=-0.1251 auditor_loss=0.0000 destr=0.8439 base=0.2567->audited=0.2567 (11869s)
+--- [JOINT] zero-shot eval at step 360 ---
+    5M_5N_5T: proposer=0.2814  audited=0.2142
+    5M_7N_5T: proposer=0.4122  audited=0.3155
+    10M_15N_5T: proposer=0.4015  audited=0.3526
+    15M_15N_5T: proposer=0.2521  audited=0.2365
+    15M_20N_5T: proposer=0.3700  audited=0.3508
+    20M_30N_5T: proposer=0.4332  audited=0.4287
+    30M_30N_10T: proposer=0.0616  audited=0.0616
+    30M_40N_10T: proposer=0.1296  audited=0.1296
+    40M_50N_10T: proposer=0.1019  audited=0.1019
+    50M_50N_15T: proposer=0.2010  audited=0.2010
+    50M_70N_15T: proposer=0.1798  audited=0.1798
+    70M_100N_15T: proposer=0.1993  audited=0.1993
+    mean_proposer=0.2520  mean_audited=0.2310  (best so far: 0.1325 at step 60)
+[JOINT] step 370/400 proposer_loss=-0.1183 auditor_loss=-0.1204 destr=0.6948 base=0.3368->audited=0.3407 (12881s)
+[JOINT] step 380/400 proposer_loss=-0.2343 auditor_loss=-0.0230 destr=0.9218 base=0.2173->audited=0.2193 (13059s)
+--- [JOINT] zero-shot eval at step 380 ---
+    5M_5N_5T: proposer=0.2927  audited=0.2254
+    5M_7N_5T: proposer=0.4187  audited=0.3021
+    10M_15N_5T: proposer=0.4005  audited=0.3552
+    15M_15N_5T: proposer=0.2648  audited=0.2386
+    15M_20N_5T: proposer=0.3761  audited=0.3569
+    20M_30N_5T: proposer=0.4545  audited=0.4498
+    30M_30N_10T: proposer=0.0630  audited=0.0630
+    30M_40N_10T: proposer=0.1488  audited=0.1488
+    40M_50N_10T: proposer=0.1107  audited=0.1107
+    50M_50N_15T: proposer=0.2031  audited=0.2031
+    50M_70N_15T: proposer=0.1845  audited=0.1845
+    70M_100N_15T: proposer=0.2011  audited=0.2011
+    mean_proposer=0.2599  mean_audited=0.2366  (best so far: 0.1325 at step 60)
+[JOINT] step 390/400 proposer_loss=-0.1392 auditor_loss=0.0528 destr=0.8617 base=0.2296->audited=0.2296 (14046s)
+[JOINT] step 400/400 proposer_loss=0.0494 auditor_loss=0.0000 destr=0.8835 base=0.2577->audited=0.2577 (14224s)
+--- [JOINT] zero-shot eval at step 400 ---
+    5M_5N_5T: proposer=0.2814  audited=0.2142
+    5M_7N_5T: proposer=0.4187  audited=0.3021
+    10M_15N_5T: proposer=0.4046  audited=0.3434
+    15M_15N_5T: proposer=0.2561  audited=0.2368
+    15M_20N_5T: proposer=0.3672  audited=0.3480
+    20M_30N_5T: proposer=0.4467  audited=0.4419
+    30M_30N_10T: proposer=0.0564  audited=0.0564
+    30M_40N_10T: proposer=0.1467  audited=0.1467
+    40M_50N_10T: proposer=0.1087  audited=0.1087
+    50M_50N_15T: proposer=0.2052  audited=0.2052
+    50M_70N_15T: proposer=0.1835  audited=0.1835
+    70M_100N_15T: proposer=0.2007  audited=0.2007
+    mean_proposer=0.2563  mean_audited=0.2323  (best so far: 0.1325 at step 60)
+Best audited mean=0.1325 at step 60
+Saved: result/Joint_base_seed5_mfloop_best.pt, result/Joint_improve_seed5_mfloop_best.pt

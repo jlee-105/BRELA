@@ -1,0 +1,25 @@
+C:\Users\ongs6\vs_code\DWTA\after_review_ieee_access\code_DWTA\eval_repair_paper_table.py:107: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:837.)
+  print(f"[check] trained sinkhorn_scale = {float(scale):.6f}"
+Using CUDA GPU
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+[check] trained sinkhorn_scale = 0.021333   (near 0 means the Sinkhorn term is inactive)
+
+config                K=0      K=3     K=10     K=30    K=100   flat@
+5M_5N_5T          0.2486   0.1929   0.1794   0.1794   0.1794     3.2
+5M_7N_5T          0.3213   0.2764   0.2696   0.2685   0.2685     3.9
+10M_15N_5T          0.2911   0.2686   0.2640   0.2640   0.2640     3.8
+15M_15N_5T          0.1215   0.1150   0.1108   0.1102   0.1102     5.0
+15M_20N_5T          0.2150   0.1949   0.1831   0.1831   0.1831     4.0
+20M_30N_5T          0.2599   0.2451   0.2302   0.2302   0.2302     5.7
+30M_30N_10T          0.0153   0.0133   0.0122   0.0120   0.0118    12.8
+30M_40N_10T          0.0361   0.0340   0.0331   0.0331   0.0331     3.8
+40M_50N_10T          0.0298   0.0293   0.0287   0.0287   0.0287     4.0
+50M_50N_15T          0.0972   0.0941   0.0917   0.0917   0.0917     7.1
+50M_70N_15T          0.0869   0.0842   0.0811   0.0809   0.0809     7.6
+70M_100N_15T          0.1103   0.1070   0.1063   0.1058   0.1057    14.9
+
+MEAN               0.1528   0.1379   0.1325   0.1323   0.1323     6.3

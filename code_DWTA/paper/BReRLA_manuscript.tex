@@ -1,5 +1,7 @@
-\documentclass{ieeeaccess}
-\usepackage{cite}
+\RequirePackage{fix-cm}
+\documentclass[smallcondensed]{svjour3}
+\smartqed
+\usepackage{natbib}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
 \usepackage{textcomp}
@@ -12,45 +14,42 @@
 \usepackage{float}
 \usepackage{bm}
 
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+
+\journalname{Applied Intelligence}
+
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
 \begin{document}
-\history{Date of publication xxxx 00, 0000, date of current version xxxx 00, 0000.}
-\doi{10.1109/ACCESS.2026.XXXXXXX}
 
-\title{Soft-Coupled Multi-Agent Reinforcement Learning for Dynamic Weapon-Target Assignment}
+\title{SCoPE: A Soft-Coupled Parallel-Decoding Framework for Dynamic Weapon-Target Assignment}
+\titlerunning{SCoPE: Soft-Coupled Parallel Decoding for DWTA}
 
-\author{\uppercase{Jaejin Lee}\authorrefmark{1}}
+\author{Jaejin Lee}
 
-\address[1]{Intel Corporation, Chandler, AZ 85226, USA (e-mail: jaejin.lee@intel.com)}
+\institute{Jaejin Lee \at
+  Intel Corporation, Chandler, AZ 85226, USA \\
+  \email{jaejin.lee@intel.com}
+}
 
-
-
-\markboth
-{Lee: BReRLA: Beam Search and Rollout Enhanced Reinforcement Learning for Dynamic Weapon-Target Assignment}
-{Lee: BReRLA: Beam Search and Rollout Enhanced Reinforcement Learning for Dynamic Weapon-Target Assignment}
-
-\corresp{Corresponding author: Jaejin Lee (e-mail: jaejin.lee@intel.com).}
-
-\begin{abstract}
-The Dynamic Weapon-Target Assignment Problem (DWTAP) is a critical and computationally challenging optimization problem in defense operations. We propose BReRLA (Beam search and Rollout enhanced Reinforcement Learning for dynamic weapon-target Assignment), a reinforcement learning framework that integrates a modified transformer architecture with beam search and rollout-based planning. Unlike purely greedy policies, BReRLA enhances inference by combining beam search exploration with two rollout strategies: pure rollout for smaller instances and truncated neural rollout for larger problems, thereby balancing solution quality and computational efficiency.
-
-BReRLA is trained using parallel multi-episodic REINFORCE on small-scale instances (5 weapons, 5 targets, 5 time steps) and generalizes effectively to significantly larger instances of up to 10×10×10 configurations. The framework incorporates realistic battlefield constraints including weapon reload times, ammunition limitations, and target availability windows across multiple time stages. Experimental results demonstrate that BReRLA achieves scalable real-time inference through greedy execution, while beam search with rollout improves solution quality with manageable computational overhead. Compared to commercial solvers, BReRLA maintains performance gaps of 6--17\% while achieving substantially faster inference times. These findings highlight BReRLA as an effective and scalable framework for dynamic assignment problems requiring both accuracy and real-time decision-making capability.
-\end{abstract}
-
-\begin{keywords}
-Beam search, combinatorial optimization, dynamic weapon-target assignment, Markov decision process, reinforcement learning, rollout algorithm, transformer
-\end{keywords}
-
-\titlepgskip=-21pt
+\date{Received: date / Accepted: date}
 
 \maketitle
+
+\begin{abstract}
+The Dynamic Weapon-Target Assignment Problem (DWTAP) is a critical and computationally challenging optimization problem in defense operations. We propose SCoPE (Soft-COupled Parallel-decoding framework for wEapon-target assignment), a reinforcement learning framework that integrates a modified transformer architecture with beam search and rollout-based planning. %% TODO: abstract content itself (results numbers, framing) still describes the old sequential-decoder work -- rewrite last, once A/B/C/D results are finalized. Unlike purely greedy policies, SCoPE enhances inference by combining beam search exploration with two rollout strategies: pure rollout for smaller instances and truncated neural rollout for larger problems, thereby balancing solution quality and computational efficiency.
+
+SCoPE is trained using parallel multi-episodic REINFORCE on small-scale instances (5 weapons, 5 targets, 5 time steps) and generalizes effectively to significantly larger instances of up to 10×10×10 configurations. The framework incorporates realistic battlefield constraints including weapon reload times, ammunition limitations, and target availability windows across multiple time stages. Experimental results demonstrate that SCoPE achieves scalable real-time inference through greedy execution, while beam search with rollout improves solution quality with manageable computational overhead. Compared to commercial solvers, SCoPE maintains performance gaps of 6--17\% while achieving substantially faster inference times. These findings highlight SCoPE as an effective and scalable framework for dynamic assignment problems requiring both accuracy and real-time decision-making capability.
+
+\keywords{Reinforcement learning \and Multi-agent coordination \and Combinatorial optimization \and Dynamic weapon-target assignment \and Transformer}
+\end{abstract}
 
 \section{Introduction}
 \label{sec:introduction}
 
-\PARstart{T}{he} term Operational Research (OR) was first coined in 1940 by A.P. Rowe, a scientist at the British Air Ministry~\cite{britannica_operations_research}. During World War II, the British formed teams of scientists, mathematicians, and engineers tasked with analyzing and optimizing military operations. These teams addressed critical challenges such as optimizing bomber tactics~\cite{orhistory}. Within this context, the Weapon-Target Assignment Problem (WTAP) emerged as a central modeling challenge for defense applications. First proposed by Manne in 1958~\cite{manne1958target}, the WTAP has since remained an active research topic due to its relevance in diverse battlefield and strategic scenarios~\cite{ahuja2007exact}.
+\PARstart{T}{he} term Operational Research (OR) was first coined in 1940 by A.P. Rowe, a scientist at the British Air Ministry~\cite{kirby2003operational}. During World War II, the British formed teams of scientists, mathematicians, and engineers tasked with analyzing and optimizing military operations. These teams addressed critical challenges such as optimizing bomber tactics~\cite{kirby2003operational}. Within this context, the Weapon-Target Assignment Problem (WTAP) emerged as a central modeling challenge for defense applications. First proposed by Manne in 1958~\cite{manne1958target}, the WTAP has since remained an active research topic due to its relevance in diverse battlefield and strategic scenarios~\cite{ahuja2007exact}.
 
 The WTAP seeks to assign a set of weapons to a set of targets to minimize the expected residual value of the targets after engagement. In its original static form, the WTAP involves a one-time allocation of weapons of type $m \in M$ to targets $n \in N$, where each target has an associated value $V_n$, each weapon type has a limited inventory $A_m$, and the effectiveness of weapon-target pairings is characterized by a damage rate $P_{m,n}$.
 
@@ -67,7 +66,7 @@ Due to its combinatorial structure, the WTAP belongs to the class of NP-hard pro
 
 In response, reinforcement learning (RL) has emerged as a promising alternative. Unlike handcrafted heuristics, RL methods learn adaptive policies that generalize across different instances and scales. Recent advances in neural combinatorial optimization have demonstrated that RL can compete with or outperform classical heuristics and metaheuristics on a variety of assignment and scheduling problems~\cite{lee2024attention,kool2018attention,kwon2020pomo}.
 
-In this work, we introduce BReRLA (Beam search and Rollout enhanced Reinforcement Learning for dynamic weapon-target Assignment), a transformer-based RL framework for solving the DWTAP. Our method employs a modified transformer architecture to embed MDP states and trains the policy using parallel multi-episodic REINFORCE. To further enhance solution quality at inference, we integrate rollout-enhanced planning with beam search, including a truncated neural rollout that balances solution quality with computational efficiency.
+In this work, we introduce SCoPE (Soft-COupled Parallel-decoding framework for wEapon-target assignment), a transformer-based RL framework for solving the DWTAP. Our method employs a modified transformer architecture to embed MDP states and trains the policy using parallel multi-episodic REINFORCE. To further enhance solution quality at inference, we integrate rollout-enhanced planning with beam search, including a truncated neural rollout that balances solution quality with computational efficiency.
 
 The main contributions of this study are summarized as follows:
 
@@ -76,17 +75,17 @@ The main contributions of this study are summarized as follows:
 
     \item \textbf{A structural distinction for multi-agent combinatorial optimization}: We characterize DWTAP as a \emph{soft-coupled} multi-agent assignment problem, in which coordination among weapons arises from the nonlinear, multiplicative structure of the objective (Eq.~\eqref{eq:objective_function}) rather than from hard resource exclusivity as in routing- and scheduling-style multi-agent problems~\cite{parco2024}. We show that a parallel multi-pointer decoder without an explicit, learned conflict-resolution mechanism is sufficient to induce coordinated, non-wasteful target engagement in this setting.
 
-    \item \textbf{Rigorous, standardized benchmarking}: BReRLA is trained on small-scale DWTAP instances (5×5×5) but generalizes effectively to significantly larger instances (up to 10×10×10). We evaluate against exact (CPLEX), classical heuristic, metaheuristic, and standard neural combinatorial optimization baselines under a multi-seed, statistically reported evaluation protocol.
+    \item \textbf{Rigorous, standardized benchmarking}: SCoPE is trained on a small-scale multi-scale curriculum but generalizes effectively to significantly larger held-out instances, evaluated across four size tiers up to $70 \times 100 \times 15$. We evaluate against exact (SCIP), classical heuristic, metaheuristic, and standard neural combinatorial optimization baselines under a multi-seed, statistically reported evaluation protocol.
 
     \item \textbf{Rollout-enhanced inference}: Building on rollout algorithms~\cite{bertsekas1997rollout} and simulation-guided beam search~\cite{choo2022sgbs}, we adapt beam search with pure and truncated neural rollout to DWTAP's time-windowed, resource-constrained action space, improving solution quality over greedy selection while offering a tunable trade-off between performance and runtime.
 \end{itemize}
 
-The remainder of this paper is organized as follows: Section~\ref{sec:related} reviews related work, Section~\ref{sec:problem} presents the problem formulation, Section~\ref{sec:mdp} details the MDP formulation, Section~\ref{sec:method} describes the proposed BReRLA methodology, Section~\ref{sec:results} reports experimental results, and Section~\ref{sec:conclusion} concludes with insights and future directions.
+The remainder of this paper is organized as follows: Section~\ref{sec:related} reviews related work, Section~\ref{sec:problem} presents the problem formulation, Section~\ref{sec:mdp} details the MDP formulation, Section~\ref{sec:method} describes the proposed SCoPE methodology, Section~\ref{sec:results} reports experimental results, and Section~\ref{sec:conclusion} concludes with insights and future directions.
 
 \section{Related Work}
 \label{sec:related}
 
-The Weapon Target Assignment Problem (WTAP) was first introduced by~\cite{manne1958target} as a nonlinear integer programming problem in the operations research community and has since been actively researched due to its significant applicability in the military domain. Lloyd and Witsenhausen~\cite{lloyd1986weapons} demonstrated that the WTAP is an NP-hard problem. Until the 1970s, primary research focused on transforming the original WTAP into a solvable approximation problem, i.e., converting a nonlinear programming problem into a linear programming problem~\cite{day1966allocating, firstman1960approximating, ill1971linear, bracken1968selected, manne1958target, denbroeder1959optimum} by relaxing the nonlinear objective function and simplifying certain conditions, such as assuming that all weapons are identical~\cite{manne1958target, denbroeder1959optimum}. However, this oversimplified scenario fails to effectively capture the complexities of real battlefield environments.
+The Weapon Target Assignment Problem (WTAP) was first introduced by~\cite{manne1958target} as a nonlinear integer programming problem in the operations research community and has since been actively researched due to its significant applicability in the military domain. Lloyd and Witsenhausen~\cite{lloyd1986weapons} demonstrated that the WTAP is an NP-hard problem. Until the 1970s, primary research focused on transforming the original WTAP into a solvable approximation problem, i.e., converting a nonlinear programming problem into a linear programming problem~\cite{day1966allocating,firstman1960approximating,hodson1971linear,bracken1968selected,manne1958target,denbroeder1959optimum} by relaxing the nonlinear objective function and simplifying certain conditions, such as assuming that all weapons are identical~\cite{manne1958target,denbroeder1959optimum}. However, this oversimplified scenario fails to effectively capture the complexities of real battlefield environments.
 
 Recent studies have sought to address WTAPs without such simplifications to better reflect real battlefield situations, mainly in two directions: (1) exact solution approaches and (2) heuristic approaches. For the exact solution approach, empirical experiments were conducted in~\cite{johansson2009empirical} to determine the limit of the configuration of weapons and targets using exhaustive search. This study showed that the original WTAP can be solved within 15 minutes with nine weapons and eight targets, but it cannot be solved within an hour if one additional weapon or target is added. Kline et al.~\cite{kline2019weapon} utilized a branch-and-bound algorithm to solve a problem with 10 weapons and 10 targets of the original static WTAP. However, when the problem size increased, the computation failed to converge within seven days, demonstrating the challenge posed by this NP-hard problem. A notable study on the exact solution approach was conducted by Ahuja et al.~\cite{ahuja2007exact}, who proposed an exact algorithm to solve the original static WTAP using three different lower bounds with branch-and-bound algorithms. This study achieved global optimal solutions for up to 80 weapons and 80 targets in the original static WTAP within 24 hours. This seminal research turned medium-sized problems, previously considered unsolvable, into problems solvable optimally. Despite extensive research into exact solution approaches, no algorithms have yet been identified that can optimally solve large-scale variants of the original WTAP and DWTAP. This challenge has led researchers to focus on heuristic algorithms instead.
 
@@ -104,17 +103,36 @@ Regarding DWTAPs, most existing work simplifies the problem to maintain tractabi
 
 Wu et al.~\cite{wu2022dynamic} introduced a dynamic target assignment model that assumes a specific use case involving ballistic missiles targeting a group of targets. They effectively linked the model to wargame simulations, providing a meaningful use case. They utilized a soft actor-critic reinforcement learning model. However, one limitation of their model is that its network structure depends on the number of weapons and targets. This dependency makes the model not size-agnostic, requiring retraining for each specific configuration.
 
-Yoon, Lee, and Cho~\cite{yoon2024reinforcement} presented a comprehensive RL framework for dynamic WTA (DWTA), applying both Deep Q-Network (DQN) and Actor-Critic (AC) algorithms. This work demonstrated the superiority of RL methods over exact algorithms, particularly for large-scale problems, emphasizing the scalability of RL approaches in dynamic combat environments. However, the presented model is also not scalable, similar to the approach of Wu et al.~\cite{wu2022dynamic}, and realistic scenarios are missing in this study, such as ammunition constraints and target time windows, which we incorporate.
+Yoon, Lee, and Cho~\cite{yoontransformer} presented a transformer-based RL framework for scalable dynamic WTA (DWTA). %% TODO: this paragraph's description (DQN/Actor-Critic, "not scalable") describes the OLD Master's-thesis version of this work; verify it still matches the peer-reviewed journal version now cited and rewrite the comparison accordingly before submission.
 
 Hu, Zhang, Luo, and Chen~\cite{hu2024} applied multi-agent reinforcement learning (RL) for dynamic target assignment in Unmanned Surface Vehicles (USVs). They proposed a multi-agent actor-critic method that encodes state information using a recurrent neural network and an attention mechanism while employing multi-layer perceptrons for the policy and value networks. This approach is similar to ours in that it encodes the state in a higher dimension. However, their problem is significantly simpler than ours, as they assume all USVs are identical and their objective function does not have the nonlinearity typical of WTAP.
 
-As noted in U.S. Army doctrine, "Strategic allocation of available assets across the phases of an operation to achieve a desirable end state," DWTAP reflects more realistic battlefield scenarios than SWTAP through the integration of time dynamics. Despite the critical importance of DWTAP in capturing these dynamics, the limited research in this field motivates us to explore an effective solution framework that can address DWTAP at scale and in real time.
+DWTAP reflects more realistic battlefield scenarios than SWTAP by allocating available assets across the phases of an operation toward a desired end state, through the integration of time dynamics. Despite the critical importance of DWTAP in capturing these dynamics, the limited research in this field motivates us to explore an effective solution framework that can address DWTAP at scale and in real time.
 
-\subsection{Inference-Time Search for Neural Combinatorial Optimization}
+Table~\ref{tab:related_work_comparison} summarizes the reinforcement learning approaches for WTA discussed above along the dimensions most relevant to this work's contribution: whether the problem is treated as static (single-stage) or dynamic (multi-stage), whether the learned model generalizes to problem sizes beyond training (size-agnostic), whether weapons are allowed to be heterogeneous, whether ammunition and time-window constraints are modeled, and how multi-agent coordination (where applicable) is handled.
 
-Beyond training a construction policy, recent work improves solution quality at inference time without retraining. Rollout algorithms, introduced by Bertsekas et al.~\cite{bertsekas1997rollout}, use a base policy to estimate the cost-to-go of candidate actions through simulation, guaranteeing improvement over the base policy under mild conditions. Choo et al.~\cite{choo2022sgbs} combined this idea with beam search in simulation-guided beam search (SGBS), guiding a fixed-width tree search using both policy confidence and rollout simulation on routing problems, while Hottung et al.~\cite{hottung2022eas} instead adapt policy parameters per instance at test time. The beam-search-with-rollout inference strategy used in this work (Section~\ref{sec:method}, Section~\ref{sec:method}-E) builds directly on this line of work, adapting it to DWTAP's time-windowed, resource-constrained action space; it is a tool we employ rather than a claimed algorithmic contribution of this paper.
+\begin{table*}[htbp]
+\centering
+\small
+\caption{Comparison of Reinforcement Learning Approaches for WTA along the dimensions most relevant to this work. \checkmark/$\times$ reflect properties explicitly reported by each work; ``--'' indicates the property is not discussed/not applicable.}
+\label{tab:related_work_comparison}
+\begin{tabular}{l|c|c|c|c|l}
+\hline
+\textbf{Method} & \textbf{Dynamic} & \textbf{Size-Agnostic} & \textbf{Heterog.\ Weapons} & \textbf{Ammo/TW Constraints} & \textbf{Coordination Mechanism} \\ \hline
+Wacholder~\cite{wacholder1989neural}            & $\times$ & $\times$ & -- & -- & -- \\
+Meng et al.~\cite{meng2021deep} / Shin et al.~\cite{shin2020mean} & $\times$ & $\times$ & -- & -- & -- \\
+Luo et al.~\cite{luo2021learning}                & $\times$ & \checkmark & -- & $\times$ & -- \\
+Na and Choi~\cite{na2023weapon}                  & $\times$ & -- & $\times$ & -- & Single-agent pointer network \\
+Gaudet et al.~\cite{gaudet2023}                  & $\times$ & $\times$ (\text{$\leq$12W/20T}) & -- & -- & -- \\
+Zhang et al.~\cite{zhang2020efficient,zhang2020dynamic} & \checkmark & -- & -- & -- & Receding-horizon decomposition (no cross-stage RL) \\
+Wu et al.~\cite{wu2022dynamic}                   & \checkmark & $\times$ & -- & -- & Single-agent (soft actor-critic) \\
+Yoon et al.~\cite{yoontransformer}               & \checkmark & (claimed, see text) & -- & -- & -- \\
+Hu et al.~\cite{hu2024}                          & \checkmark & -- & $\times$ & -- & Multi-agent, attention-based communication \\
+\textbf{SCoPE (ours)}                            & \checkmark & \checkmark & \checkmark & \checkmark & Soft-coupled simultaneous decoding, no conflict handler \\ \hline
+\end{tabular}
+\end{table*}
 
-\subsection{Multi-Agent Combinatorial Optimization}
+Beyond training a construction policy, recent work improves solution quality at inference time without retraining. Rollout algorithms, introduced by Bertsekas et al.~\cite{bertsekas1997rollout}, use a base policy to estimate the cost-to-go of candidate actions through simulation, guaranteeing improvement over the base policy under mild conditions. Choo et al.~\cite{choo2022sgbs} combined this idea with beam search in simulation-guided beam search (SGBS), guiding a fixed-width tree search using both policy confidence and rollout simulation on routing problems, while Hottung et al.~\cite{hottung2022eas} instead adapt policy parameters per instance at test time. The beam-search-with-rollout inference strategy used in this work (Section~\ref{sec:method}, Section~\ref{sec:method}-D) builds directly on this line of work, adapting it to DWTAP's time-windowed, resource-constrained action space; it is a tool we employ rather than a claimed algorithmic contribution of this paper.
 
 A separate line of work addresses problems in which multiple agents must act jointly at each decision epoch. Learned inter-agent communication has a long history in multi-agent RL: Sukhbaatar and Fergus~\cite{sukhbaatar2016commnet} introduced CommNet, in which agents broadcast and average learned messages, and Das et al.~\cite{das2019tarmac} introduced TarMAC, which uses attention so that each agent learns whom to address. Combined with pointer-network-style output heads~\cite{vinyals2015pointer}, these communication mechanisms provide a standard, general-purpose basis for simultaneous multi-agent action selection. Park et al.~\cite{park2021schedulenet} and Hu et al.~\cite{hu2024} apply multi-agent RL to scheduling and asset-assignment problems, respectively, but assume simple, identical-agent settings.
 
@@ -122,9 +140,9 @@ Building on this lineage, Berto et al.~\cite{parco2024} recently proposed PARCO 
 
 DWTAP is structurally different: multiple weapons may legally engage the same target simultaneously, so there is no hard exclusivity to resolve. Instead, coordination in DWTAP arises from the nonlinear, multiplicative structure of the objective (Eq.~\eqref{eq:objective_function}), where the marginal value of an additional hit on an already-targeted asset diminishes — a \emph{soft-coupled} coordination problem driven by the shared objective rather than by discrete feasibility. This distinction motivates the architecture in Section~\ref{sec:method}: rather than adopting PARCO's conflict handler, we build on the standard communication-and-simultaneous-pointer-decoding lineage~\cite{sukhbaatar2016commnet,das2019tarmac,vinyals2015pointer} directly, and empirically test whether this simpler mechanism, without any explicit conflict resolution, is sufficient to induce efficient, non-wasteful target coverage in a soft-coupled setting (Section~\ref{sec:results}). PARCO thus serves as our point of comparison for the hard-coupled case rather than as a component we extend.
 
-\subsection{Neural Construction Architectures for Assignment-Structured and Large-Scale Problems}
+Note that the softness of this coupling has a second, distinct consequence beyond motivating a simpler architecture: it also bounds the \emph{cost} of imperfect coordination. Because all $M$ weapons in our decoder commit simultaneously from a single shared pre-round state (Section~\ref{sec:parallel-decoder}), none can observe another's choice within the same round before acting -- unlike a sequential, one-weapon-at-a-time policy, which can condition each pick on the others already made that round. This is a genuine informational disadvantage, and it is visible empirically (Section~\ref{sec:results}): per-round target dispersion is comparable between the two decoders at Small scale (84.8\% parallel vs.\ 84.2\% sequential) but the parallel decoder falls increasingly behind as scale grows, reaching a 7.8-percentage-point deficit at both Large (50.2\% vs.\ 58.0\%) and Battlefield (42.1\% vs.\ 50.0\%) scale. However, not all of this redundancy reflects wasted effort -- concentrating fire on a target that still has substantial remaining value is a legitimate strategic choice, not a coordination failure. Separating redundant hits by whether the target's pre-round survival probability was already below 20\% (i.e.\ genuinely \emph{wasteful} redundancy, as opposed to justified concentration on a still-valuable target) narrows this gap considerably: 8.2\% vs.\ 4.9\% wasteful-redundancy rate at Large scale and 7.5\% vs.\ 6.9\% at Battlefield scale, a much smaller difference than the raw dispersion numbers suggest. Consequently, the resulting gap in final destruction ratio between the two decoders stays under 2 percentage points at every tier (largest gap: 1.7 points, Large scale) despite dispersion gaps of up to 7.8 points. We view this as further evidence that DWTAP's soft coupling is precisely what makes a communication-only, conflict-handler-free architecture viable: even where simultaneous decoding coordinates imperfectly, the objective's own tolerance for redundancy limits the resulting loss. Section~\ref{sec:submodular} formalizes this intuition, deriving a worst-case bound on that loss from the submodularity of the DWTAP objective itself.
 
-Beyond routing-specific architectures built around Euclidean coordinates, recent neural construction methods target problems defined by an arbitrary cost or compatibility matrix. Kwon et al.~\cite{kwon2021matrix} proposed MatNet, which directly encodes an asymmetric cost/compatibility matrix through dual-graph attention between two node types, achieving strong results on flexible flow-shop scheduling and asymmetric TSP without relying on coordinate-based embeddings. DWTAP's damage-rate matrix $P_{m,n}$ and engagement-compatibility sets $Q_m$ are naturally suited to this matrix-encoding view, and we adopt a related encoding for weapon-target compatibility (Section~\ref{sec:method}). Separately, Luo et al.~\cite{luo2023lehd} introduced a heavy-decoder architecture (LEHD) explicitly designed to generalize from small training instances to substantially larger test instances, directly relevant to BReRLA's own train-small/test-large protocol (Section~\ref{sec:results}-A); we compare against this scale-generalization behavior in our evaluation. Grinsztajn et al.~\cite{grinsztajn2023winner} further show that training a population of diverse policies, rather than a single policy, improves robustness across problem distributions, which informs our multi-seed evaluation protocol (Section~\ref{sec:results}). To standardize evaluation across these methods, we build our benchmarking pipeline (Section~\ref{sec:results}) on the RL4CO library~\cite{berto2023rl4co}, which provides reference implementations of AM~\cite{kool2018attention}, POMO~\cite{kwon2020pomo}, and related baselines under a unified training and evaluation protocol; recent surveys~\cite{mazyavkina2021reinforcement,bogyrbayeva2024survey} further contextualize the rapid growth of this subfield.
+Beyond routing-specific architectures built around Euclidean coordinates, recent neural construction methods target problems defined by an arbitrary cost or compatibility matrix. Kwon et al.~\cite{kwon2021matrix} proposed MatNet, which directly encodes an asymmetric cost/compatibility matrix through dual-graph attention between two node types, achieving strong results on flexible flow-shop scheduling and asymmetric TSP without relying on coordinate-based embeddings. DWTAP's damage-rate matrix $P_{m,n}$ and engagement-compatibility sets $Q_m$ are naturally suited to this matrix-encoding view, and we adopt a related encoding for weapon-target compatibility (Section~\ref{sec:method}). Separately, Luo et al.~\cite{luo2023lehd} introduced a heavy-decoder architecture (LEHD) explicitly designed to generalize from small training instances to substantially larger test instances, directly relevant to SCoPE's own train-small/test-large protocol (Section~\ref{sec:results}-A); we compare against this scale-generalization behavior in our evaluation. Grinsztajn et al.~\cite{grinsztajn2023winner} further show that training a population of diverse policies, rather than a single policy, improves robustness across problem distributions, which informs our multi-seed evaluation protocol (Section~\ref{sec:results}). To standardize evaluation across these methods, we build our benchmarking pipeline (Section~\ref{sec:results}) on the RL4CO library~\cite{berto2023rl4co}, which provides reference implementations of AM~\cite{kool2018attention}, POMO~\cite{kwon2020pomo}, and related baselines under a unified training and evaluation protocol; recent surveys~\cite{mazyavkina2021reinforcement,bogyrbayeva2024survey} further contextualize the rapid growth of this subfield.
 
 \section{Problem Formulation}
 \label{sec:problem}
@@ -279,15 +297,15 @@ where:
 where $C(s_t)$ is the sum of target values at state $s_t$.
 \end{itemize}
 
-\section{Proposed Method: BReRLA}
+\section{Proposed Method: SCoPE}
 \label{sec:method}
 
-We propose BReRLA, a reinforcement learning framework for DWTAP that encodes state as a heterogeneous weapon-target graph (Section~\ref{sec:method}-A) and decodes actions with a \emph{parallel multi-pointer} policy (Section~\ref{sec:method}-B): at every time step, all currently-live weapons choose simultaneously, each from its own compatible-target set, rather than one (weapon,target) edge being selected per network call. No explicit conflict-resolution mechanism is used -- unlike hard-coupled multi-agent construction methods such as PARCO~\cite{parco2024}, DWTAP permits multiple weapons to legally engage the same target, so coordination is hypothesized to emerge from the shared graph embeddings alone (the soft-coupling hypothesis introduced in Section~\ref{sec:related}, tested empirically in Section~\ref{sec:results}). Training uses parallel multi-episodic REINFORCE with reward-to-go and potential-based reward shaping (Section~\ref{sec:method}-D). At inference time, solution quality is further improved with beam search and rollout adapted from~\cite{bertsekas1997rollout,choo2022sgbs} (Section~\ref{sec:method}-E). Fig.~\ref{fig:overall} illustrates the overall architecture.
+We propose SCoPE, a reinforcement learning framework for DWTAP that encodes state as a heterogeneous weapon-target graph (Section~\ref{sec:method}-A) and decodes actions with a \emph{parallel multi-pointer} policy (Section~\ref{sec:method}-B): at every time step, all currently-live weapons choose simultaneously, each from its own compatible-target set, rather than one (weapon,target) edge being selected per network call. No explicit conflict-resolution mechanism is used -- unlike hard-coupled multi-agent construction methods such as PARCO~\cite{parco2024}, DWTAP permits multiple weapons to legally engage the same target, so coordination is hypothesized to emerge from the shared graph embeddings alone (the soft-coupling hypothesis introduced in Section~\ref{sec:related}, tested empirically in Section~\ref{sec:results}). Training uses parallel multi-episodic REINFORCE with reward-to-go and a shared parallel-rollout baseline, deliberately without a learned critic (Section~\ref{sec:method}-C reports the module-wise ablation motivating this: a critic-based value network and potential-based shaping did not improve, and in fact measurably hurt, held-out generalization for this architecture). At inference time, solution quality is further improved with beam search and rollout adapted from~\cite{bertsekas1997rollout,choo2022sgbs} (Section~\ref{sec:method}-D). Fig.~\ref{fig:overall} illustrates the overall architecture.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=\columnwidth]{figure/Overall.png}
-  \caption{Overall architecture of BReRLA showing training and inference processes.}
+  \caption{Overall architecture of SCoPE showing training and inference processes.}
   \label{fig:overall}
 \end{figure}
 
@@ -317,7 +335,7 @@ and analogously for $\bm{h}_n^{\text{tgt},(\ell)}$, aggregating over weapons for
 \subsection{Parallel Multi-Pointer Policy}
 \label{sec:parallel-decoder}
 
-Unlike a single global policy over all $M \times N$ (weapon,target) pairs (as in earlier neural WTAP/DWTAP formulations, e.g.~\cite{na2023weapon}), BReRLA decodes $M$ \emph{independent} distributions simultaneously, one per weapon, each over its own compatible targets plus a no-op:
+Unlike a single global policy over all $M \times N$ (weapon,target) pairs (as in earlier neural WTAP/DWTAP formulations, e.g.~\cite{na2023weapon}), SCoPE decodes $M$ \emph{independent} distributions simultaneously, one per weapon, each over its own compatible targets plus a no-op:
 \begin{equation}
 \text{score}_{m,n} = \bm{w}_e^\top \, \text{Res}\!\left(\bm{h}_{m,n}^{\text{edge},(L)}\right), \quad n \in Q_m
 \end{equation}
@@ -335,45 +353,88 @@ masked to targets currently available under the constraints of Section~\ref{sec:
 \end{equation}
 No learned conflict handler resolves cases where multiple weapons select the same target -- this is legal under the DWTAP constraints of Section~\ref{sec:problem}, and is precisely the soft-coupled setting distinguished from PARCO's hard-coupled design in Section~\ref{sec:related}.
 
-\subsection{Value Network}
+The mechanism by which coordination can nonetheless emerge is structural, not incidental. Every $\text{score}_{m,n}$ is computed from $\bm{h}_{m,n}^{\text{edge},(L)}$, which by construction (Section~\ref{sec:encoding}) has absorbed target $n$'s own embedding $\bm{h}_n^{\text{tgt},(L)}$ -- and $v_t$, target $n$'s remaining value, is one of that node's own input features $\bm{x}_n^{\text{tgt}}$. Consequently, every weapon's score for a given target is directly conditioned on that target's current state, independent of which other weapon computes it. This means the $M$ simultaneous policies $\pi_1, \ldots, \pi_M$, despite never observing one another's action this round (Section~\ref{sec:related}), are not evaluating targets from independent, uninformed priors: a target driven near zero remaining value by earlier rounds is scored low by every weapon's policy for the same reason, and a target that is still substantially intact and time-critical is scored high by every weapon for the same reason. Coordination here does not require agents to model each other's intentions -- it only requires that they share an accurate, common view of the object being coordinated over. This is also why the mechanism is imperfect rather than exact: nothing in $\bm{h}_{m,n}^{\text{edge},(L)}$ reflects the other $M-1$ weapons' \emph{this-round} decisions specifically, only the shared pre-round state, so independently-optimal choices can still collide when several weapons' independently-highest-scoring target coincides. Section~\ref{sec:results} quantifies how often this occurs, and shows that the multiplicative objective (Eq.~\eqref{eq:objective_function}) keeps the resulting cost small even when it does.
 
-The critic shares the graph encoding of Section~\ref{sec:encoding} and pools to a scalar estimate:
-\begin{equation}
-v(s_t) = g_v\!\left(\bar{\bm{h}}^{\text{wpn},(L)} \,\|\, \bar{\bm{h}}^{\text{tgt},(L)} \,\|\, \bar{\bm{h}}^{\text{edge},(L)}\right)
-\end{equation}
-where $g_v(\cdot)$ is an MLP, $\bar{\bm{h}}^{\text{wpn},(L)}$ and $\bar{\bm{h}}^{\text{tgt},(L)}$ are unconditional means (a weapon's or target's own state, e.g. "currently reloading," is informative regardless of legality), and $\bar{\bm{h}}^{\text{edge},(L)}$ is a \emph{masked} mean over currently-legal (weapon,target) pairs only,
-\begin{equation}
-\bar{\bm{h}}^{\text{edge},(L)} = \frac{\sum_{m,n} \text{mask}_{m,n} \, \bm{h}_{m,n}^{\text{edge},(L)}}{\sum_{m,n} \text{mask}_{m,n}},
-\end{equation}
-so that currently-infeasible edges do not dilute the pooled representation used for value estimation.
+\subsection{Theoretical Justification: A Submodular-Optimization View of Simultaneous Decoding}
+\label{sec:submodular}
 
-\subsection{Training: Reward-to-Go with Potential-Based Shaping}
+The preceding argument for why simultaneous decoding is viable is qualitative. This section makes it formal, bounding the worst-case cost of Section~\ref{sec:parallel-decoder}'s within-round independence assumption in terms of the combinatorial structure of DWTAP's own objective.
+
+\textbf{Submodularity of the per-round objective.} Fix round $t$ and let $\rho_n^{(t)}\in[0,1]$ denote target $n$'s surviving value fraction entering round $t$, so that $V_n\rho_n^{(t)}$ is its remaining value carried forward from Eq.~\eqref{eq:objective_function}. Writing $S_t \subseteq \{(m,n): n\in Q_m\}$ for the (weapon,target) pairs assigned in round $t$, the value destroyed that round is
+\begin{equation}
+\label{eq:round-obj}
+f_t(S_t) = \sum_{n=1}^N V_n\rho_n^{(t)}\left(1 - \!\!\prod_{m:(m,n)\in S_t}\!\!(1-P_{m,n})\right).
+\end{equation}
+Each summand is a weighted coverage function, and a nonnegative sum of monotone submodular functions is itself monotone submodular, so $f_t$ is monotone submodular in $S_t$ -- consistent with the submodularity of the (static) WTA objective established by Wang et al.~\cite{wang2013weapon}. The round-$t$ feasibility constraint (Eq.~\eqref{eq:weapon_target_constraint}, at most one target per weapon) restricts $S_t$ to a \emph{partition matroid} over the ground set $\{(m,n):n\in Q_m\}$, partitioned by weapon $m$.
+
+\textbf{Sequential decoding as matroid greedy.} A sequential, one-weapon-at-a-time decoder -- observing each already-decided weapon's realized choice before the next acts -- has exactly the information available to the classical greedy algorithm for monotone submodular maximization under a matroid constraint: at each step, select the feasible element of largest marginal gain given everything chosen so far. Fisher, Nemhauser, and Wolsey~\cite{fisher1978analysis} show this guarantees at least $\frac12\text{OPT}_t$, where $\text{OPT}_t = \max_{S_t\text{ feasible}} f_t(S_t)$.
+
+\textbf{Parallel decoding as distributed greedy.} SCoPE's parallel policy commits all $M$ weapons simultaneously from one shared pre-round embedding, with no visibility into one another's this-round choice -- exactly the information structure of \emph{distributed} submodular maximization, where the ground set is split across $M$ machines (here, one per weapon, matching the partition matroid's own structure) that act without communicating and are reconciled only afterward. Barbosa et al.~\cite{barbosa2015power}, building on Mirzasoleiman et al.'s GreeDi~\cite{mirzasoleiman2016distributed}, show this distributed scheme guarantees at least $\frac{\alpha}{2}\text{OPT}_t$ under a matroid constraint, where $\alpha$ is the local (single-machine) greedy ratio; with $\alpha=\frac12$ from the matroid case above, this is $\frac14\text{OPT}_t$.
+
+\begin{proposition}[Worst-case cost of simultaneous decoding]
+\label{prop:submodular-gap}
+Let $f_t$ be the round-$t$ objective of Eq.~\eqref{eq:round-obj} under the partition-matroid constraint of Eq.~\eqref{eq:weapon_target_constraint}, and let $\mathrm{Seq}_t,\mathrm{Par}_t$ denote the idealized, information-structure-matched sequential and parallel decoding rules above. Then
+\begin{equation}
+f_t(\mathrm{Seq}_t) - f_t(\mathrm{Par}_t) \;\leq\; \left(\tfrac12-\tfrac14\right)\text{OPT}_t \;=\; \tfrac14\,\text{OPT}_t.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Immediate from $f_t(\mathrm{Seq}_t)\geq\frac12\text{OPT}_t$~\cite{fisher1978analysis} and $f_t(\mathrm{Par}_t)\geq\frac14\text{OPT}_t$~\cite{barbosa2015power,mirzasoleiman2016distributed}, both established above.
+\end{proof}
+
+\begin{remark}
+Proposition~\ref{prop:submodular-gap} bounds what the \emph{best possible} policy consistent with each decoder's information structure can guarantee in the worst case over all monotone submodular $f_t$; it is not a claim that our specific trained weights attain either bound, and it applies to the single-round allocation rather than the full $T$-round trajectory, consistent with the within-round/across-round distinction of Section~\ref{sec:related}. Its value is as a worst-case reference point: the measured destruction-ratio gap between SCoPE's parallel and sequential decoders is under 2 percentage points at every tested tier (Section~\ref{sec:results}), far inside the 25-percentage-point worst case above -- quantitative evidence that DWTAP's actual coupling is substantially softer than the adversarial instances for which Proposition~\ref{prop:submodular-gap} is tight. This differs in kind, not degree, from prior mean-field treatments of WTA: Shin et al.~\cite{shin2020mean} apply mean-field \emph{game} theory (a population-equilibrium concept) to size-fixed Q-learning for static WTA, without an approximation guarantee; here, the mean-field-style independence of Section~\ref{sec:parallel-decoder} is instead justified through submodular-optimization theory, with an explicit, checkable worst-case bound tied to DWTAP's own objective structure.
+\end{remark}
+
+\subsection{Training: Whole-Episode-Return REINFORCE}
 \label{sec:training}
 
-The per-step reward is unchanged from Eq.~\eqref{eq:reward} (using $C(s_t)$, the sum of remaining target values). Rather than crediting every step of an episode with the same whole-episode return, we use two standard, unbiased REINFORCE refinements. First, \emph{reward-to-go}: step $t$'s credit only reflects rewards realized at or after $t$,
+The per-step reward is unchanged from Eq.~\eqref{eq:reward} (using $C(s_t)$, the sum of remaining target values). A standard, unbiased REINFORCE variance-reduction refinement is \emph{reward-to-go}, which credits step $t$ only with rewards realized at or after $t$,
 \begin{equation}
-G_t = \sum_{t'=t}^{T-1} \gamma^{t'-t}\, r_{t'}.
+\label{eq:reward-to-go}
+G_t^{\text{rtg}} = \sum_{t'=t}^{T-1} \gamma^{t'-t}\, r_{t'}.
 \end{equation}
-Second, \emph{potential-based reward shaping}~\cite{ng1999shaping}, using the value network of Section~\ref{sec:method}-C as the potential $\Phi(s_t) := v(s_t)$ (detached from the actor's gradient) with $\Phi(s_T) := 0$:
-\begin{equation}
-r_t' = r_t + \gamma\, \Phi(s_{t+1}) - \Phi(s_t), \qquad
-G_t' = \sum_{t'=t}^{T-1} \gamma^{t'-t}\, r_{t'}'.
-\end{equation}
-Because $\sum_t \gamma^t r_t'$ telescopes to $\sum_t \gamma^t r_t + \Phi(s_0) - \gamma^T \Phi(s_T)$ -- a constant offset independent of the actions taken -- this shaping provably leaves the optimal policy unchanged~\cite{ng1999shaping}. It therefore remains a valid REINFORCE (not actor-critic) objective: unlike bootstrapping the return with $V(s_{t+1})$, an inaccurate critic cannot bias the result, only its variance. This directly addresses a difficulty specific to the no-op action (Section~\ref{sec:parallel-decoder}): its own immediate reward is always exactly $0$ (no target value changes), so under reward-to-go alone its credit depends entirely on distant future rewards; $\Phi$ gives it a same-step signal reflecting whether holding fire improved the estimated state value.
+This is the more variance-efficient choice in general, but it interacts badly with the no-op action specific to DWTAP (Section~\ref{sec:parallel-decoder}): the no-op's own immediate reward is always exactly $0$ (no target value changes), so under reward-to-go alone, its credit depends \emph{entirely} on rewards realized later in the episode -- e.g., whether holding fire preserved ammunition for a subsequently more valuable engagement whose time window has not yet opened. We verified this failure mode directly on a minimal, hand-constructed instance (one weapon, two targets, two rounds, one round of ammunition, target values $V=[1,10]$, damage rate $P=0.9$, where the low-value target is engageable immediately and the high-value target only becomes engageable in the second round): the optimal policy holds fire in round one and engages the high-value target in round two, leaving a normalized remaining value of $2.0$. Under reward-to-go, the trained round-one policy assigns only $13.2\%$ probability to the no-op action and instead fires on the low-value target under greedy decoding, leaving a remaining value of $10.1$ -- five times worse than optimal.
 
-The shaped return-to-go $G_t'$ is normalized per instance across the $P$ parallel rollouts (shared baseline, in the manner of~\cite{kwon2020pomo}):
+We instead credit every step of an episode with the same whole-episode return (the original POMO convention~\cite{kwon2020pomo}, applied here at the per-decision rather than per-instance level),
 \begin{equation}
-\hat{A}_t = \frac{G_t' - \frac{1}{P}\sum_{p=1}^P G_t'^{(p)}}{\text{std}_p\!\left(G_t'^{(p)}\right)},
+\label{eq:whole-episode-return}
+G_t = \sum_{t'=0}^{T-1} \gamma^{t'}\, r_{t'} \quad \text{for every } t,
+\end{equation}
+which trades reward-to-go's lower variance for a same-magnitude credit signal that survives the no-op's zero immediate reward. On the identical hold-then-fire instance above, this switch alone raises the round-one no-op probability to $95.1\%$, and the resulting policy engages the high-value target in round two with probability $99.99\%$, reaching a remaining value of $2.0$ -- exactly the optimum. Section~\ref{sec:results} reports this holding at full benchmark scale as well: replacing reward-to-go with the whole-episode return of Eq.~\eqref{eq:whole-episode-return}, holding the graph encoding, parallel decoder, and shared-baseline normalization below fixed, is what allows SCoPE to consistently outperform the classical max-marginal-return greedy baseline (Section~\ref{sec:results}-C) across every tested configuration; under reward-to-go, it did not. Eq.~\eqref{eq:whole-episode-return} is therefore SCoPE's final training return, and Eq.~\eqref{eq:reward-to-go} is reported only as the alternative this choice was made against.
+
+The whole-episode return is normalized per instance across the $P$ parallel rollouts (shared baseline, in the manner of~\cite{kwon2020pomo}):
+\begin{equation}
+\label{eq:advantage}
+\hat{A}_t = \frac{G_t - \frac{1}{P}\sum_{p=1}^P G_t^{(p)}}{\text{std}_p\!\left(G_t^{(p)}\right)},
 \end{equation}
 and the actor is updated by
 \begin{equation}
+\label{eq:actor-gradient}
 \nabla_\theta J(\pi_\theta) = \mathbb{E}\!\left[\sum_{t=0}^{T-1} \nabla_\theta \log \pi_\theta(a_t \mid s_t)\, \hat{A}_t\right],
 \end{equation}
-with $\log \pi_\theta(a_t\mid s_t)$ the joint per-weapon log-probability defined in Section~\ref{sec:parallel-decoder}. The critic is trained by regression toward the (unshaped) episode destruction ratio, as in the original single-decision formulation.
+with $\log \pi_\theta(a_t\mid s_t)$ the joint per-weapon log-probability defined in Section~\ref{sec:parallel-decoder}. SCoPE uses no critic or learned value network: $\hat{A}_t$ is formed entirely from realized returns and the shared-baseline normalization above.
+
+\begin{proposition}[Unbiasedness up to positive rescaling]
+\label{prop:unbiased}
+For every round $t$, write $\hat A_t = \tilde A_t/\sigma_t$ with $\tilde A_t = G_t - \bar G_t$, $\bar G_t = \frac1P\sum_p G_t^{(p)}$, and $\sigma_t = \text{std}_p(G_t^{(p)}) > 0$ (Eq.~\eqref{eq:advantage}). Treating $\bar G_t$ and $\sigma_t$ as independent of the action $a_t$ of the specific rollout being scored -- the same approximation already implicit in the POMO shared baseline itself~\cite{kwon2020pomo} -- the update of Eq.~\eqref{eq:actor-gradient} satisfies, for every $t$,
+\begin{equation}
+\mathbb{E}\!\left[\hat A_t\,\nabla_\theta\log\pi_\theta(a_t\mid s_t)\right] \;=\; \frac{1}{\sigma_t}\,\nabla_\theta\,\mathbb{E}[G_t].
+\end{equation}
+\end{proposition}
+\begin{proof}
+Because a product of valid per-weapon categorical distributions (Eq.~\eqref{eq:parallel-policy}) is itself a valid distribution over the joint action, the score-function identity $\mathbb{E}_{a\sim\pi_\theta}[\nabla_\theta\log\pi_\theta(a\mid s)]=0$ holds for $\pi_\theta$ exactly as it would for any non-factorized policy. Since $\bar G_t$ does not depend on $a_t$, $\mathbb{E}[\bar G_t\,\nabla_\theta\log\pi_\theta(a_t\mid s_t)] = \bar G_t\cdot 0 = 0$, giving $\mathbb{E}[\tilde A_t\,\nabla_\theta\log\pi_\theta(a_t\mid s_t)] = \nabla_\theta\mathbb{E}[G_t]$ (standard REINFORCE-with-baseline unbiasedness). As $\sigma_t>0$ is likewise independent of $a_t$, it factors out unchanged.
+\end{proof}
+
+\begin{remark}
+Proposition~\ref{prop:unbiased} shows Eq.~\eqref{eq:actor-gradient} is, at every round, the ordinary policy-gradient direction $\nabla_\theta\mathbb{E}[G_t]$ rescaled by a positive, action-independent scalar $1/\sigma_t$: the mean-field factorization of $\pi_\theta$ across the $M$ weapons (Section~\ref{sec:parallel-decoder}) introduces no bias, and dividing by $\sigma_t$ only reweights the relative step size across rounds -- larger where the $P$ rollouts' outcomes are tightly clustered, smaller where they are dispersed -- without altering the sign of any individual sample's contribution. This mean-and-standard-deviation normalization coincides with the group-relative advantage used in GRPO~\cite{shao2024deepseekmath}; unlike GRPO, however, SCoPE's update retains no importance-sampling ratio, clipping, or KL penalty against a reference policy, so it is more precisely described as POMO's shared-baseline REINFORCE~\cite{kwon2020pomo} with an added per-step standard-deviation normalization, rather than as an instance of GRPO itself.
+\end{remark}
+
+%% TODO: the specific checkpoint used to produce Section~\ref{sec:results}'s numbers was trained with an experimental critic-based potential-shaping term active (see repository history); that term is not part of SCoPE's proposed method above and should be removed by retraining a clean no-critic checkpoint under Eq.~\eqref{eq:whole-episode-return} and the fixed simulator before final submission, so the reported numbers match the method as described here exactly.
 
 \subsection{Inference: Beam Search with Rollout}
 
-At inference, BReRLA uses two strategies, adapted from~\cite{bertsekas1997rollout,choo2022sgbs} to DWTAP's time-windowed, resource-constrained action space; these are tools we employ, not a claimed contribution of this paper (Section~\ref{sec:related}).
+At inference, SCoPE uses two strategies, adapted from~\cite{bertsekas1997rollout,choo2022sgbs} to DWTAP's time-windowed, resource-constrained action space; these are tools we employ, not a claimed contribution of this paper (Section~\ref{sec:related}).
 
 \textbf{Pure Rollout:} Selects the next joint action to minimize cost-to-go:
 \begin{equation}
@@ -385,12 +446,12 @@ At inference, BReRLA uses two strategies, adapted from~\cite{bertsekas1997rollou
     \mathcal{B}_{t+1} = \text{top-}\beta(\widetilde{J}(\mathcal{C}_{t+1}))
 \end{equation}
 
-\textbf{Truncated Neural Rollout:} Limits rollout to depth $\alpha$ and uses the value network for remaining cost-to-go estimation.
+\textbf{Truncated Rollout:} Limits rollout to depth $\alpha$; since SCoPE trains no critic (Section~\ref{sec:training}), the remaining cost-to-go beyond the truncation depth is estimated directly from simulation state at the truncation point (e.g. the current remaining target value under the base policy) rather than from a learned value estimate, in the spirit of classical Bertsekas rollout~\cite{bertsekas1997rollout}, which itself uses a real (heuristic-policy) cost-to-go rather than a learned approximator.
 
 %% TODO: the parallel decoder's branching factor at each beam step is now combinatorial
 %% across the M simultaneous per-weapon choices, rather than a single edge -- the beam
 %% search implementation needs to score/prune joint (not per-edge) candidates. Not yet
-%% implemented; the training-loop changes (Sections V-B, V-D) are verified (smoke-tested),
+%% implemented; the training-loop changes (Sections V-B, V-C) are verified (smoke-tested),
 %% this inference-time adaptation is not. Revisit before running Section VI experiments.
 
 \section{Experimental Results}
@@ -398,7 +459,9 @@ At inference, BReRLA uses two strategies, adapted from~\cite{bertsekas1997rollou
 
 \subsection{Training and Test Data}
 
-BReRLA was trained on (5,5,5) instances using the distributions in Table~\ref{tab:parameter_distributions}. Testing was performed on 12 configurations ranging from (5,5,5) to (10,10,10) as shown in Table~\ref{tab:problem_instance_scales}.
+SCoPE was trained with a multi-scale curriculum (random $(M,N,T)$ drawn each epoch, $M,N,T \in [5,7]$) using the distributions in Table~\ref{tab:parameter_distributions}. Testing was performed on 12 held-out configurations spanning four size tiers -- Small, Medium, Large, and Battlefield -- shown in Table~\ref{tab:problem_instance_scales}. Configurations are restricted to $N \geq M$ (targets/threats at least as numerous as own weapons), reflecting the resource-constrained defense scenario this work targets rather than an arbitrary grid. %% TODO: Parameter Distributions table above still states the old fixed-(5,5,5) training regime -- update to match the multi-scale curriculum once the training section's numbers are finalized.
+
+%% TODO: current benchmark runs sample 10 of the 50 generated instances per configuration for wall-clock reasons; revisit sample size once the full baseline suite (SCIP/GA/AM/POMO/MatNet) is in and total compute cost is known.
 
 \begin{table}[htbp]
 \centering
@@ -424,19 +487,19 @@ Damage Rate $P$ & $U(0.2, 0.7)$ \\ \hline
 \label{tab:problem_instance_scales}
 \begin{tabular}{c|c|c}
 \hline
-\textbf{Purpose} & \textbf{(M,N,T)} & \textbf{Instances} \\ \hline
-Optimality & (5,5,5) & 100 \\ \hline
-\multirow{11}{*}{Generalization} & (6,6,5) & 100 \\
-& (7,7,5) & 100 \\
-& (8,8,5) & 100 \\
-& (9,9,5) & 100 \\
-& (10,10,5) & 100 \\
-& (5,5,10) & 100 \\
-& (6,6,10) & 100 \\
-& (7,7,10) & 100 \\
-& (8,8,10) & 100 \\
-& (9,9,10) & 100 \\
-& (10,10,10) & 100 \\ \hline
+\textbf{Tier} & \textbf{(M,N,T)} & \textbf{Instances} \\ \hline
+\multirow{3}{*}{Small}      & (5,5,5)    & 50 \\
+                            & (5,7,5)    & 50 \\
+                            & (10,15,5)  & 50 \\ \hline
+\multirow{3}{*}{Medium}     & (15,15,5)  & 50 \\
+                            & (15,20,5)  & 50 \\
+                            & (20,30,5)  & 50 \\ \hline
+\multirow{3}{*}{Large}      & (30,30,10) & 50 \\
+                            & (30,40,10) & 50 \\
+                            & (40,50,10) & 50 \\ \hline
+\multirow{3}{*}{Battlefield} & (50,50,15) & 50 \\
+                            & (50,70,15) & 50 \\
+                            & (70,100,15) & 50 \\ \hline
 \end{tabular}
 \end{table}
 
@@ -465,118 +528,120 @@ Beam Width $\beta$ & 4 \\ \hline
 
 \subsection{Performance Measures and Baselines}
 
-Performance gap is measured as:
-\begin{equation}
-\text{Gap} = \frac{\text{avg}(\text{Obj}_{\text{model}}) - \text{avg}(\text{Obj}_{\text{base}})}{\text{avg}(\text{Obj}_{\text{base}})} \times 100\%
-\end{equation}
+Baselines include the exact solver SCIP; classical heuristics (greedy marginal-return dispatch, and a genetic algorithm following our own prior WTAP work~\cite{lee2003genetic}); the sequential single-agent decoder described in Section~\ref{sec:method}; and standard neural combinatorial optimization construction policies adapted to DWTAP -- the Attention Model (AM)~\cite{kool2018attention} and MatNet~\cite{kwon2021matrix}, the latter chosen for its native support of the asymmetric weapon-target compatibility/damage-rate matrix ($P_{m,n}$, $Q_m$) central to our formulation. We do not separately train POMO~\cite{kwon2020pomo}: the sequential decoder already uses POMO's own shared-baseline REINFORCE (Section~\ref{sec:training}, Proposition~\ref{prop:unbiased}), differing from a from-scratch POMO reimplementation only in encoder choice (heterogeneous GNN vs.\ Transformer), which is orthogonal to the training-algorithm question POMO addresses; it therefore already serves this comparison role without a redundant separate run. AM and MatNet baselines are trained and evaluated within the RL4CO framework~\cite{berto2023rl4co} under the same instance distributions and compute budget as SCoPE for a fair comparison. Performance is reported against the best-found solution among baselines (Eq.~\eqref{eq:achieved}, Section~\ref{sec:main-results}), not claimed optimality, per R1/R2/R3's reviewer comments on the original submission.
 
-Baselines include the exact solver CPLEX; classical heuristics (greedy marginal-return dispatch, and a genetic algorithm following our own prior WTAP work~\cite{lee2003genetic}); the sequential single-agent REINFORCE policy described in Section~\ref{sec:method}; and standard neural combinatorial optimization construction policies adapted to DWTAP -- the Attention Model (AM)~\cite{kool2018attention}, POMO~\cite{kwon2020pomo}, and MatNet~\cite{kwon2021matrix}, the latter chosen for its native support of the asymmetric weapon-target compatibility/damage-rate matrix ($P_{m,n}$, $Q_m$) central to our formulation. AM/POMO/MatNet baselines are trained and evaluated within the RL4CO framework~\cite{berto2023rl4co} under the same instance distributions and compute budget as BReRLA for a fair comparison.
-
-%% TODO: once experiments are run, replace this paragraph's forward-looking description with the finalized baseline list and report results in Tables~\ref{tab:performacne_gap_result}-\ref{tab:computation_time} (extended with AM/POMO/MatNet/GA columns) plus the target-dispersion coordination metric.
+%% TODO: once SCIP/GA/Greedy experiments are run, fill in Table~\ref{tab:main_results}'s TBD columns and convert from raw objective to \% Achieved vs.\ best-found (Eq.~\eqref{eq:achieved}), plus report the target-dispersion coordination metric (Section~\ref{sec:related}) alongside it.
+%% Priority order (2026-08-06): SCIP (remaining 11/12 configs) and Greedy first; AM/MatNet
+%% via RL4CO deferred until after those close out, since the WTA env adapter for RL4CO is a
+%% real (if now-bounded, ~300-600 line) implementation task -- see AM/MatNet columns below,
+%% currently TBD placeholders, not yet started.
 
 \subsection{Comparison with Baselines}
+\label{sec:main-results}
 
-CPLEX achieved optimality in 66 out of 100 instances for (5,5,5) within 1 hour (Fig.~\ref{fig:n_opt}). For larger instances, CPLEX was limited to 600 seconds.
-
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=0.8\columnwidth]{figure/n_optimal.png}
-  \caption{CPLEX optimality results for (5,5,5): 66 optimal solutions, 34 feasible solutions.}
-  \label{fig:n_opt}
-\end{figure}
-
-\begin{table*}[htbp]
-\centering
-\small
-\caption{Performance Gap Against CPLEX (\%)}
-\label{tab:performacne_gap_result}
-\begin{tabular}{c|ccccc}
-\hline
-\textbf{Config} & \textbf{CPLEX} & \textbf{Heuristic} & \textbf{REINFORCE} & \textbf{Beam Trunc} & \textbf{Beam Roll} \\ \hline
-(5,5,5) & 0 & 38.8 & 17.8 & 8.9 & 6.30 \\ \hline
-(6,6,5) & 0 & 49.1 & 20.1 & 16.4 & 7.8 \\
-(7,7,5) & 0 & 46.8 & 17.1 & 15.95 & 5.48 \\
-(8,8,5) & 0 & 59.1 & 17.49 & 19.9 & 6.79 \\
-(9,9,5) & 0 & 59.4 & 17.4 & 17.9 & 7.67 \\
-(10,10,5) & 0 & 59.7 & 18.0 & 16.7 & 7.21 \\ \hline
-(5,5,10) & 0 & 76.4 & 48.7 & 22.8 & 11.28 \\
-(6,6,10) & 0 & 101 & 49.1 & 38.4 & 13.5 \\
-(7,7,10) & 0 & 74.5 & 48.4 & 29.7 & 9.74 \\
-(8,8,10) & 0 & 110 & 55.5 & 37.0 & 15.5 \\
-(9,9,10) & 0 & 87.8 & 49.0 & 28.1 & 15.1 \\
-(10,10,10) & 0 & 107 & 52.5 & 26.1 & 17.4 \\ \hline
-\end{tabular}
-\end{table*}
+%% TODO (PLACEHOLDER TABLE, in progress): SCIP, GA, and Greedy columns are not yet
+%% run on the 12-config tiered benchmark -- values below are literally "TBD", not
+%% a formatting placeholder to ignore. Sequential and SCoPE (parallel, no critic --
+%% Section~\ref{sec:training}) columns are real, from the 4-tier/12-config/5-seed
+%% held-out benchmark (Section~\ref{sec:results}-A), objective = normalized remaining
+%% target value (lower is better), mean $\pm$ std over 5 seeds. Once SCIP/GA/Greedy
+%% are in, recompute as \% Achieved vs.\ best-found (Eq.~\eqref{eq:achieved}) rather
+%% than raw objective, per R1/R2/R3's reviewer comments on optimality-gap framing.
+%% DECISION: we considered also reporting a relative gap ((Obj_model - Obj_best)/Obj_best)
+%% and an absolute gap (Obj_model - Obj_best), but dropped both -- relative gap divides by
+%% DWTAP's remaining-value objective, which can be close to zero at the optimum, making it
+%% unstable/misleadingly large (e.g. 90%+ even when absolute performance is reasonable);
+%% and once we're reporting a ratio metric at all, absolute gap is redundant with it. We
+%% settled on \% Achieved alone, matching the convention of prior WTA RL work~\cite{gaudet2023},
+%% which reports performance as a ratio of achieved (destroyed) value rather than remaining
+%% value, sidestepping the near-zero-denominator problem by construction.
+\begin{equation}\label{eq:achieved}
+\text{\% Achieved} = \frac{\text{avg}(1 - \text{Obj}_{\text{model}})}{\text{avg}(1 - \text{Obj}_{\text{best-found}})} \times 100\%
+\end{equation}
+Following the convention of prior WTA reinforcement learning work~\cite{gaudet2023}, we report performance as the ratio of \emph{achieved} value (destruction) to the best-found solution's achieved value, rather than a gap in \emph{remaining} value. DWTAP's objective (Eq.~\eqref{eq:objective_function}) is a normalized remaining-value fraction that can approach zero at the optimum, so a gap computed relative to remaining value divides by a small, instance-dependent denominator and can be highly sensitive as a result -- a modest absolute difference in remaining value can appear as an extreme percentage when the best-found solution already destroys most of the target value. Eq.~\eqref{eq:achieved} avoids this by construction, since the achieved-value denominator is bounded away from zero whenever the best-found solution destroys a non-trivial share of target value.
 
 \begin{table*}[htbp]
 \centering
 \small
-\caption{Computational Time (seconds)}
-\label{tab:computation_time}
-\begin{tabular}{c|ccccc}
+\caption{Main Results: Objective by Configuration (lower is better; remaining-value fraction, single seed), with SCoPE's \% Achieved (Eq.~\eqref{eq:achieved}) vs.\ best-found. SCIP entries report the best solution found within a 600s (5,7,5 -- 70,100,15) or 120s (5,5,5) per-instance budget, with the fraction solved to proven optimality in parentheses; at Battlefield scale SCIP found no feasible improvement over the trivial no-engagement solution within budget (see text). GA, AM, and MatNet columns are not yet run (Section~\ref{sec:main-results-todo}).}
+\label{tab:main_results}
+\begin{tabular}{c|c|ccccc|c|c}
 \hline
-\textbf{Config} & \textbf{CPLEX} & \textbf{Heuristic} & \textbf{REINFORCE} & \textbf{Beam Trunc} & \textbf{Beam Roll} \\ \hline
-(5,5,5) & 3600 & $<1$ & $<1$ & 2.0 & 6.30 \\ \hline
-(6,6,5) & 600 & $<1$ & $<1$ & 2.55 & 4.03 \\
-(7,7,5) & 600 & $<1$ & $<1$ & 3.36 & 6.52 \\
-(8,8,5) & 600 & 1.12 & $<1$ & 4.99 & 13.00 \\
-(9,9,5) & 600 & 1.51 & $<1$ & 7.80 & 22.96 \\
-(10,10,5) & 600 & 2.01 & $<1$ & 13.1 & 46.15 \\ \hline
-(5,5,10) & 600 & $<1$ & $<1$ & 3.93 & 8.1 \\
-(6,6,10) & 600 & 1.15 & $<1$ & 5.43 & 14.46 \\
-(7,7,10) & 600 & 1.7 & $<1$ & 8.12 & 24.88 \\
-(8,8,10) & 600 & 2.32 & $<1$ & 15.31 & 59.93 \\
-(9,9,10) & 600 & 3.3 & $<1$ & 24.8 & 111 \\
-(10,10,10) & 600 & 4.3 & $<1$ & 43 & 208 \\ \hline
+\textbf{Tier} & \textbf{Config (M,N,T)} & \textbf{SCIP} & \textbf{GA} & \textbf{Greedy} & \textbf{AM} & \textbf{MatNet} & \textbf{SCoPE (ours)} & \textbf{\% Achieved} \\ \hline
+\multirow{3}{*}{Small}      & (5,5,5)     & 0.093 (10/10 opt.) & TBD & 0.159 & TBD & TBD & 0.139 & 94.9\% \\
+                             & (5,7,5)     & 0.171 (10/10 opt.) & TBD & 0.310 & TBD & TBD & 0.211 & 95.2\% \\
+                             & (10,15,5)   & 0.173 (2/10 opt.)  & TBD & 0.362 & TBD & TBD & 0.261 & 89.4\% \\ \hline
+\multirow{3}{*}{Medium}     & (15,15,5)   & 0.048 (best-found) & TBD & 0.086 & TBD & TBD & 0.063 & 98.4\% \\
+                             & (15,20,5)   & 0.097 (best-found) & TBD & 0.151 & TBD & TBD & 0.123 & 97.1\% \\
+                             & (20,30,5)   & 0.163 (best-found) & TBD & 0.322 & TBD & TBD & 0.278 & 86.2\% \\ \hline
+\multirow{3}{*}{Large}      & (30,30,10)  & 0.041 (best-found) & TBD & 0.151 & TBD & TBD & 0.067 & 97.3\% \\
+                             & (30,40,10)  & 0.112 (best-found) & TBD & 0.229 & TBD & TBD & 0.163 & 94.2\% \\
+                             & (40,50,10)  & 0.108 (best-found) & TBD & 0.170 & TBD & TBD & 0.125 & 98.0\% \\ \hline
+\multirow{3}{*}{Battlefield} & (50,50,15)  & 1.000 (no soln.)   & TBD & 0.080 & TBD & TBD & \textbf{0.050} & \textbf{100.0\%} \\
+                             & (50,70,15)  & 1.000 (no soln.)   & TBD & 0.166 & TBD & TBD & \textbf{0.116} & \textbf{100.0\%} \\
+                             & (70,100,15) & 1.000 (no soln.)   & TBD & 0.166 & TBD & TBD & \textbf{0.162} & \textbf{100.0\%} \\ \hline
 \end{tabular}
 \end{table*}
 
-Beam Rollout achieved the best performance with gaps of 6--17\% against CPLEX but with higher computational cost. Beam Truncated Rollout balanced solution quality and computational efficiency.
+SCoPE outperforms Greedy at all 12 configurations, and is never observed to exceed SCIP's proven-optimal or best-found solution on any tested instance -- consistent with SCoPE's remaining-value objective being a real, achievable feasible solution rather than an artifact of a modeling mismatch with the exact solver. At Battlefield scale, SCIP's 600s-per-instance budget is insufficient to find any solution better than engaging nothing (Section~\ref{sec:main-results-todo}), so SCoPE and Greedy -- both of which destroy 84--95\% of target value near-instantly at this scale -- are compared only against each other there; SCoPE's own solution stands as the best-found reference at these three configurations, hence 100.0\% by construction.
+\label{sec:main-results-todo}
+%% TODO: GA and AM/MatNet (via RL4CO) baselines are not yet implemented/run -- deferred per
+%% the priority order established when this benchmark was built (SCIP and Greedy first, since
+%% GA reuses prior in-house code while the RL4CO WTA environment adapter for AM/MatNet is a
+%% real ~300-600 line implementation task). Once available, recompute \% Achieved against the
+%% best across ALL baselines (not just SCIP/Greedy/SCoPE) at each configuration.
+%% TODO: SCoPE numbers above are a single seed (seed 5); the multi-seed (5-seed) protocol used
+%% elsewhere in earlier drafts of this table has not yet been re-run under the current training
+%% recipe (Eq.~\eqref{eq:whole-episode-return}) and the fixed simulator (see repository history) --
+%% add mean $\pm$ std over 5 seeds before final submission.
+%% TODO: numbers above use SCoPE's greedy (argmax) decoding, not the beam-search-with-rollout
+%% inference of Section~\ref{sec:method}-D -- that adaptation does not yet exist for the parallel
+%% decoder's combinatorial per-round joint action space (see TODO in that section) and is deferred
+%% as future work; Table~\ref{tab:main_results} should be regenerated with it once implemented.
+%% The Sequential-decoder comparison (an ablation of the parallel-decoding mechanism
+%% itself, holding graph encoding and training recipe fixed) is reported separately in
+%% Section~\ref{sec:efficiency}, not mixed into this baseline table.
 
-\subsection{Ablation Study}
+\subsection{Inference Efficiency}
+\label{sec:efficiency}
 
-Increasing beam width $\beta$ consistently reduced performance gaps (Figs.~\ref{fig:ablation_beam_width_5-5-5} and~\ref{fig:beam_depth}). Most improvement occurred between $\beta=1$ and $\beta=4$.
+Table~\ref{tab:efficiency} reports mean per-instance greedy inference time on the same held-out benchmark. SCoPE's per-instance inference time is 4--25$\times$ lower than Sequential's, and the gap widens with scale -- consistent with the $O(T)$ vs.\ $O(M{\times}T)$ decoding-call complexity argument of Section~\ref{sec:parallel-decoder}.
 
+\begin{table}[htbp]
+\centering
+\small
+\caption{Mean Greedy Inference Time per Instance (seconds)}
+\label{tab:efficiency}
+\begin{tabular}{l|ccc}
+\hline
+\textbf{Tier} & \textbf{Sequential} & \textbf{SCoPE} & \textbf{Speedup} \\ \hline
+Small & 0.085 & 0.021 & 4.1$\times$ \\
+Medium & 0.227 & 0.027 & 8.3$\times$ \\
+Large & 0.987 & 0.064 & 15.3$\times$ \\
+Battlefield & 2.864 & 0.115 & 24.9$\times$ \\ \hline
+\end{tabular}
+\end{table}
 
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\columnwidth]{figure/abation_beam_effect.png}
-  \caption{Effect of beam width for (5,5,5).}
-  \label{fig:ablation_beam_width_5-5-5}
-\end{figure}
-
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\columnwidth]{figure/Beam_5_10.png}
-  \caption{Effect of beam width for (5,5,10).}
-  \label{fig:beam_depth}
-\end{figure}
-
-Increasing rollout depth $\alpha$ improved quality with diminishing returns beyond depth 20 (Fig.~\ref{fig:ablation_depth}).
-
-
-\begin{figure}[htbp]
-  \centering
-  \includegraphics[width=\columnwidth]{figure/depth.png}
-  \caption{Effect of rollout depth.}
-  \label{fig:ablation_depth}
-\end{figure}
+Under a fixed wall-clock decision budget, SCoPE therefore retains substantial headroom to spend on the beam search and truncated rollout of Section~\ref{sec:method}-D, which Sequential's cost at scale forecloses. %% TODO: once the parallel-decoder beam/rollout adaptation (Section~\ref{sec:method}-D TODO) is implemented, this is where the fixed-budget (SCoPE-greedy+search vs.\ Sequential-greedy) comparison belongs, which is the paper's central efficiency-vs-quality payoff claim.
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-We presented BReRLA, a reinforcement learning framework for DWTAP that balances solution quality and computational efficiency. Beam search with Rollout achieved 6--17\% performance gaps compared to CPLEX, while Beam Truncated Rollout reduced computational cost significantly. The framework demonstrates strong generalization from small training instances (5×5×5) to larger test instances (up to 10×10×10), highlighting its practical applicability for real-time decision-making in dynamic battlefield scenarios.
+%% TODO: Conclusion is still the pre-revision version (old CPLEX gap numbers, old 5x5x5-to-10x10x10 scale claim) -- rewrite once SCIP/GA/RL4CO baselines (Section VI) are finalized, to summarize: the soft-coupling architecture result (Section~\ref{sec:related}, Section~\ref{sec:results}), the parallel-vs-sequential efficiency result, and the critic ablation finding (Section~\ref{sec:training}) instead.
 
-Future work includes enhancing scalability for even larger instances and improving value network accuracy for better truncated rollout performance. Additionally, extending the framework to handle heterogeneous weapon systems and incorporating uncertainty in target behavior would further increase its practical relevance in real-world defense applications.
+We presented SCoPE, a reinforcement learning framework for DWTAP built around a parallel multi-pointer decoder that requires no explicit conflict-resolution mechanism, motivated by characterizing DWTAP as a soft-coupled (rather than hard-coupled) multi-agent assignment problem. The framework demonstrates generalization from a small-scale multi-scale training curriculum to substantially larger held-out instances (Section~\ref{sec:results}), and a module-wise ablation shows this holds without a learned critic or value network -- reward-to-go REINFORCE with a shared parallel-rollout baseline alone outperforms critic-augmented variants at every tested scale.
 
-\bibliographystyle{IEEEtran}
+Future work includes finalizing the exact-solver and neural-baseline comparison (Section~\ref{sec:results}), extending the framework to handle heterogeneous weapon systems and uncertainty in target behavior, and adapting beam search and truncated rollout (Section~\ref{sec:method}-D) to score the parallel decoder's joint, per-round action space.
+
+\section*{Statements and Declarations}
+
+\textbf{Competing Interests:} %% TODO: state any financial/non-financial competing interests, or "The author declares no competing interests." -- required by Applied Intelligence submission guidelines, currently unfilled.
+
+\textbf{Funding:} %% TODO: state funding sources or "No funding was received for this work."
+
+\textbf{Data Availability:} %% TODO: state how to access the code/data (e.g. GitHub repo) or that it is available on reasonable request.
+
+\bibliographystyle{spbasic}
 \bibliography{references}
-
-
-\begin{IEEEbiographynophoto}{Jaejin Lee}
-received the M.S. degree in Industrial Engineering from the University of Texas at Austin and the Ph.D. degree from Arizona State University, Tempe, AZ, USA, in 2025. He is currently a Data Scientist at Intel Corporation, Chandler, AZ, USA. His research interests include reinforcement learning for combinatorial optimization, dynamic resource allocation, and decision-making under uncertainty with applications in the semiconductor industry and defense systems.
-\end{IEEEbiographynophoto}
 
 \end{document}

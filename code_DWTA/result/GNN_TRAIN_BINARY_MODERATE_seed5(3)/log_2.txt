@@ -1,0 +1,470 @@
+[2026-08-08 00:01:55] Binary fire/hold actor initialized (RL+Auction hybrid, MODERATE curriculum)
+[2026-08-08 00:01:55] Output directory: ./result/GNN_TRAIN_BINARY_MODERATE_seed5(3)
+[2026-08-08 00:01:55] Training: 200 epochs, 5 episodes/epoch, moderate temporal-dilemma curriculum
+[2026-08-08 00:01:55] Starting binary fire/hold REINFORCE training (moderate curriculum)...
+[2026-08-08 00:01:55] [PROGRESS] Greedy baseline on moderate temporal-dilemma instances (5x5x5, 10 instances): objective=0.5984 (fixed reference)
+[2026-08-08 00:01:55] [PROGRESS] SCIP reference (9/10 proven optimal): objective=0.1479
+[2026-08-08 00:01:56] Episode 1/5 | Actor Loss: -0.517702
+[2026-08-08 00:01:58] Episode 2/5 | Actor Loss: 0.964726
+[2026-08-08 00:02:00] Episode 3/5 | Actor Loss: 0.172450
+[2026-08-08 00:02:01] Episode 4/5 | Actor Loss: -1.033740
+[2026-08-08 00:02:02] Episode 5/5 | Actor Loss: -0.846063
+[2026-08-08 00:02:02] [2026-08-08 00:02:02] Epoch: 001 | Objective: 12.598425 | Destruction: 63.79% | Actor Loss: -0.252066 | EntropyCoef: 0.2949 | Epoch time: 6.7s
+[2026-08-08 00:02:03] Episode 1/5 | Actor Loss: -1.201315
+[2026-08-08 00:02:04] Episode 2/5 | Actor Loss: -1.407875
+[2026-08-08 00:02:06] Episode 3/5 | Actor Loss: 0.100750
+[2026-08-08 00:02:08] Episode 4/5 | Actor Loss: 0.226468
+[2026-08-08 00:02:10] Episode 5/5 | Actor Loss: -0.397370
+[2026-08-08 00:02:10] [2026-08-08 00:02:10] Epoch: 002 | Objective: 8.670981 | Destruction: 72.64% | Actor Loss: -0.535868 | EntropyCoef: 0.2900 | Epoch time: 8.3s
+[2026-08-08 00:02:11] Episode 1/5 | Actor Loss: -0.598137
+[2026-08-08 00:02:12] Episode 2/5 | Actor Loss: -1.179356
+[2026-08-08 00:02:13] Episode 3/5 | Actor Loss: -0.699319
+[2026-08-08 00:02:15] Episode 4/5 | Actor Loss: -0.380415
+[2026-08-08 00:02:16] Episode 5/5 | Actor Loss: -0.735486
+[2026-08-08 00:02:16] [2026-08-08 00:02:16] Epoch: 003 | Objective: 6.727683 | Destruction: 77.97% | Actor Loss: -0.718543 | EntropyCoef: 0.2851 | Epoch time: 5.4s
+[2026-08-08 00:02:16] Episode 1/5 | Actor Loss: -0.001228
+[2026-08-08 00:02:18] Episode 2/5 | Actor Loss: 0.403426
+[2026-08-08 00:02:18] Episode 3/5 | Actor Loss: 0.863734
+[2026-08-08 00:02:19] Episode 4/5 | Actor Loss: -1.302889
+[2026-08-08 00:02:20] Episode 5/5 | Actor Loss: 0.481998
+[2026-08-08 00:02:20] [2026-08-08 00:02:20] Epoch: 004 | Objective: 13.225884 | Destruction: 65.32% | Actor Loss: 0.089008 | EntropyCoef: 0.2803 | Epoch time: 4.2s
+[2026-08-08 00:02:22] Episode 1/5 | Actor Loss: -0.302765
+[2026-08-08 00:02:24] Episode 2/5 | Actor Loss: -0.816933
+[2026-08-08 00:02:29] Episode 3/5 | Actor Loss: -0.771421
+[2026-08-08 00:02:31] Episode 4/5 | Actor Loss: -0.438179
+[2026-08-08 00:02:32] Episode 5/5 | Actor Loss: -1.311183
+[2026-08-08 00:02:32] [2026-08-08 00:02:32] Epoch: 005 | Objective: 13.299618 | Destruction: 62.46% | Actor Loss: -0.728096 | EntropyCoef: 0.2755 | Epoch time: 12.3s
+[2026-08-08 00:02:33] [PROGRESS] epoch 5: RL+Auction=0.4087 vs Greedy=0.5984 (gap=-0.1897) vs SCIP=0.1479 (gap=+0.2608)
+[2026-08-08 00:02:35] Episode 1/5 | Actor Loss: 0.080192
+[2026-08-08 00:02:37] Episode 2/5 | Actor Loss: -0.056324
+[2026-08-08 00:02:38] Episode 3/5 | Actor Loss: -1.012316
+[2026-08-08 00:02:39] Episode 4/5 | Actor Loss: -0.052626
+[2026-08-08 00:02:40] Episode 5/5 | Actor Loss: -0.992076
+[2026-08-08 00:02:40] [2026-08-08 00:02:40] Epoch: 006 | Objective: 10.582600 | Destruction: 70.62% | Actor Loss: -0.406630 | EntropyCoef: 0.2709 | Epoch time: 7.0s
+[2026-08-08 00:02:41] Episode 1/5 | Actor Loss: 0.030544
+[2026-08-08 00:02:42] Episode 2/5 | Actor Loss: 1.162564
+[2026-08-08 00:02:42] Episode 3/5 | Actor Loss: -0.594195
+[2026-08-08 00:02:45] Episode 4/5 | Actor Loss: -0.892287
+[2026-08-08 00:02:45] Episode 5/5 | Actor Loss: -1.284224
+[2026-08-08 00:02:45] [2026-08-08 00:02:45] Epoch: 007 | Objective: 11.062533 | Destruction: 66.86% | Actor Loss: -0.315520 | EntropyCoef: 0.2663 | Epoch time: 5.1s
+[2026-08-08 00:02:46] Episode 1/5 | Actor Loss: 0.759360
+[2026-08-08 00:02:48] Episode 2/5 | Actor Loss: -1.016405
+[2026-08-08 00:02:48] Episode 3/5 | Actor Loss: -0.689895
+[2026-08-08 00:02:49] Episode 4/5 | Actor Loss: 0.102753
+[2026-08-08 00:02:50] Episode 5/5 | Actor Loss: 0.645311
+[2026-08-08 00:02:50] [2026-08-08 00:02:50] Epoch: 008 | Objective: 13.127751 | Destruction: 60.56% | Actor Loss: -0.039775 | EntropyCoef: 0.2618 | Epoch time: 4.5s
+[2026-08-08 00:02:51] Episode 1/5 | Actor Loss: -1.142870
+[2026-08-08 00:02:52] Episode 2/5 | Actor Loss: 0.445874
+[2026-08-08 00:02:53] Episode 3/5 | Actor Loss: -0.913017
+[2026-08-08 00:02:55] Episode 4/5 | Actor Loss: -0.754169
+[2026-08-08 00:02:57] Episode 5/5 | Actor Loss: -0.850290
+[2026-08-08 00:02:57] [2026-08-08 00:02:57] Epoch: 009 | Objective: 8.281673 | Destruction: 75.73% | Actor Loss: -0.642894 | EntropyCoef: 0.2574 | Epoch time: 6.6s
+[2026-08-08 00:02:58] Episode 1/5 | Actor Loss: -1.371704
+[2026-08-08 00:02:59] Episode 2/5 | Actor Loss: 1.025940
+[2026-08-08 00:03:00] Episode 3/5 | Actor Loss: 0.048723
+[2026-08-08 00:03:01] Episode 4/5 | Actor Loss: -0.024298
+[2026-08-08 00:03:02] Episode 5/5 | Actor Loss: -0.507611
+[2026-08-08 00:03:02] [2026-08-08 00:03:02] Epoch: 010 | Objective: 11.928561 | Destruction: 67.37% | Actor Loss: -0.165790 | EntropyCoef: 0.2531 | Epoch time: 5.4s
+[2026-08-08 00:03:03] [PROGRESS] epoch 10: RL+Auction=0.2573 vs Greedy=0.5984 (gap=-0.3411) vs SCIP=0.1479 (gap=+0.1094)
+[2026-08-08 00:03:03] Episode 1/5 | Actor Loss: 0.121807
+[2026-08-08 00:03:04] Episode 2/5 | Actor Loss: -1.453192
+[2026-08-08 00:03:05] Episode 3/5 | Actor Loss: -0.560102
+[2026-08-08 00:03:05] Episode 4/5 | Actor Loss: -1.336787
+[2026-08-08 00:03:06] Episode 5/5 | Actor Loss: -1.279665
+[2026-08-08 00:03:06] [2026-08-08 00:03:06] Epoch: 011 | Objective: 8.178647 | Destruction: 73.94% | Actor Loss: -0.901588 | EntropyCoef: 0.2488 | Epoch time: 3.5s
+[2026-08-08 00:03:07] Episode 1/5 | Actor Loss: -0.059044
+[2026-08-08 00:03:09] Episode 2/5 | Actor Loss: -0.416522
+[2026-08-08 00:03:10] Episode 3/5 | Actor Loss: -1.200334
+[2026-08-08 00:03:11] Episode 4/5 | Actor Loss: -0.151598
+[2026-08-08 00:03:12] Episode 5/5 | Actor Loss: -0.980662
+[2026-08-08 00:03:12] [2026-08-08 00:03:12] Epoch: 012 | Objective: 15.095461 | Destruction: 50.61% | Actor Loss: -0.561632 | EntropyCoef: 0.2446 | Epoch time: 5.9s
+[2026-08-08 00:03:13] Episode 1/5 | Actor Loss: -1.505393
+[2026-08-08 00:03:13] Episode 2/5 | Actor Loss: 0.219222
+[2026-08-08 00:03:14] Episode 3/5 | Actor Loss: 1.072251
+[2026-08-08 00:03:16] Episode 4/5 | Actor Loss: -0.197774
+[2026-08-08 00:03:17] Episode 5/5 | Actor Loss: -0.560523
+[2026-08-08 00:03:17] [2026-08-08 00:03:17] Epoch: 013 | Objective: 10.001702 | Destruction: 73.60% | Actor Loss: -0.194444 | EntropyCoef: 0.2405 | Epoch time: 4.5s
+[2026-08-08 00:03:18] Episode 1/5 | Actor Loss: 0.248883
+[2026-08-08 00:03:19] Episode 2/5 | Actor Loss: -1.240079
+[2026-08-08 00:03:20] Episode 3/5 | Actor Loss: 0.209650
+[2026-08-08 00:03:21] Episode 4/5 | Actor Loss: -0.706036
+[2026-08-08 00:03:22] Episode 5/5 | Actor Loss: 0.337706
+[2026-08-08 00:03:22] [2026-08-08 00:03:22] Epoch: 014 | Objective: 13.007746 | Destruction: 62.72% | Actor Loss: -0.229975 | EntropyCoef: 0.2364 | Epoch time: 5.9s
+[2026-08-08 00:03:24] Episode 1/5 | Actor Loss: -0.712024
+[2026-08-08 00:03:25] Episode 2/5 | Actor Loss: -0.080377
+[2026-08-08 00:03:25] Episode 3/5 | Actor Loss: -0.619267
+[2026-08-08 00:03:27] Episode 4/5 | Actor Loss: 0.027785
+[2026-08-08 00:03:28] Episode 5/5 | Actor Loss: -0.341682
+[2026-08-08 00:03:28] [2026-08-08 00:03:28] Epoch: 015 | Objective: 12.489334 | Destruction: 67.64% | Actor Loss: -0.345113 | EntropyCoef: 0.2325 | Epoch time: 5.9s
+[2026-08-08 00:03:30] [PROGRESS] epoch 15: RL+Auction=0.4087 vs Greedy=0.5984 (gap=-0.1897) vs SCIP=0.1479 (gap=+0.2608)
+[2026-08-08 00:03:32] Episode 1/5 | Actor Loss: -1.595377
+[2026-08-08 00:03:33] Episode 2/5 | Actor Loss: -0.591132
+[2026-08-08 00:03:34] Episode 3/5 | Actor Loss: -1.630942
+[2026-08-08 00:03:36] Episode 4/5 | Actor Loss: -0.482980
+[2026-08-08 00:03:38] Episode 5/5 | Actor Loss: -1.886814
+[2026-08-08 00:03:38] [2026-08-08 00:03:38] Epoch: 016 | Objective: 7.145938 | Destruction: 81.88% | Actor Loss: -1.237449 | EntropyCoef: 0.2285 | Epoch time: 8.0s
+[2026-08-08 00:03:40] Episode 1/5 | Actor Loss: -1.208773
+[2026-08-08 00:03:42] Episode 2/5 | Actor Loss: -0.437797
+[2026-08-08 00:03:43] Episode 3/5 | Actor Loss: -1.477403
+[2026-08-08 00:03:47] Episode 4/5 | Actor Loss: -0.728295
+[2026-08-08 00:03:48] Episode 5/5 | Actor Loss: -0.729675
+[2026-08-08 00:03:48] [2026-08-08 00:03:48] Epoch: 017 | Objective: 9.577530 | Destruction: 74.18% | Actor Loss: -0.916389 | EntropyCoef: 0.2247 | Epoch time: 9.3s
+[2026-08-08 00:03:50] Episode 1/5 | Actor Loss: -1.528843
+[2026-08-08 00:03:51] Episode 2/5 | Actor Loss: 0.223631
+[2026-08-08 00:03:52] Episode 3/5 | Actor Loss: -0.129544
+[2026-08-08 00:03:53] Episode 4/5 | Actor Loss: 0.370802
+[2026-08-08 00:03:55] Episode 5/5 | Actor Loss: -0.319169
+[2026-08-08 00:03:55] [2026-08-08 00:03:55] Epoch: 018 | Objective: 13.195213 | Destruction: 63.65% | Actor Loss: -0.276625 | EntropyCoef: 0.2209 | Epoch time: 7.8s
+[2026-08-08 00:03:57] Episode 1/5 | Actor Loss: -0.426219
+[2026-08-08 00:03:59] Episode 2/5 | Actor Loss: -0.464494
+[2026-08-08 00:04:01] Episode 3/5 | Actor Loss: -0.640470
+[2026-08-08 00:04:03] Episode 4/5 | Actor Loss: -0.897557
+[2026-08-08 00:04:05] Episode 5/5 | Actor Loss: 0.472648
+[2026-08-08 00:04:05] [2026-08-08 00:04:05] Epoch: 019 | Objective: 10.817202 | Destruction: 72.50% | Actor Loss: -0.391218 | EntropyCoef: 0.2172 | Epoch time: 9.6s
+[2026-08-08 00:04:06] Episode 1/5 | Actor Loss: -0.405243
+[2026-08-08 00:04:07] Episode 2/5 | Actor Loss: -0.561645
+[2026-08-08 00:04:07] Episode 3/5 | Actor Loss: 1.009524
+[2026-08-08 00:04:10] Episode 4/5 | Actor Loss: 1.041622
+[2026-08-08 00:04:11] Episode 5/5 | Actor Loss: -1.013699
+[2026-08-08 00:04:11] [2026-08-08 00:04:11] Epoch: 020 | Objective: 17.372413 | Destruction: 56.31% | Actor Loss: 0.014112 | EntropyCoef: 0.2135 | Epoch time: 6.4s
+[2026-08-08 00:04:14] [PROGRESS] epoch 20: RL+Auction=0.4087 vs Greedy=0.5984 (gap=-0.1897) vs SCIP=0.1479 (gap=+0.2608)
+[2026-08-08 00:04:16] Episode 1/5 | Actor Loss: 0.496842
+[2026-08-08 00:04:19] Episode 2/5 | Actor Loss: -2.343021
+[2026-08-08 00:04:20] Episode 3/5 | Actor Loss: -0.931171
+[2026-08-08 00:04:21] Episode 4/5 | Actor Loss: -0.637696
+[2026-08-08 00:04:23] Episode 5/5 | Actor Loss: -1.320916
+[2026-08-08 00:04:23] [2026-08-08 00:04:23] Epoch: 021 | Objective: 6.916927 | Destruction: 81.30% | Actor Loss: -0.947193 | EntropyCoef: 0.2099 | Epoch time: 9.3s
+[2026-08-08 00:04:23] Episode 1/5 | Actor Loss: -0.023635
+[2026-08-08 00:04:24] Episode 2/5 | Actor Loss: 1.612383
+[2026-08-08 00:04:25] Episode 3/5 | Actor Loss: 0.916218
+[2026-08-08 00:04:27] Episode 4/5 | Actor Loss: 0.380591
+[2026-08-08 00:04:29] Episode 5/5 | Actor Loss: 1.859059
+[2026-08-08 00:04:29] [2026-08-08 00:04:29] Epoch: 022 | Objective: 14.919435 | Destruction: 60.67% | Actor Loss: 0.948923 | EntropyCoef: 0.2064 | Epoch time: 6.0s
+[2026-08-08 00:04:31] Episode 1/5 | Actor Loss: -2.895054
+[2026-08-08 00:04:31] Episode 2/5 | Actor Loss: -0.002785
+[2026-08-08 00:04:33] Episode 3/5 | Actor Loss: 1.211516
+[2026-08-08 00:04:35] Episode 4/5 | Actor Loss: -0.726704
+[2026-08-08 00:04:36] Episode 5/5 | Actor Loss: 0.073880
+[2026-08-08 00:04:36] [2026-08-08 00:04:36] Epoch: 023 | Objective: 11.584326 | Destruction: 69.20% | Actor Loss: -0.467829 | EntropyCoef: 0.2029 | Epoch time: 7.2s
+[2026-08-08 00:04:37] Episode 1/5 | Actor Loss: 0.432152
+[2026-08-08 00:04:38] Episode 2/5 | Actor Loss: 1.161454
+[2026-08-08 00:04:38] Episode 3/5 | Actor Loss: -0.660235
+[2026-08-08 00:04:40] Episode 4/5 | Actor Loss: -0.161392
+[2026-08-08 00:04:41] Episode 5/5 | Actor Loss: 0.279621
+[2026-08-08 00:04:41] [2026-08-08 00:04:41] Epoch: 024 | Objective: 14.546698 | Destruction: 60.33% | Actor Loss: 0.210320 | EntropyCoef: 0.1995 | Epoch time: 4.6s
+[2026-08-08 00:04:42] Episode 1/5 | Actor Loss: 0.644024
+[2026-08-08 00:04:43] Episode 2/5 | Actor Loss: -1.033311
+[2026-08-08 00:04:46] Episode 3/5 | Actor Loss: -1.750554
+[2026-08-08 00:04:47] Episode 4/5 | Actor Loss: 0.657544
+[2026-08-08 00:04:48] Episode 5/5 | Actor Loss: -0.574363
+[2026-08-08 00:04:48] [2026-08-08 00:04:48] Epoch: 025 | Objective: 16.127310 | Destruction: 60.05% | Actor Loss: -0.411332 | EntropyCoef: 0.1961 | Epoch time: 7.6s
+[2026-08-08 00:04:49] [PROGRESS] epoch 25: RL+Auction=0.4087 vs Greedy=0.5984 (gap=-0.1897) vs SCIP=0.1479 (gap=+0.2608)
+[2026-08-08 00:04:51] Episode 1/5 | Actor Loss: -1.657945
+[2026-08-08 00:04:52] Episode 2/5 | Actor Loss: -0.766282
+[2026-08-08 00:04:53] Episode 3/5 | Actor Loss: -1.343612
+[2026-08-08 00:04:55] Episode 4/5 | Actor Loss: -1.468660
+[2026-08-08 00:04:57] Episode 5/5 | Actor Loss: -1.339740
+[2026-08-08 00:04:57] [2026-08-08 00:04:57] Epoch: 026 | Objective: 7.752248 | Destruction: 77.41% | Actor Loss: -1.315248 | EntropyCoef: 0.1928 | Epoch time: 7.5s
+[2026-08-08 00:04:58] Episode 1/5 | Actor Loss: -0.568410
+[2026-08-08 00:04:59] Episode 2/5 | Actor Loss: -1.938425
+[2026-08-08 00:05:01] Episode 3/5 | Actor Loss: -0.278389
+[2026-08-08 00:05:02] Episode 4/5 | Actor Loss: -0.898972
+[2026-08-08 00:05:03] Episode 5/5 | Actor Loss: 1.173079
+[2026-08-08 00:05:03] [2026-08-08 00:05:03] Epoch: 027 | Objective: 9.232691 | Destruction: 71.39% | Actor Loss: -0.502223 | EntropyCoef: 0.1895 | Epoch time: 6.0s
+[2026-08-08 00:05:04] Episode 1/5 | Actor Loss: 0.131783
+[2026-08-08 00:05:05] Episode 2/5 | Actor Loss: -1.178659
+[2026-08-08 00:05:07] Episode 3/5 | Actor Loss: 0.292997
+[2026-08-08 00:05:08] Episode 4/5 | Actor Loss: -1.148978
+[2026-08-08 00:05:10] Episode 5/5 | Actor Loss: 0.936472
+[2026-08-08 00:05:10] [2026-08-08 00:05:10] Epoch: 028 | Objective: 8.737127 | Destruction: 74.78% | Actor Loss: -0.193277 | EntropyCoef: 0.1863 | Epoch time: 6.7s
+[2026-08-08 00:05:10] Episode 1/5 | Actor Loss: -0.648981
+[2026-08-08 00:05:11] Episode 2/5 | Actor Loss: 0.865448
+[2026-08-08 00:05:13] Episode 3/5 | Actor Loss: -2.076300
+[2026-08-08 00:05:14] Episode 4/5 | Actor Loss: -0.200836
+[2026-08-08 00:05:16] Episode 5/5 | Actor Loss: 0.252917
+[2026-08-08 00:05:16] [2026-08-08 00:05:16] Epoch: 029 | Objective: 11.119367 | Destruction: 69.19% | Actor Loss: -0.361551 | EntropyCoef: 0.1832 | Epoch time: 6.1s
+[2026-08-08 00:05:17] Episode 1/5 | Actor Loss: -2.478145
+[2026-08-08 00:05:19] Episode 2/5 | Actor Loss: -1.190704
+[2026-08-08 00:05:20] Episode 3/5 | Actor Loss: -0.335502
+[2026-08-08 00:05:21] Episode 4/5 | Actor Loss: -0.190035
+[2026-08-08 00:05:22] Episode 5/5 | Actor Loss: 0.804104
+[2026-08-08 00:05:22] [2026-08-08 00:05:22] Epoch: 030 | Objective: 11.339117 | Destruction: 69.49% | Actor Loss: -0.678057 | EntropyCoef: 0.1801 | Epoch time: 6.3s
+[2026-08-08 00:05:23] [PROGRESS] epoch 30: RL+Auction=0.4087 vs Greedy=0.5984 (gap=-0.1897) vs SCIP=0.1479 (gap=+0.2608)
+[2026-08-08 00:05:24] Episode 1/5 | Actor Loss: 0.839448
+[2026-08-08 00:05:24] Episode 2/5 | Actor Loss: -0.938857
+[2026-08-08 00:05:26] Episode 3/5 | Actor Loss: 1.213847
+[2026-08-08 00:05:28] Episode 4/5 | Actor Loss: -0.902845
+[2026-08-08 00:05:29] Episode 5/5 | Actor Loss: -0.462704
+[2026-08-08 00:05:29] [2026-08-08 00:05:29] Epoch: 031 | Objective: 8.443227 | Destruction: 74.59% | Actor Loss: -0.050222 | EntropyCoef: 0.1771 | Epoch time: 5.7s
+[2026-08-08 00:05:31] Episode 1/5 | Actor Loss: 0.087575
+[2026-08-08 00:05:32] Episode 2/5 | Actor Loss: -0.596625
+[2026-08-08 00:05:33] Episode 3/5 | Actor Loss: 0.005634
+[2026-08-08 00:05:34] Episode 4/5 | Actor Loss: 1.033209
+[2026-08-08 00:05:34] Episode 5/5 | Actor Loss: -1.020839
+[2026-08-08 00:05:34] [2026-08-08 00:05:34] Epoch: 032 | Objective: 11.374251 | Destruction: 70.61% | Actor Loss: -0.098209 | EntropyCoef: 0.1741 | Epoch time: 5.8s
+[2026-08-08 00:05:36] Episode 1/5 | Actor Loss: 0.745158
+[2026-08-08 00:05:37] Episode 2/5 | Actor Loss: -1.606175
+[2026-08-08 00:05:39] Episode 3/5 | Actor Loss: -1.568386
+[2026-08-08 00:05:40] Episode 4/5 | Actor Loss: -1.344368
+[2026-08-08 00:05:42] Episode 5/5 | Actor Loss: -0.524074
+[2026-08-08 00:05:42] [2026-08-08 00:05:42] Epoch: 033 | Objective: 5.994092 | Destruction: 81.57% | Actor Loss: -0.859569 | EntropyCoef: 0.1712 | Epoch time: 7.9s
+[2026-08-08 00:05:43] Episode 1/5 | Actor Loss: 0.625192
+[2026-08-08 00:05:46] Episode 2/5 | Actor Loss: 1.233111
+[2026-08-08 00:05:47] Episode 3/5 | Actor Loss: 0.363336
+[2026-08-08 00:05:48] Episode 4/5 | Actor Loss: -1.093645
+[2026-08-08 00:05:48] Episode 5/5 | Actor Loss: -0.377971
+[2026-08-08 00:05:48] [2026-08-08 00:05:48] Epoch: 034 | Objective: 10.148236 | Destruction: 68.80% | Actor Loss: 0.150005 | EntropyCoef: 0.1683 | Epoch time: 5.9s
+[2026-08-08 00:05:51] Episode 1/5 | Actor Loss: -0.689805
+[2026-08-08 00:05:52] Episode 2/5 | Actor Loss: -0.577896
+[2026-08-08 00:05:53] Episode 3/5 | Actor Loss: 1.825310
+[2026-08-08 00:05:54] Episode 4/5 | Actor Loss: 1.976867
+[2026-08-08 00:05:56] Episode 5/5 | Actor Loss: -1.006270
+[2026-08-08 00:05:56] [2026-08-08 00:05:56] Epoch: 035 | Objective: 10.725957 | Destruction: 68.14% | Actor Loss: 0.305641 | EntropyCoef: 0.1654 | Epoch time: 7.7s
+[2026-08-08 00:05:57] [PROGRESS] epoch 35: RL+Auction=0.4087 vs Greedy=0.5984 (gap=-0.1897) vs SCIP=0.1479 (gap=+0.2608)
+[2026-08-08 00:05:58] Episode 1/5 | Actor Loss: 1.573506
+[2026-08-08 00:05:59] Episode 2/5 | Actor Loss: 0.787358
+[2026-08-08 00:06:00] Episode 3/5 | Actor Loss: -0.056189
+[2026-08-08 00:06:01] Episode 4/5 | Actor Loss: -0.790607
+[2026-08-08 00:06:03] Episode 5/5 | Actor Loss: -0.722980
+[2026-08-08 00:06:03] [2026-08-08 00:06:03] Epoch: 036 | Objective: 7.467973 | Destruction: 73.28% | Actor Loss: 0.158218 | EntropyCoef: 0.1626 | Epoch time: 6.1s
+[2026-08-08 00:06:04] Episode 1/5 | Actor Loss: -0.077815
+[2026-08-08 00:06:07] Episode 2/5 | Actor Loss: 0.281718
+[2026-08-08 00:06:08] Episode 3/5 | Actor Loss: 1.326640
+[2026-08-08 00:06:09] Episode 4/5 | Actor Loss: -1.115462
+[2026-08-08 00:06:10] Episode 5/5 | Actor Loss: -1.123368
+[2026-08-08 00:06:10] [2026-08-08 00:06:10] Epoch: 037 | Objective: 11.835801 | Destruction: 66.96% | Actor Loss: -0.141657 | EntropyCoef: 0.1599 | Epoch time: 6.4s
+[2026-08-08 00:06:11] Episode 1/5 | Actor Loss: 0.758122
+[2026-08-08 00:06:13] Episode 2/5 | Actor Loss: -0.221959
+[2026-08-08 00:06:14] Episode 3/5 | Actor Loss: -1.259899
+[2026-08-08 00:06:15] Episode 4/5 | Actor Loss: -0.377757
+[2026-08-08 00:06:16] Episode 5/5 | Actor Loss: -0.063373
+[2026-08-08 00:06:16] [2026-08-08 00:06:16] Epoch: 038 | Objective: 9.281435 | Destruction: 74.41% | Actor Loss: -0.232973 | EntropyCoef: 0.1572 | Epoch time: 6.6s
+[2026-08-08 00:06:17] Episode 1/5 | Actor Loss: 1.649097
+[2026-08-08 00:06:20] Episode 2/5 | Actor Loss: -0.680397
+[2026-08-08 00:06:21] Episode 3/5 | Actor Loss: 0.658136
+[2026-08-08 00:06:21] Episode 4/5 | Actor Loss: -2.438137
+[2026-08-08 00:06:22] Episode 5/5 | Actor Loss: -0.206304
+[2026-08-08 00:06:22] [2026-08-08 00:06:22] Epoch: 039 | Objective: 12.521744 | Destruction: 64.43% | Actor Loss: -0.203521 | EntropyCoef: 0.1546 | Epoch time: 5.6s
+[2026-08-08 00:06:24] Episode 1/5 | Actor Loss: -0.800721
+[2026-08-08 00:06:26] Episode 2/5 | Actor Loss: -0.058185
+[2026-08-08 00:06:27] Episode 3/5 | Actor Loss: -0.374251
+[2026-08-08 00:06:29] Episode 4/5 | Actor Loss: -1.380281
+[2026-08-08 00:06:31] Episode 5/5 | Actor Loss: -0.093356
+[2026-08-08 00:06:31] [2026-08-08 00:06:31] Epoch: 040 | Objective: 8.175125 | Destruction: 71.37% | Actor Loss: -0.541359 | EntropyCoef: 0.1519 | Epoch time: 9.0s
+[2026-08-08 00:06:32] [PROGRESS] epoch 40: RL+Auction=0.4087 vs Greedy=0.5984 (gap=-0.1897) vs SCIP=0.1479 (gap=+0.2608)
+[2026-08-08 00:06:34] Episode 1/5 | Actor Loss: -0.951594
+[2026-08-08 00:06:35] Episode 2/5 | Actor Loss: -0.155566
+[2026-08-08 00:06:36] Episode 3/5 | Actor Loss: -0.990788
+[2026-08-08 00:06:38] Episode 4/5 | Actor Loss: -1.518240
+[2026-08-08 00:06:38] Episode 5/5 | Actor Loss: -1.538648
+[2026-08-08 00:06:38] [2026-08-08 00:06:38] Epoch: 041 | Objective: 9.879713 | Destruction: 71.05% | Actor Loss: -1.030967 | EntropyCoef: 0.1494 | Epoch time: 6.3s
+[2026-08-08 00:06:39] Episode 1/5 | Actor Loss: -0.342730
+[2026-08-08 00:06:40] Episode 2/5 | Actor Loss: 0.836031
+[2026-08-08 00:06:41] Episode 3/5 | Actor Loss: 1.020759
+[2026-08-08 00:06:43] Episode 4/5 | Actor Loss: -0.520880
+[2026-08-08 00:06:43] Episode 5/5 | Actor Loss: -1.742075
+[2026-08-08 00:06:43] [2026-08-08 00:06:43] Epoch: 042 | Objective: 6.397404 | Destruction: 77.83% | Actor Loss: -0.149779 | EntropyCoef: 0.1469 | Epoch time: 5.1s
+[2026-08-08 00:06:45] Episode 1/5 | Actor Loss: -0.681159
+[2026-08-08 00:06:47] Episode 2/5 | Actor Loss: 0.865606
+[2026-08-08 00:06:49] Episode 3/5 | Actor Loss: 1.335858
+[2026-08-08 00:06:50] Episode 4/5 | Actor Loss: -0.577214
+[2026-08-08 00:06:51] Episode 5/5 | Actor Loss: -0.496644
+[2026-08-08 00:06:51] [2026-08-08 00:06:51] Epoch: 043 | Objective: 8.887337 | Destruction: 77.82% | Actor Loss: 0.089289 | EntropyCoef: 0.1444 | Epoch time: 7.3s
+[2026-08-08 00:06:53] Episode 1/5 | Actor Loss: -0.239103
+[2026-08-08 00:06:56] Episode 2/5 | Actor Loss: 3.172713
+[2026-08-08 00:06:56] Episode 3/5 | Actor Loss: 0.383899
+[2026-08-08 00:06:57] Episode 4/5 | Actor Loss: -1.343300
+[2026-08-08 00:06:58] Episode 5/5 | Actor Loss: -0.250387
+[2026-08-08 00:06:58] [2026-08-08 00:06:58] Epoch: 044 | Objective: 8.989671 | Destruction: 75.40% | Actor Loss: 0.344765 | EntropyCoef: 0.1420 | Epoch time: 7.1s
+[2026-08-08 00:06:59] Episode 1/5 | Actor Loss: -0.545312
+[2026-08-08 00:06:59] Episode 2/5 | Actor Loss: -0.553841
+[2026-08-08 00:07:01] Episode 3/5 | Actor Loss: -1.827896
+[2026-08-08 00:07:03] Episode 4/5 | Actor Loss: -0.979240
+[2026-08-08 00:07:04] Episode 5/5 | Actor Loss: 2.383844
+[2026-08-08 00:07:04] [2026-08-08 00:07:04] Epoch: 045 | Objective: 8.098293 | Destruction: 73.90% | Actor Loss: -0.304489 | EntropyCoef: 0.1396 | Epoch time: 6.3s
+[2026-08-08 00:07:05] [PROGRESS] epoch 45: RL+Auction=0.4087 vs Greedy=0.5984 (gap=-0.1897) vs SCIP=0.1479 (gap=+0.2608)
+[2026-08-08 00:07:06] Episode 1/5 | Actor Loss: -0.019122
+[2026-08-08 00:07:08] Episode 2/5 | Actor Loss: 0.067875
+[2026-08-08 00:07:09] Episode 3/5 | Actor Loss: 0.985227
+[2026-08-08 00:07:09] Episode 4/5 | Actor Loss: 0.435645
+[2026-08-08 00:07:11] Episode 5/5 | Actor Loss: -0.719314
+[2026-08-08 00:07:11] [2026-08-08 00:07:11] Epoch: 046 | Objective: 9.970653 | Destruction: 67.99% | Actor Loss: 0.150062 | EntropyCoef: 0.1372 | Epoch time: 6.1s
+[2026-08-08 00:07:13] Episode 1/5 | Actor Loss: -0.209085
+[2026-08-08 00:07:15] Episode 2/5 | Actor Loss: -3.257773
+[2026-08-08 00:07:17] Episode 3/5 | Actor Loss: 1.418360
+[2026-08-08 00:07:18] Episode 4/5 | Actor Loss: 0.251751
+[2026-08-08 00:07:20] Episode 5/5 | Actor Loss: -1.840576
+[2026-08-08 00:07:20] [2026-08-08 00:07:20] Epoch: 047 | Objective: 9.826290 | Destruction: 69.39% | Actor Loss: -0.727465 | EntropyCoef: 0.1349 | Epoch time: 8.6s
+[2026-08-08 00:07:21] Episode 1/5 | Actor Loss: 0.854199
+[2026-08-08 00:07:22] Episode 2/5 | Actor Loss: -1.504892
+[2026-08-08 00:07:24] Episode 3/5 | Actor Loss: 1.522859
+[2026-08-08 00:07:25] Episode 4/5 | Actor Loss: -0.642443
+[2026-08-08 00:07:27] Episode 5/5 | Actor Loss: -0.870278
+[2026-08-08 00:07:27] [2026-08-08 00:07:27] Epoch: 048 | Objective: 10.918552 | Destruction: 70.87% | Actor Loss: -0.128111 | EntropyCoef: 0.1326 | Epoch time: 7.3s
+[2026-08-08 00:07:28] Episode 1/5 | Actor Loss: 0.954886
+[2026-08-08 00:07:29] Episode 2/5 | Actor Loss: 0.723027
+[2026-08-08 00:07:30] Episode 3/5 | Actor Loss: -0.028646
+[2026-08-08 00:07:32] Episode 4/5 | Actor Loss: -0.719274
+[2026-08-08 00:07:33] Episode 5/5 | Actor Loss: 0.717676
+[2026-08-08 00:07:33] [2026-08-08 00:07:33] Epoch: 049 | Objective: 14.512830 | Destruction: 59.68% | Actor Loss: 0.329534 | EntropyCoef: 0.1304 | Epoch time: 5.8s
+[2026-08-08 00:07:34] Episode 1/5 | Actor Loss: 0.797388
+[2026-08-08 00:07:35] Episode 2/5 | Actor Loss: -0.428044
+[2026-08-08 00:07:36] Episode 3/5 | Actor Loss: -1.151286
+[2026-08-08 00:07:36] Episode 4/5 | Actor Loss: -0.710958
+[2026-08-08 00:07:38] Episode 5/5 | Actor Loss: -1.581817
+[2026-08-08 00:07:38] [2026-08-08 00:07:38] Epoch: 050 | Objective: 5.041069 | Destruction: 82.66% | Actor Loss: -0.614944 | EntropyCoef: 0.1282 | Epoch time: 5.2s
+[2026-08-08 00:07:39] [PROGRESS] epoch 50: RL+Auction=0.4087 vs Greedy=0.5984 (gap=-0.1897) vs SCIP=0.1479 (gap=+0.2608)
+[2026-08-08 00:07:42] Episode 1/5 | Actor Loss: -0.590726
+[2026-08-08 00:07:44] Episode 2/5 | Actor Loss: 0.320330
+[2026-08-08 00:07:46] Episode 3/5 | Actor Loss: 0.714891
+[2026-08-08 00:07:48] Episode 4/5 | Actor Loss: -0.295589
+[2026-08-08 00:07:50] Episode 5/5 | Actor Loss: 0.123768
+[2026-08-08 00:07:50] [2026-08-08 00:07:50] Epoch: 051 | Objective: 9.839211 | Destruction: 73.62% | Actor Loss: 0.054535 | EntropyCoef: 0.1260 | Epoch time: 10.8s
+[2026-08-08 00:07:50] Episode 1/5 | Actor Loss: -0.703283
+[2026-08-08 00:07:51] Episode 2/5 | Actor Loss: 1.162827
+[2026-08-08 00:07:53] Episode 3/5 | Actor Loss: -0.171231
+[2026-08-08 00:07:53] Episode 4/5 | Actor Loss: 1.958286
+[2026-08-08 00:07:54] Episode 5/5 | Actor Loss: -0.731773
+[2026-08-08 00:07:54] [2026-08-08 00:07:54] Epoch: 052 | Objective: 12.169281 | Destruction: 64.55% | Actor Loss: 0.302965 | EntropyCoef: 0.1239 | Epoch time: 4.3s
+[2026-08-08 00:07:57] Episode 1/5 | Actor Loss: -1.749631
+[2026-08-08 00:07:59] Episode 2/5 | Actor Loss: 0.982550
+[2026-08-08 00:08:00] Episode 3/5 | Actor Loss: 1.270978
+[2026-08-08 00:08:00] Episode 4/5 | Actor Loss: 1.405518
+[2026-08-08 00:08:01] Episode 5/5 | Actor Loss: -0.081165
+[2026-08-08 00:08:01] [2026-08-08 00:08:01] Epoch: 053 | Objective: 11.741899 | Destruction: 67.09% | Actor Loss: 0.365650 | EntropyCoef: 0.1218 | Epoch time: 6.9s
+[2026-08-08 00:08:03] Episode 1/5 | Actor Loss: -0.616176
+[2026-08-08 00:08:05] Episode 2/5 | Actor Loss: -0.283165
+[2026-08-08 00:08:07] Episode 3/5 | Actor Loss: -1.314603
+[2026-08-08 00:08:08] Episode 4/5 | Actor Loss: -1.032612
+[2026-08-08 00:08:10] Episode 5/5 | Actor Loss: 0.555909
+[2026-08-08 00:08:10] [2026-08-08 00:08:10] Epoch: 054 | Objective: 10.120807 | Destruction: 67.56% | Actor Loss: -0.538129 | EntropyCoef: 0.1198 | Epoch time: 8.7s
+[2026-08-08 00:08:12] Episode 1/5 | Actor Loss: -0.262931
+[2026-08-08 00:08:13] Episode 2/5 | Actor Loss: -0.016739
+[2026-08-08 00:08:14] Episode 3/5 | Actor Loss: -1.254649
+[2026-08-08 00:08:16] Episode 4/5 | Actor Loss: -0.768982
+[2026-08-08 00:08:18] Episode 5/5 | Actor Loss: 0.641020
+[2026-08-08 00:08:18] [2026-08-08 00:08:18] Epoch: 055 | Objective: 12.265191 | Destruction: 65.31% | Actor Loss: -0.332456 | EntropyCoef: 0.1177 | Epoch time: 8.4s
+[2026-08-08 00:08:20] [PROGRESS] epoch 55: RL+Auction=0.4087 vs Greedy=0.5984 (gap=-0.1897) vs SCIP=0.1479 (gap=+0.2608)
+[2026-08-08 00:08:21] Episode 1/5 | Actor Loss: 1.725671
+[2026-08-08 00:08:22] Episode 2/5 | Actor Loss: -0.185737
+[2026-08-08 00:08:24] Episode 3/5 | Actor Loss: -0.492563
+[2026-08-08 00:08:25] Episode 4/5 | Actor Loss: 0.605106
+[2026-08-08 00:08:26] Episode 5/5 | Actor Loss: -1.180388
+[2026-08-08 00:08:26] [2026-08-08 00:08:26] Epoch: 056 | Objective: 8.867268 | Destruction: 70.36% | Actor Loss: 0.094418 | EntropyCoef: 0.1158 | Epoch time: 6.6s
+[2026-08-08 00:08:28] Episode 1/5 | Actor Loss: -1.909225
+[2026-08-08 00:08:29] Episode 2/5 | Actor Loss: 1.424675
+[2026-08-08 00:08:30] Episode 3/5 | Actor Loss: -0.074331
+[2026-08-08 00:08:31] Episode 4/5 | Actor Loss: -1.231547
+[2026-08-08 00:08:35] Episode 5/5 | Actor Loss: -0.709682
+[2026-08-08 00:08:35] [2026-08-08 00:08:35] Epoch: 057 | Objective: 3.168835 | Destruction: 89.57% | Actor Loss: -0.500022 | EntropyCoef: 0.1138 | Epoch time: 8.4s
+[2026-08-08 00:08:36] Episode 1/5 | Actor Loss: 1.260157
+[2026-08-08 00:08:37] Episode 2/5 | Actor Loss: 0.486659
+[2026-08-08 00:08:38] Episode 3/5 | Actor Loss: -1.912103
+[2026-08-08 00:08:41] Episode 4/5 | Actor Loss: 0.241619
+[2026-08-08 00:08:42] Episode 5/5 | Actor Loss: 0.010949
+[2026-08-08 00:08:42] [2026-08-08 00:08:42] Epoch: 058 | Objective: 9.278280 | Destruction: 68.54% | Actor Loss: 0.017456 | EntropyCoef: 0.1119 | Epoch time: 7.2s
+[2026-08-08 00:08:44] Episode 1/5 | Actor Loss: -1.430376
+[2026-08-08 00:08:46] Episode 2/5 | Actor Loss: -3.168198
+[2026-08-08 00:08:47] Episode 3/5 | Actor Loss: -1.466382
+[2026-08-08 00:08:48] Episode 4/5 | Actor Loss: -0.944964
+[2026-08-08 00:08:49] Episode 5/5 | Actor Loss: -0.116305
+[2026-08-08 00:08:49] [2026-08-08 00:08:49] Epoch: 059 | Objective: 10.428010 | Destruction: 71.39% | Actor Loss: -1.425245 | EntropyCoef: 0.1100 | Epoch time: 7.4s
+[2026-08-08 00:08:50] Episode 1/5 | Actor Loss: 0.878642
+[2026-08-08 00:08:51] Episode 2/5 | Actor Loss: 0.562053
+[2026-08-08 00:08:53] Episode 3/5 | Actor Loss: -0.853656
+[2026-08-08 00:08:55] Episode 4/5 | Actor Loss: 0.822896
+[2026-08-08 00:08:56] Episode 5/5 | Actor Loss: 0.901089
+[2026-08-08 00:08:56] [2026-08-08 00:08:56] Epoch: 060 | Objective: 11.657359 | Destruction: 66.08% | Actor Loss: 0.462205 | EntropyCoef: 0.1081 | Epoch time: 7.0s
+[2026-08-08 00:08:57] [PROGRESS] epoch 60: RL+Auction=0.4087 vs Greedy=0.5984 (gap=-0.1897) vs SCIP=0.1479 (gap=+0.2608)
+[2026-08-08 00:08:58] Episode 1/5 | Actor Loss: -0.807911
+[2026-08-08 00:09:00] Episode 2/5 | Actor Loss: -0.533359
+[2026-08-08 00:09:02] Episode 3/5 | Actor Loss: 0.377041
+[2026-08-08 00:09:04] Episode 4/5 | Actor Loss: 0.921450
+[2026-08-08 00:09:04] Episode 5/5 | Actor Loss: -0.709799
+[2026-08-08 00:09:04] [2026-08-08 00:09:04] Epoch: 061 | Objective: 8.464708 | Destruction: 74.75% | Actor Loss: -0.150516 | EntropyCoef: 0.1063 | Epoch time: 6.8s
+[2026-08-08 00:09:05] Episode 1/5 | Actor Loss: 1.004693
+[2026-08-08 00:09:06] Episode 2/5 | Actor Loss: 0.871588
+[2026-08-08 00:09:07] Episode 3/5 | Actor Loss: 1.349283
+[2026-08-08 00:09:10] Episode 4/5 | Actor Loss: -1.009578
+[2026-08-08 00:09:13] Episode 5/5 | Actor Loss: -0.947774
+[2026-08-08 00:09:13] [2026-08-08 00:09:13] Epoch: 062 | Objective: 7.718830 | Destruction: 71.41% | Actor Loss: 0.253642 | EntropyCoef: 0.1045 | Epoch time: 9.4s
+[2026-08-08 00:09:15] Episode 1/5 | Actor Loss: 0.776261
+[2026-08-08 00:09:17] Episode 2/5 | Actor Loss: -0.558110
+[2026-08-08 00:09:19] Episode 3/5 | Actor Loss: 0.208928
+[2026-08-08 00:09:22] Episode 4/5 | Actor Loss: -0.776536
+[2026-08-08 00:09:22] Episode 5/5 | Actor Loss: 0.293882
+[2026-08-08 00:09:22] [2026-08-08 00:09:22] Epoch: 063 | Objective: 13.569777 | Destruction: 61.31% | Actor Loss: -0.011115 | EntropyCoef: 0.1028 | Epoch time: 8.7s
+[2026-08-08 00:09:24] Episode 1/5 | Actor Loss: -1.219573
+[2026-08-08 00:09:25] Episode 2/5 | Actor Loss: 0.161941
+[2026-08-08 00:09:25] Episode 3/5 | Actor Loss: 1.109323
+[2026-08-08 00:09:26] Episode 4/5 | Actor Loss: -1.406683
+[2026-08-08 00:09:27] Episode 5/5 | Actor Loss: -1.088598
+[2026-08-08 00:09:27] [2026-08-08 00:09:27] Epoch: 064 | Objective: 5.837737 | Destruction: 83.27% | Actor Loss: -0.488718 | EntropyCoef: 0.1010 | Epoch time: 5.0s
+[2026-08-08 00:09:30] Episode 1/5 | Actor Loss: 0.647156
+[2026-08-08 00:09:31] Episode 2/5 | Actor Loss: -1.170487
+[2026-08-08 00:09:32] Episode 3/5 | Actor Loss: -1.438852
+[2026-08-08 00:09:33] Episode 4/5 | Actor Loss: 1.346975
+[2026-08-08 00:09:34] Episode 5/5 | Actor Loss: 0.938197
+[2026-08-08 00:09:34] [2026-08-08 00:09:34] Epoch: 065 | Objective: 11.854155 | Destruction: 64.77% | Actor Loss: 0.064598 | EntropyCoef: 0.0993 | Epoch time: 6.9s
+[2026-08-08 00:09:35] [PROGRESS] epoch 65: RL+Auction=0.4087 vs Greedy=0.5984 (gap=-0.1897) vs SCIP=0.1479 (gap=+0.2608)
+[2026-08-08 00:09:37] Episode 1/5 | Actor Loss: -1.537933
+[2026-08-08 00:09:37] Episode 2/5 | Actor Loss: 0.690370
+[2026-08-08 00:09:39] Episode 3/5 | Actor Loss: -0.632355
+[2026-08-08 00:09:39] Episode 4/5 | Actor Loss: 1.457909
+[2026-08-08 00:09:40] Episode 5/5 | Actor Loss: -0.642829
+[2026-08-08 00:09:40] [2026-08-08 00:09:40] Epoch: 066 | Objective: 10.535965 | Destruction: 71.52% | Actor Loss: -0.132968 | EntropyCoef: 0.0976 | Epoch time: 4.7s
+[2026-08-08 00:09:41] Episode 1/5 | Actor Loss: 1.330675
+[2026-08-08 00:09:42] Episode 2/5 | Actor Loss: 1.543029
+[2026-08-08 00:09:44] Episode 3/5 | Actor Loss: -0.041350
+[2026-08-08 00:09:46] Episode 4/5 | Actor Loss: -0.000107
+[2026-08-08 00:09:49] Episode 5/5 | Actor Loss: -0.052024
+[2026-08-08 00:09:49] [2026-08-08 00:09:49] Epoch: 067 | Objective: 16.131506 | Destruction: 55.73% | Actor Loss: 0.556045 | EntropyCoef: 0.0960 | Epoch time: 8.5s
+[2026-08-08 00:09:50] Episode 1/5 | Actor Loss: -2.011102
+[2026-08-08 00:09:53] Episode 2/5 | Actor Loss: -1.021589
+[2026-08-08 00:09:55] Episode 3/5 | Actor Loss: 1.513844
+[2026-08-08 00:09:56] Episode 4/5 | Actor Loss: -0.772319
+[2026-08-08 00:09:57] Episode 5/5 | Actor Loss: 2.512543
+[2026-08-08 00:09:57] [2026-08-08 00:09:57] Epoch: 068 | Objective: 14.163361 | Destruction: 62.70% | Actor Loss: 0.044275 | EntropyCoef: 0.0944 | Epoch time: 8.1s
+[2026-08-08 00:09:58] Episode 1/5 | Actor Loss: -0.817889
+[2026-08-08 00:09:59] Episode 2/5 | Actor Loss: -1.517352
+[2026-08-08 00:10:01] Episode 3/5 | Actor Loss: -0.114693
+[2026-08-08 00:10:04] Episode 4/5 | Actor Loss: -0.738915
+[2026-08-08 00:10:07] Episode 5/5 | Actor Loss: -1.192031
+[2026-08-08 00:10:07] [2026-08-08 00:10:07] Epoch: 069 | Objective: 12.233579 | Destruction: 66.28% | Actor Loss: -0.876176 | EntropyCoef: 0.0928 | Epoch time: 9.9s
+[2026-08-08 00:10:07] Episode 1/5 | Actor Loss: 0.341161
+[2026-08-08 00:10:10] Episode 2/5 | Actor Loss: -1.828652
+[2026-08-08 00:10:12] Episode 3/5 | Actor Loss: -0.755931
+[2026-08-08 00:10:13] Episode 4/5 | Actor Loss: -0.856172
+[2026-08-08 00:10:15] Episode 5/5 | Actor Loss: 0.101882
+[2026-08-08 00:10:15] [2026-08-08 00:10:15] Epoch: 070 | Objective: 4.982009 | Destruction: 83.64% | Actor Loss: -0.599542 | EntropyCoef: 0.0912 | Epoch time: 8.6s
+[2026-08-08 00:10:16] [PROGRESS] epoch 70: RL+Auction=0.4087 vs Greedy=0.5984 (gap=-0.1897) vs SCIP=0.1479 (gap=+0.2608)
+[2026-08-08 00:10:18] Episode 1/5 | Actor Loss: -0.992956
+[2026-08-08 00:10:20] Episode 2/5 | Actor Loss: -0.330751
+[2026-08-08 00:10:22] Episode 3/5 | Actor Loss: -1.223673
+[2026-08-08 00:10:25] Episode 4/5 | Actor Loss: -0.116263
+[2026-08-08 00:10:27] Episode 5/5 | Actor Loss: -1.326290
+[2026-08-08 00:10:27] [2026-08-08 00:10:27] Epoch: 071 | Objective: 14.092266 | Destruction: 61.52% | Actor Loss: -0.797987 | EntropyCoef: 0.0897 | Epoch time: 10.7s
+[2026-08-08 00:10:29] Episode 1/5 | Actor Loss: 0.437522
+[2026-08-08 00:10:31] Episode 2/5 | Actor Loss: -0.385506
+[2026-08-08 00:10:34] Episode 3/5 | Actor Loss: -0.866586
+[2026-08-08 00:10:35] Episode 4/5 | Actor Loss: 0.759087
+[2026-08-08 00:10:36] Episode 5/5 | Actor Loss: 0.852019
+[2026-08-08 00:10:36] [2026-08-08 00:10:36] Epoch: 072 | Objective: 10.055784 | Destruction: 71.20% | Actor Loss: 0.159307 | EntropyCoef: 0.0882 | Epoch time: 8.9s
+[2026-08-08 00:10:38] Episode 1/5 | Actor Loss: -1.321769
+[2026-08-08 00:10:40] Episode 2/5 | Actor Loss: 0.262484
+[2026-08-08 00:10:41] Episode 3/5 | Actor Loss: 1.925686
+[2026-08-08 00:10:43] Episode 4/5 | Actor Loss: -0.636235
+[2026-08-08 00:10:44] Episode 5/5 | Actor Loss: -2.009125
+[2026-08-08 00:10:44] [2026-08-08 00:10:44] Epoch: 073 | Objective: 16.512043 | Destruction: 60.02% | Actor Loss: -0.355792 | EntropyCoef: 0.0867 | Epoch time: 8.1s
+[2026-08-08 00:10:46] Episode 1/5 | Actor Loss: -0.367740
+[2026-08-08 00:10:47] Episode 2/5 | Actor Loss: 0.158514
+[2026-08-08 00:10:48] Episode 3/5 | Actor Loss: 0.262407
+[2026-08-08 00:10:50] Episode 4/5 | Actor Loss: -0.249912
+[2026-08-08 00:10:50] Episode 5/5 | Actor Loss: 1.229505
+[2026-08-08 00:10:50] [2026-08-08 00:10:50] Epoch: 074 | Objective: 7.050397 | Destruction: 75.79% | Actor Loss: 0.206555 | EntropyCoef: 0.0852 | Epoch time: 6.5s
+[2026-08-08 00:10:52] Episode 1/5 | Actor Loss: -0.795156
+[2026-08-08 00:10:53] Episode 2/5 | Actor Loss: 1.153520
+[2026-08-08 00:10:55] Episode 3/5 | Actor Loss: 0.453584
+[2026-08-08 00:10:58] Episode 4/5 | Actor Loss: 0.524253
+[2026-08-08 00:11:00] Episode 5/5 | Actor Loss: 0.260638
+[2026-08-08 00:11:00] [2026-08-08 00:11:00] Epoch: 075 | Objective: 11.872747 | Destruction: 66.52% | Actor Loss: 0.319368 | EntropyCoef: 0.0838 | Epoch time: 9.5s

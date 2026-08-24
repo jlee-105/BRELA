@@ -1,0 +1,15 @@
+Using CUDA GPU
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+config               Seq  1:1 prop   1:1 aud   mf prop    mf aud  best beats Seq?
+5M_5N_5T         0.1694    0.2009    0.1798    0.2112    0.1947               no
+5M_7N_5T         0.3071    0.2545    0.2440    0.2544    0.2544              YES
+10M_15N_5T         0.2996    0.2379    0.2303    0.2441    0.2357              YES
+15M_15N_5T         0.0958    0.1122    0.1053    0.1103    0.1045               no
+15M_20N_5T         0.2073    0.1683    0.1575    0.1777    0.1654              YES
+20M_30N_5T         0.2953    0.2211    0.2074    0.2422    0.2258              YES
+30M_30N_10T         0.0162    0.0331    0.0305    0.0215    0.0168               no
+30M_40N_10T         0.0317    0.0463    0.0447    0.0367    0.0346               no
+40M_50N_10T         0.0283    0.0495    0.0483    0.0443    0.0430               no

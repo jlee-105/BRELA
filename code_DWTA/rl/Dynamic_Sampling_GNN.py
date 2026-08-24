@@ -133,13 +133,24 @@ def restore_hyperparameters(original_values):
             pass
 
 
-def self_play_gnn(old_actor, actor, critic, episode, temp, epoch, logger=None):
+def self_play_gnn(old_actor, actor, critic, episode, temp, epoch, logger=None, ablation=None):
     """
     Multi-episodic REINFORCE training for GNN with random multi-scale training.
     Uses only final returns (REINFORCE) with variance reduction.
     Each episode has random configuration.
+
+    ablation: None (full model) or a comma-separated combination of:
+        'no_critic'        -- no critic at all: no shaping, no critic loss/update,
+                               plain REINFORCE with reward-to-go + POMO baseline only.
+        'no_shaping'       -- critic still trained (for logging parity), but its
+                               values are not injected into the reward (no Phi shaping).
+        'no_reward_to_go'  -- shaping kept, but the whole-episode (shaped) return is
+                               applied uniformly to every step instead of per-step
+                               reward-to-go.
+        e.g. 'no_critic,no_reward_to_go' combines both.
     """
-    
+    active_ablations = set(ablation.split(',')) if ablation else set()
+
     try:
         # Set models to training mode
         actor.train()
@@ -250,11 +261,9 @@ def self_play_gnn(old_actor, actor, critic, episode, temp, epoch, logger=None):
                     flat_policy = policy.reshape(-1, ep_num_targets + 1)
                     action = torch.multinomial(flat_policy, 1).view(b_sz, p_sz, ep_num_weapons)
 
-                    # Value: single state-value estimate this step; doubles as Phi(s_t)
-                    # for potential-based shaping below. Uses the per-weapon mask so the
-                    # critic can mask out illegal (weapon,target) pairs when pooling
-                    # (see EdgeAwareGNN_CRITIC.forward) and recover exact (W,T) without guessing.
-                    value = critic(current_state, env.mask_per_weapon.clone())
+                    # No critic, ever (plain REINFORCE): value kept at zero, never fed to
+                    # the critic network, purely a shape placeholder for the values list.
+                    value = torch.zeros(b_sz, p_sz, 1, device=current_state.device, dtype=current_state.dtype)
 
                     # Store: joint log-prob of the simultaneous action = sum over weapons
                     # of each weapon's own log-prob, log pi(a_t|s_t) = sum_m log pi_m(a_m,t|s_t)
@@ -283,26 +292,27 @@ def self_play_gnn(old_actor, actor, critic, episode, temp, epoch, logger=None):
                 destruction_ratio = 1 - (final_value / (original_value + 1e-8))
                 returns = destruction_ratio
 
-                # --- Potential-based reward shaping (Ng, Harada & Russell, ICML 1999) ---
-                # Phi(s_t) := critic(s_t), detached. Adding gamma*Phi(s_{t+1}) - Phi(s_t) to
-                # each step's reward provably leaves the optimal policy unchanged (it
-                # telescopes to a constant over a full trajectory), so this stays a valid
-                # REINFORCE objective -- it is NOT actor-critic bootstrapping, and does not
-                # introduce bias if the critic is inaccurate. Phi(s_T) (terminal) := 0.
-                gamma = 1.0  # undiscounted, finite horizon -- matches Eq. (17)'s reward form
+                # No critic, no potential-based shaping -- plain REINFORCE. Raw step
+                # reward used as-is (undiscounted, finite horizon -- matches Eq. (17)).
+                gamma = 1.0
                 T_steps = len(rewards)
-                phi = [v.squeeze(-1).detach() for v in values]
-                phi_next = phi[1:] + [torch.zeros_like(phi[0])]
-                shaped_rewards = [rewards[t] + gamma * phi_next[t] - phi[t] for t in range(T_steps)]
+                shaped_rewards = rewards
 
                 # Shaped reward-to-go per decision step: a step's credit should not depend
                 # on reward realized before that step was taken (standard REINFORCE
                 # variance reduction, unbiased; see Sutton & Barto).
                 shaped_returns = [None] * T_steps
-                running = torch.zeros_like(shaped_rewards[0])
-                for t in reversed(range(T_steps)):
-                    running = shaped_rewards[t] + gamma * running
-                    shaped_returns[t] = running
+                if 'no_reward_to_go' in active_ablations:
+                    # Whole-episode return applied uniformly to every step (pre-revision
+                    # baseline behavior), instead of per-step reward-to-go.
+                    total_return = sum(shaped_rewards)
+                    for t in range(T_steps):
+                        shaped_returns[t] = total_return
+                else:
+                    running = torch.zeros_like(shaped_rewards[0])
+                    for t in reversed(range(T_steps)):
+                        running = shaped_rewards[t] + gamma * running
+                        shaped_returns[t] = running
 
                 # Per-instance, per-step advantage normalization across para (same POMO-style
                 # shared baseline as before, now applied at every decision step instead of
@@ -327,15 +337,8 @@ def self_play_gnn(old_actor, actor, critic, episode, temp, epoch, logger=None):
                 torch.nn.utils.clip_grad_norm_(actor.parameters(), max_norm=1.0)
                 actor.optimizer.step()
                 
-                # Update Critic to predict 0-1 destruction ratio
-                critic_loss = 0
-                for value in values:
-                    critic_loss = critic_loss + F.mse_loss(value.squeeze(-1), returns)
-                
-                critic.optimizer.zero_grad()
-                critic_loss.backward()
-                torch.nn.utils.clip_grad_norm_(critic.parameters(), max_norm=1.0)
-                critic.optimizer.step()
+                # No critic, ever: plain REINFORCE.
+                critic_loss = torch.tensor(0.0)
                 
                 # Metrics
                 actor_losses.push(torch.tensor(actor_loss.item()), 1)

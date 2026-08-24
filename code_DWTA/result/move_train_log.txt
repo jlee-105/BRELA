@@ -1,0 +1,31 @@
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+Using CUDA GPU
+[MOVE] base=result/CommSinkhornSCoPE_multiscale_seed5_best_actor.pt (frozen), n_edits=3 (train) / 30 (eval), batch=4x8
+[MOVE] step 10/200 loss=-0.2090 base=0.0728 -> moved=0.0866 lr=9.94e-05 (58s)
+[MOVE] step 20/200 loss=-0.0607 base=0.1238 -> moved=0.1283 lr=9.76e-05 (91s)
+[MOVE] step 30/200 loss=0.1275 base=0.1339 -> moved=0.1657 lr=9.46e-05 (139s)
+[MOVE] step 40/200 loss=-0.0525 base=0.4133 -> moved=0.4097 lr=9.05e-05 (180s)
+[MOVE] step 50/200 loss=-0.4241 base=0.1694 -> moved=0.1831 lr=8.55e-05 (217s)
+--- [MOVE] zero-shot eval at step 50 ---
+    5M_5N_5T: base=0.1910  moved=0.1795
+    5M_7N_5T: base=0.2653  moved=0.2539
+    10M_15N_5T: base=0.2383  moved=0.2374
+    15M_15N_5T: base=0.1063  moved=0.1042
+    15M_20N_5T: base=0.1691  moved=0.1673
+    20M_30N_5T: base=0.2198  moved=0.2196
+    30M_30N_10T: base=0.0332  moved=0.0314
+    30M_40N_10T: base=0.0642  moved=0.0632
+    40M_50N_10T: base=0.0558  moved=0.0551
+    50M_50N_15T: base=0.0953  moved=0.0952
+    50M_70N_15T: base=0.0852  moved=0.0851
+    70M_100N_15T: base=0.1045  moved=0.1045
+    mean_base=0.1357  mean_moved=0.1330  (best so far: 0.1330 at step 50)
+[MOVE] step 60/200 loss=0.0223 base=0.2753 -> moved=0.2598 lr=7.96e-05 (1454s)
+[MOVE] step 70/200 loss=-0.0422 base=0.1544 -> moved=0.1538 lr=7.30e-05 (1484s)
+[MOVE] step 80/200 loss=-0.3385 base=0.2795 -> moved=0.2745 lr=6.58e-05 (1541s)
+[MOVE] step 90/200 loss=-0.1381 base=0.0709 -> moved=0.0791 lr=5.82e-05 (1595s)
+[MOVE] step 100/200 loss=-0.3076 base=0.0649 -> moved=0.0716 lr=5.05e-05 (1640s)
+--- [MOVE] zero-shot eval at step 100 ---

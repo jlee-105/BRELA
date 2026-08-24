@@ -1,0 +1,388 @@
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+Using CUDA GPU
+[QVALUE-MULTISCALE] training on M,N,T ~ U[5,7], Monte-Carlo Q regression (no REINFORCE), evaluating zero-shot on 12 held-out configs every 50 steps
+[QVALUE-MULTISCALE] step 10/1000 mse_loss=0.0578 destruction=0.1903 lr=5.00e-05 (26s)
+[QVALUE-MULTISCALE] step 20/1000 mse_loss=0.0428 destruction=0.4433 lr=5.00e-05 (63s)
+[QVALUE-MULTISCALE] step 30/1000 mse_loss=0.0195 destruction=0.3787 lr=4.99e-05 (89s)
+[QVALUE-MULTISCALE] step 40/1000 mse_loss=0.0092 destruction=0.5457 lr=4.98e-05 (125s)
+[QVALUE-MULTISCALE] step 50/1000 mse_loss=0.0060 destruction=0.5236 lr=4.97e-05 (154s)
+--- [QVALUE-MULTISCALE] zero-shot eval at step 50 ---
+    5M_5N_5T: QValue=0.5237
+    5M_7N_5T: QValue=0.5818
+    10M_15N_5T: QValue=0.5711
+    15M_15N_5T: QValue=0.4422
+    15M_20N_5T: QValue=0.3770
+    20M_30N_5T: QValue=0.6196
+    30M_30N_10T: QValue=0.4440
+    30M_40N_10T: QValue=0.5354
+    40M_50N_10T: QValue=0.5182
+    50M_50N_15T: QValue=0.4452
+    50M_70N_15T: QValue=0.5675
+    70M_100N_15T: QValue=0.5995
+    mean_across_12_configs=0.5188  (best so far: 0.5188 at step 50)
+[QVALUE-MULTISCALE] step 60/1000 mse_loss=0.0055 destruction=0.5814 lr=4.96e-05 (276s)
+[QVALUE-MULTISCALE] step 70/1000 mse_loss=0.0051 destruction=0.5792 lr=4.94e-05 (308s)
+[QVALUE-MULTISCALE] step 80/1000 mse_loss=0.0065 destruction=0.6704 lr=4.92e-05 (341s)
+[QVALUE-MULTISCALE] step 90/1000 mse_loss=0.0042 destruction=0.4249 lr=4.90e-05 (367s)
+[QVALUE-MULTISCALE] step 100/1000 mse_loss=0.0036 destruction=0.4197 lr=4.88e-05 (398s)
+--- [QVALUE-MULTISCALE] zero-shot eval at step 100 ---
+    5M_5N_5T: QValue=0.2829
+    5M_7N_5T: QValue=0.5827
+    10M_15N_5T: QValue=1.0000
+    15M_15N_5T: QValue=1.0000
+    15M_20N_5T: QValue=1.0000
+    20M_30N_5T: QValue=0.8606
+    30M_30N_10T: QValue=0.7511
+    30M_40N_10T: QValue=0.7699
+    40M_50N_10T: QValue=0.7041
+    50M_50N_15T: QValue=0.7268
+    50M_70N_15T: QValue=0.6906
+    70M_100N_15T: QValue=0.5881
+    mean_across_12_configs=0.7464  (best so far: 0.5188 at step 50)
+[QVALUE-MULTISCALE] step 110/1000 mse_loss=0.0062 destruction=0.5063 lr=4.85e-05 (493s)
+[QVALUE-MULTISCALE] step 120/1000 mse_loss=0.0046 destruction=0.5287 lr=4.83e-05 (523s)
+[QVALUE-MULTISCALE] step 130/1000 mse_loss=0.0067 destruction=0.5989 lr=4.80e-05 (554s)
+[QVALUE-MULTISCALE] step 140/1000 mse_loss=0.0041 destruction=0.5932 lr=4.76e-05 (585s)
+[QVALUE-MULTISCALE] step 150/1000 mse_loss=0.0069 destruction=0.7357 lr=4.73e-05 (621s)
+--- [QVALUE-MULTISCALE] zero-shot eval at step 150 ---
+    5M_5N_5T: QValue=0.3134
+    5M_7N_5T: QValue=0.4679
+    10M_15N_5T: QValue=1.0000
+    15M_15N_5T: QValue=1.0000
+    15M_20N_5T: QValue=1.0000
+    20M_30N_5T: QValue=0.7707
+    30M_30N_10T: QValue=0.6057
+    30M_40N_10T: QValue=0.4755
+    40M_50N_10T: QValue=0.3168
+    50M_50N_15T: QValue=0.3105
+    50M_70N_15T: QValue=0.2743
+    70M_100N_15T: QValue=0.3296
+    mean_across_12_configs=0.5720  (best so far: 0.5188 at step 50)
+[QVALUE-MULTISCALE] step 160/1000 mse_loss=0.0039 destruction=0.5604 lr=4.69e-05 (731s)
+[QVALUE-MULTISCALE] step 170/1000 mse_loss=0.0032 destruction=0.5384 lr=4.66e-05 (762s)
+[QVALUE-MULTISCALE] step 180/1000 mse_loss=0.0058 destruction=0.8064 lr=4.61e-05 (795s)
+[QVALUE-MULTISCALE] step 190/1000 mse_loss=0.0028 destruction=0.3728 lr=4.57e-05 (825s)
+[QVALUE-MULTISCALE] step 200/1000 mse_loss=0.0030 destruction=0.5380 lr=4.53e-05 (856s)
+--- [QVALUE-MULTISCALE] zero-shot eval at step 200 ---
+    5M_5N_5T: QValue=0.3252
+    5M_7N_5T: QValue=0.4651
+    10M_15N_5T: QValue=1.0000
+    15M_15N_5T: QValue=1.0000
+    15M_20N_5T: QValue=1.0000
+    20M_30N_5T: QValue=0.9205
+    30M_30N_10T: QValue=0.6859
+    30M_40N_10T: QValue=0.5506
+    40M_50N_10T: QValue=0.2970
+    50M_50N_15T: QValue=0.2479
+    50M_70N_15T: QValue=0.2768
+    70M_100N_15T: QValue=0.3214
+    mean_across_12_configs=0.5909  (best so far: 0.5188 at step 50)
+[QVALUE-MULTISCALE] step 210/1000 mse_loss=0.0041 destruction=0.5677 lr=4.48e-05 (967s)
+[QVALUE-MULTISCALE] step 220/1000 mse_loss=0.0040 destruction=0.5783 lr=4.43e-05 (1003s)
+[QVALUE-MULTISCALE] step 230/1000 mse_loss=0.0038 destruction=0.5380 lr=4.38e-05 (1030s)
+[QVALUE-MULTISCALE] step 240/1000 mse_loss=0.0044 destruction=0.6479 lr=4.33e-05 (1063s)
+[QVALUE-MULTISCALE] step 250/1000 mse_loss=0.0031 destruction=0.4224 lr=4.28e-05 (1100s)
+--- [QVALUE-MULTISCALE] zero-shot eval at step 250 ---
+    5M_5N_5T: QValue=0.4260
+    5M_7N_5T: QValue=0.5543
+    10M_15N_5T: QValue=0.5222
+    15M_15N_5T: QValue=0.3263
+    15M_20N_5T: QValue=0.7536
+    20M_30N_5T: QValue=0.6337
+    30M_30N_10T: QValue=0.0768
+    30M_40N_10T: QValue=0.2484
+    40M_50N_10T: QValue=0.2477
+    50M_50N_15T: QValue=0.1961
+    50M_70N_15T: QValue=0.2427
+    70M_100N_15T: QValue=0.2947
+    mean_across_12_configs=0.3769  (best so far: 0.3769 at step 250)
+[QVALUE-MULTISCALE] step 260/1000 mse_loss=0.0040 destruction=0.5908 lr=4.22e-05 (1224s)
+[QVALUE-MULTISCALE] step 270/1000 mse_loss=0.0054 destruction=0.7080 lr=4.16e-05 (1261s)
+[QVALUE-MULTISCALE] step 280/1000 mse_loss=0.0027 destruction=0.3464 lr=4.10e-05 (1294s)
+[QVALUE-MULTISCALE] step 290/1000 mse_loss=0.0037 destruction=0.6037 lr=4.04e-05 (1334s)
+[QVALUE-MULTISCALE] step 300/1000 mse_loss=0.0038 destruction=0.7167 lr=3.98e-05 (1370s)
+--- [QVALUE-MULTISCALE] zero-shot eval at step 300 ---
+    5M_5N_5T: QValue=0.4162
+    5M_7N_5T: QValue=0.4864
+    10M_15N_5T: QValue=1.0000
+    15M_15N_5T: QValue=1.0000
+    15M_20N_5T: QValue=1.0000
+    20M_30N_5T: QValue=1.0000
+    30M_30N_10T: QValue=0.8429
+    30M_40N_10T: QValue=0.8437
+    40M_50N_10T: QValue=0.6094
+    50M_50N_15T: QValue=0.5240
+    50M_70N_15T: QValue=0.5461
+    70M_100N_15T: QValue=0.2714
+    mean_across_12_configs=0.7117  (best so far: 0.3769 at step 250)
+[QVALUE-MULTISCALE] step 310/1000 mse_loss=0.0031 destruction=0.5768 lr=3.92e-05 (1464s)
+[QVALUE-MULTISCALE] step 320/1000 mse_loss=0.0021 destruction=0.5207 lr=3.85e-05 (1500s)
+[QVALUE-MULTISCALE] step 330/1000 mse_loss=0.0048 destruction=0.7865 lr=3.78e-05 (1530s)
+[QVALUE-MULTISCALE] step 340/1000 mse_loss=0.0044 destruction=0.6569 lr=3.72e-05 (1565s)
+[QVALUE-MULTISCALE] step 350/1000 mse_loss=0.0041 destruction=0.5949 lr=3.65e-05 (1606s)
+--- [QVALUE-MULTISCALE] zero-shot eval at step 350 ---
+    5M_5N_5T: QValue=0.3432
+    5M_7N_5T: QValue=0.5320
+    10M_15N_5T: QValue=0.5656
+    15M_15N_5T: QValue=0.4672
+    15M_20N_5T: QValue=0.8030
+    20M_30N_5T: QValue=0.6822
+    30M_30N_10T: QValue=0.0797
+    30M_40N_10T: QValue=0.2557
+    40M_50N_10T: QValue=0.2714
+    50M_50N_15T: QValue=0.2511
+    50M_70N_15T: QValue=0.3264
+    70M_100N_15T: QValue=0.3428
+    mean_across_12_configs=0.4100  (best so far: 0.3769 at step 250)
+[QVALUE-MULTISCALE] step 360/1000 mse_loss=0.0025 destruction=0.4076 lr=3.58e-05 (1732s)
+[QVALUE-MULTISCALE] step 370/1000 mse_loss=0.0031 destruction=0.4670 lr=3.51e-05 (1763s)
+[QVALUE-MULTISCALE] step 380/1000 mse_loss=0.0035 destruction=0.5675 lr=3.44e-05 (1792s)
+[QVALUE-MULTISCALE] step 390/1000 mse_loss=0.0048 destruction=0.5441 lr=3.36e-05 (1824s)
+[QVALUE-MULTISCALE] step 400/1000 mse_loss=0.0046 destruction=0.7446 lr=3.29e-05 (1855s)
+--- [QVALUE-MULTISCALE] zero-shot eval at step 400 ---
+    5M_5N_5T: QValue=0.3368
+    5M_7N_5T: QValue=0.4267
+    10M_15N_5T: QValue=1.0000
+    15M_15N_5T: QValue=1.0000
+    15M_20N_5T: QValue=1.0000
+    20M_30N_5T: QValue=1.0000
+    30M_30N_10T: QValue=0.8401
+    30M_40N_10T: QValue=0.8543
+    40M_50N_10T: QValue=0.5098
+    50M_50N_15T: QValue=0.2607
+    50M_70N_15T: QValue=0.2586
+    70M_100N_15T: QValue=0.2435
+    mean_across_12_configs=0.6442  (best so far: 0.3769 at step 250)
+[QVALUE-MULTISCALE] step 410/1000 mse_loss=0.0040 destruction=0.6127 lr=3.22e-05 (1964s)
+[QVALUE-MULTISCALE] step 420/1000 mse_loss=0.0022 destruction=0.5252 lr=3.14e-05 (1997s)
+[QVALUE-MULTISCALE] step 430/1000 mse_loss=0.0034 destruction=0.6850 lr=3.06e-05 (2031s)
+[QVALUE-MULTISCALE] step 440/1000 mse_loss=0.0023 destruction=0.4779 lr=2.99e-05 (2065s)
+[QVALUE-MULTISCALE] step 450/1000 mse_loss=0.0029 destruction=0.5204 lr=2.91e-05 (2095s)
+--- [QVALUE-MULTISCALE] zero-shot eval at step 450 ---
+    5M_5N_5T: QValue=0.4158
+    5M_7N_5T: QValue=0.5449
+    10M_15N_5T: QValue=0.8790
+    15M_15N_5T: QValue=0.9289
+    15M_20N_5T: QValue=1.0000
+    20M_30N_5T: QValue=0.9731
+    30M_30N_10T: QValue=0.6332
+    30M_40N_10T: QValue=0.6394
+    40M_50N_10T: QValue=0.1988
+    50M_50N_15T: QValue=0.1564
+    50M_70N_15T: QValue=0.2233
+    70M_100N_15T: QValue=0.3166
+    mean_across_12_configs=0.5758  (best so far: 0.3769 at step 250)
+[QVALUE-MULTISCALE] step 460/1000 mse_loss=0.0030 destruction=0.5821 lr=2.84e-05 (2214s)
+[QVALUE-MULTISCALE] step 470/1000 mse_loss=0.0045 destruction=0.7207 lr=2.76e-05 (2246s)
+[QVALUE-MULTISCALE] step 480/1000 mse_loss=0.0034 destruction=0.5282 lr=2.68e-05 (2281s)
+[QVALUE-MULTISCALE] step 490/1000 mse_loss=0.0028 destruction=0.5044 lr=2.60e-05 (2314s)
+[QVALUE-MULTISCALE] step 500/1000 mse_loss=0.0014 destruction=0.4247 lr=2.52e-05 (2341s)
+--- [QVALUE-MULTISCALE] zero-shot eval at step 500 ---
+    5M_5N_5T: QValue=0.3565
+    5M_7N_5T: QValue=0.4475
+    10M_15N_5T: QValue=1.0000
+    15M_15N_5T: QValue=1.0000
+    15M_20N_5T: QValue=1.0000
+    20M_30N_5T: QValue=1.0000
+    30M_30N_10T: QValue=0.8821
+    30M_40N_10T: QValue=0.8803
+    40M_50N_10T: QValue=0.5748
+    50M_50N_15T: QValue=0.2596
+    50M_70N_15T: QValue=0.2232
+    70M_100N_15T: QValue=0.2618
+    mean_across_12_configs=0.6571  (best so far: 0.3769 at step 250)
+[QVALUE-MULTISCALE] step 510/1000 mse_loss=0.0037 destruction=0.6570 lr=2.45e-05 (2451s)
+[QVALUE-MULTISCALE] step 520/1000 mse_loss=0.0046 destruction=0.5221 lr=2.37e-05 (2481s)
+[QVALUE-MULTISCALE] step 530/1000 mse_loss=0.0040 destruction=0.6265 lr=2.29e-05 (2514s)
+[QVALUE-MULTISCALE] step 540/1000 mse_loss=0.0026 destruction=0.5490 lr=2.21e-05 (2544s)
+[QVALUE-MULTISCALE] step 550/1000 mse_loss=0.0045 destruction=0.6684 lr=2.14e-05 (2575s)
+--- [QVALUE-MULTISCALE] zero-shot eval at step 550 ---
+    5M_5N_5T: QValue=0.2764
+    5M_7N_5T: QValue=0.4352
+    10M_15N_5T: QValue=0.8400
+    15M_15N_5T: QValue=0.7930
+    15M_20N_5T: QValue=1.0000
+    20M_30N_5T: QValue=0.9678
+    30M_30N_10T: QValue=0.2270
+    30M_40N_10T: QValue=0.3533
+    40M_50N_10T: QValue=0.2327
+    50M_50N_15T: QValue=0.1838
+    50M_70N_15T: QValue=0.2607
+    70M_100N_15T: QValue=0.3107
+    mean_across_12_configs=0.4900  (best so far: 0.3769 at step 250)
+[QVALUE-MULTISCALE] step 560/1000 mse_loss=0.0025 destruction=0.4987 lr=2.06e-05 (2689s)
+[QVALUE-MULTISCALE] step 570/1000 mse_loss=0.0030 destruction=0.6476 lr=1.99e-05 (2734s)
+[QVALUE-MULTISCALE] step 580/1000 mse_loss=0.0032 destruction=0.5521 lr=1.91e-05 (2770s)
+[QVALUE-MULTISCALE] step 590/1000 mse_loss=0.0024 destruction=0.5311 lr=1.83e-05 (2808s)
+[QVALUE-MULTISCALE] step 600/1000 mse_loss=0.0053 destruction=0.6936 lr=1.76e-05 (2843s)
+--- [QVALUE-MULTISCALE] zero-shot eval at step 600 ---
+    5M_5N_5T: QValue=0.3991
+    5M_7N_5T: QValue=0.5475
+    10M_15N_5T: QValue=0.4861
+    15M_15N_5T: QValue=0.3085
+    15M_20N_5T: QValue=0.7185
+    20M_30N_5T: QValue=0.8655
+    30M_30N_10T: QValue=0.0532
+    30M_40N_10T: QValue=0.1244
+    40M_50N_10T: QValue=0.2244
+    50M_50N_15T: QValue=0.2087
+    50M_70N_15T: QValue=0.2948
+    70M_100N_15T: QValue=0.3132
+    mean_across_12_configs=0.3787  (best so far: 0.3769 at step 250)
+[QVALUE-MULTISCALE] step 610/1000 mse_loss=0.0024 destruction=0.5126 lr=1.69e-05 (2970s)
+[QVALUE-MULTISCALE] step 620/1000 mse_loss=0.0034 destruction=0.6071 lr=1.61e-05 (2997s)
+[QVALUE-MULTISCALE] step 630/1000 mse_loss=0.0030 destruction=0.5373 lr=1.54e-05 (3029s)
+[QVALUE-MULTISCALE] step 640/1000 mse_loss=0.0025 destruction=0.5711 lr=1.47e-05 (3061s)
+[QVALUE-MULTISCALE] step 650/1000 mse_loss=0.0043 destruction=0.7001 lr=1.40e-05 (3090s)
+--- [QVALUE-MULTISCALE] zero-shot eval at step 650 ---
+    5M_5N_5T: QValue=0.3379
+    5M_7N_5T: QValue=0.4929
+    10M_15N_5T: QValue=0.7439
+    15M_15N_5T: QValue=0.7417
+    15M_20N_5T: QValue=0.9910
+    20M_30N_5T: QValue=0.9842
+    30M_30N_10T: QValue=0.2302
+    30M_40N_10T: QValue=0.4497
+    40M_50N_10T: QValue=0.1971
+    50M_50N_15T: QValue=0.1768
+    50M_70N_15T: QValue=0.2938
+    70M_100N_15T: QValue=0.3108
+    mean_across_12_configs=0.4958  (best so far: 0.3769 at step 250)
+[QVALUE-MULTISCALE] step 660/1000 mse_loss=0.0028 destruction=0.6116 lr=1.33e-05 (3205s)
+[QVALUE-MULTISCALE] step 670/1000 mse_loss=0.0031 destruction=0.5901 lr=1.27e-05 (3234s)
+[QVALUE-MULTISCALE] step 680/1000 mse_loss=0.0046 destruction=0.8248 lr=1.20e-05 (3269s)
+[QVALUE-MULTISCALE] step 690/1000 mse_loss=0.0032 destruction=0.6157 lr=1.13e-05 (3302s)
+[QVALUE-MULTISCALE] step 700/1000 mse_loss=0.0023 destruction=0.3842 lr=1.07e-05 (3329s)
+--- [QVALUE-MULTISCALE] zero-shot eval at step 700 ---
+    5M_5N_5T: QValue=0.3902
+    5M_7N_5T: QValue=0.5345
+    10M_15N_5T: QValue=0.8154
+    15M_15N_5T: QValue=0.9032
+    15M_20N_5T: QValue=1.0000
+    20M_30N_5T: QValue=0.9929
+    30M_30N_10T: QValue=0.7776
+    30M_40N_10T: QValue=0.7845
+    40M_50N_10T: QValue=0.1612
+    50M_50N_15T: QValue=0.1563
+    50M_70N_15T: QValue=0.2494
+    70M_100N_15T: QValue=0.2825
+    mean_across_12_configs=0.5873  (best so far: 0.3769 at step 250)
+[QVALUE-MULTISCALE] step 710/1000 mse_loss=0.0039 destruction=0.6866 lr=1.01e-05 (3442s)
+[QVALUE-MULTISCALE] step 720/1000 mse_loss=0.0035 destruction=0.5888 lr=9.47e-06 (3469s)
+[QVALUE-MULTISCALE] step 730/1000 mse_loss=0.0036 destruction=0.7180 lr=8.88e-06 (3496s)
+[QVALUE-MULTISCALE] step 740/1000 mse_loss=0.0018 destruction=0.4665 lr=8.31e-06 (3520s)
+[QVALUE-MULTISCALE] step 750/1000 mse_loss=0.0026 destruction=0.6027 lr=7.75e-06 (3553s)
+--- [QVALUE-MULTISCALE] zero-shot eval at step 750 ---
+    5M_5N_5T: QValue=0.3394
+    5M_7N_5T: QValue=0.4818
+    10M_15N_5T: QValue=0.9470
+    15M_15N_5T: QValue=1.0000
+    15M_20N_5T: QValue=1.0000
+    20M_30N_5T: QValue=1.0000
+    30M_30N_10T: QValue=0.8388
+    30M_40N_10T: QValue=0.8562
+    40M_50N_10T: QValue=0.1832
+    50M_50N_15T: QValue=0.1434
+    50M_70N_15T: QValue=0.1963
+    70M_100N_15T: QValue=0.2584
+    mean_across_12_configs=0.6037  (best so far: 0.3769 at step 250)
+[QVALUE-MULTISCALE] step 760/1000 mse_loss=0.0031 destruction=0.6207 lr=7.21e-06 (3661s)
+[QVALUE-MULTISCALE] step 770/1000 mse_loss=0.0038 destruction=0.6691 lr=6.68e-06 (3692s)
+[QVALUE-MULTISCALE] step 780/1000 mse_loss=0.0021 destruction=0.5993 lr=6.18e-06 (3728s)
+[QVALUE-MULTISCALE] step 790/1000 mse_loss=0.0026 destruction=0.6515 lr=5.69e-06 (3761s)
+[QVALUE-MULTISCALE] step 800/1000 mse_loss=0.0029 destruction=0.5025 lr=5.23e-06 (3793s)
+--- [QVALUE-MULTISCALE] zero-shot eval at step 800 ---
+    5M_5N_5T: QValue=0.3461
+    5M_7N_5T: QValue=0.4916
+    10M_15N_5T: QValue=0.9492
+    15M_15N_5T: QValue=1.0000
+    15M_20N_5T: QValue=1.0000
+    20M_30N_5T: QValue=1.0000
+    30M_30N_10T: QValue=0.8411
+    30M_40N_10T: QValue=0.8528
+    40M_50N_10T: QValue=0.2121
+    50M_50N_15T: QValue=0.1691
+    50M_70N_15T: QValue=0.1961
+    70M_100N_15T: QValue=0.2556
+    mean_across_12_configs=0.6095  (best so far: 0.3769 at step 250)
+[QVALUE-MULTISCALE] step 810/1000 mse_loss=0.0029 destruction=0.5124 lr=4.78e-06 (3904s)
+[QVALUE-MULTISCALE] step 820/1000 mse_loss=0.0019 destruction=0.4256 lr=4.35e-06 (3938s)
+[QVALUE-MULTISCALE] step 830/1000 mse_loss=0.0033 destruction=0.6534 lr=3.95e-06 (3969s)
+[QVALUE-MULTISCALE] step 840/1000 mse_loss=0.0032 destruction=0.6379 lr=3.56e-06 (4003s)
+[QVALUE-MULTISCALE] step 850/1000 mse_loss=0.0021 destruction=0.5893 lr=3.20e-06 (4036s)
+--- [QVALUE-MULTISCALE] zero-shot eval at step 850 ---
+    5M_5N_5T: QValue=0.3476
+    5M_7N_5T: QValue=0.5145
+    10M_15N_5T: QValue=0.8848
+    15M_15N_5T: QValue=0.9771
+    15M_20N_5T: QValue=1.0000
+    20M_30N_5T: QValue=1.0000
+    30M_30N_10T: QValue=0.8180
+    30M_40N_10T: QValue=0.8390
+    40M_50N_10T: QValue=0.1866
+    50M_50N_15T: QValue=0.1476
+    50M_70N_15T: QValue=0.1973
+    70M_100N_15T: QValue=0.2790
+    mean_across_12_configs=0.5993  (best so far: 0.3769 at step 250)
+[QVALUE-MULTISCALE] step 860/1000 mse_loss=0.0022 destruction=0.5599 lr=2.86e-06 (4144s)
+[QVALUE-MULTISCALE] step 870/1000 mse_loss=0.0034 destruction=0.7347 lr=2.54e-06 (4177s)
+[QVALUE-MULTISCALE] step 880/1000 mse_loss=0.0045 destruction=0.7132 lr=2.24e-06 (4211s)
+[QVALUE-MULTISCALE] step 890/1000 mse_loss=0.0018 destruction=0.5197 lr=1.96e-06 (4240s)
+[QVALUE-MULTISCALE] step 900/1000 mse_loss=0.0018 destruction=0.4728 lr=1.71e-06 (4274s)
+--- [QVALUE-MULTISCALE] zero-shot eval at step 900 ---
+    5M_5N_5T: QValue=0.3431
+    5M_7N_5T: QValue=0.5101
+    10M_15N_5T: QValue=0.8607
+    15M_15N_5T: QValue=0.9492
+    15M_20N_5T: QValue=1.0000
+    20M_30N_5T: QValue=0.9969
+    30M_30N_10T: QValue=0.8078
+    30M_40N_10T: QValue=0.8235
+    40M_50N_10T: QValue=0.1628
+    50M_50N_15T: QValue=0.1469
+    50M_70N_15T: QValue=0.2083
+    70M_100N_15T: QValue=0.2705
+    mean_across_12_configs=0.5900  (best so far: 0.3769 at step 250)
+[QVALUE-MULTISCALE] step 910/1000 mse_loss=0.0033 destruction=0.6293 lr=1.48e-06 (4387s)
+[QVALUE-MULTISCALE] step 920/1000 mse_loss=0.0038 destruction=0.6003 lr=1.28e-06 (4417s)
+[QVALUE-MULTISCALE] step 930/1000 mse_loss=0.0031 destruction=0.5875 lr=1.10e-06 (4448s)
+[QVALUE-MULTISCALE] step 940/1000 mse_loss=0.0028 destruction=0.6150 lr=9.38e-07 (4480s)
+[QVALUE-MULTISCALE] step 950/1000 mse_loss=0.0032 destruction=0.6446 lr=8.05e-07 (4512s)
+--- [QVALUE-MULTISCALE] zero-shot eval at step 950 ---
+    5M_5N_5T: QValue=0.3476
+    5M_7N_5T: QValue=0.5145
+    10M_15N_5T: QValue=0.8756
+    15M_15N_5T: QValue=0.9682
+    15M_20N_5T: QValue=1.0000
+    20M_30N_5T: QValue=1.0000
+    30M_30N_10T: QValue=0.8138
+    30M_40N_10T: QValue=0.8332
+    40M_50N_10T: QValue=0.1595
+    50M_50N_15T: QValue=0.1468
+    50M_70N_15T: QValue=0.1984
+    70M_100N_15T: QValue=0.2670
+    mean_across_12_configs=0.5937  (best so far: 0.3769 at step 250)
+[QVALUE-MULTISCALE] step 960/1000 mse_loss=0.0029 destruction=0.7484 lr=6.95e-07 (4627s)
+[QVALUE-MULTISCALE] step 970/1000 mse_loss=0.0021 destruction=0.5044 lr=6.10e-07 (4660s)
+[QVALUE-MULTISCALE] step 980/1000 mse_loss=0.0038 destruction=0.7003 lr=5.49e-07 (4693s)
+[QVALUE-MULTISCALE] step 990/1000 mse_loss=0.0030 destruction=0.6941 lr=5.12e-07 (4728s)
+[QVALUE-MULTISCALE] step 1000/1000 mse_loss=0.0033 destruction=0.6044 lr=5.00e-07 (4761s)
+--- [QVALUE-MULTISCALE] zero-shot eval at step 1000 ---
+    5M_5N_5T: QValue=0.3461
+    5M_7N_5T: QValue=0.5073
+    10M_15N_5T: QValue=0.8848
+    15M_15N_5T: QValue=0.9771
+    15M_20N_5T: QValue=1.0000
+    20M_30N_5T: QValue=1.0000
+    30M_30N_10T: QValue=0.8265
+    30M_40N_10T: QValue=0.8444
+    40M_50N_10T: QValue=0.1728
+    50M_50N_15T: QValue=0.1498
+    50M_70N_15T: QValue=0.1996
+    70M_100N_15T: QValue=0.2681
+    mean_across_12_configs=0.5981  (best so far: 0.3769 at step 250)
+Saved final actor to result/QValue_multiscale_seed5_final_actor.pt
+Saved best actor (step 250, mean=0.3769) to result/QValue_multiscale_seed5_best_actor.pt

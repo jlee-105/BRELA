@@ -1,0 +1,22 @@
+Using CUDA GPU
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+config               Seq  1:1 prop   1:1 aud   mf prop    mf aud  best beats Seq?
+5M_5N_5T         0.1694    0.1897    0.1744    0.1846    0.1774               no
+5M_7N_5T         0.3071    0.2292    0.2292    0.2284    0.2284              YES
+10M_15N_5T         0.2996    0.2431    0.2425    0.2469    0.2464              YES
+15M_15N_5T         0.0958    0.1081    0.1080    0.1049    0.1043               no
+15M_20N_5T         0.2073    0.1622    0.1622    0.1687    0.1677              YES
+20M_30N_5T         0.2953    0.2236    0.2236    0.2350    0.2337              YES
+30M_30N_10T         0.0162    0.0245    0.0245    0.0116    0.0116              YES
+30M_40N_10T         0.0317    0.0398    0.0398    0.0324    0.0324               no
+40M_50N_10T         0.0283    0.0350    0.0350    0.0272    0.0272              YES
+50M_50N_15T         0.0878    0.1007    0.1007    0.0905    0.0905               no
+50M_70N_15T         0.0798    0.0942    0.0942    0.0927    0.0927               no
+70M_100N_15T         0.1003    0.1100    0.1100    0.1177    0.1177               no
+
+MEAN              0.1432    0.1300    0.1287    0.1284    0.1275
+
+Best-of-both-auctions beats Sequential on 6/12 configs

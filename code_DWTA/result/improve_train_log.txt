@@ -1,0 +1,98 @@
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+Using CUDA GPU
+[IMPROVE] base=result/CommSinkhornSCoPE_multiscale_seed5_best_actor.pt (frozen), n_edits=3, batch=4x8, lr=0.0001, eval on 12 held-out configs every 40 steps
+[IMPROVE] step 10/200 loss=-0.0150 base=0.2072 -> improved=0.2044 lr=9.94e-05 (75s)
+[IMPROVE] step 20/200 loss=0.0826 base=0.2687 -> improved=0.2404 lr=9.76e-05 (128s)
+[IMPROVE] step 30/200 loss=-0.1293 base=0.1037 -> improved=0.1078 lr=9.46e-05 (187s)
+[IMPROVE] step 40/200 loss=0.0538 base=0.4847 -> improved=0.4994 lr=9.05e-05 (247s)
+--- [IMPROVE] zero-shot eval at step 40 ---
+    5M_5N_5T: base=0.1910  improved=0.1843
+    5M_7N_5T: base=0.2653  improved=0.2596
+    10M_15N_5T: base=0.2383  improved=0.2342
+    15M_15N_5T: base=0.1063  improved=0.1055
+    15M_20N_5T: base=0.1691  improved=0.1691
+    20M_30N_5T: base=0.2198  improved=0.2191
+    30M_30N_10T: base=0.0332  improved=0.0324
+    30M_40N_10T: base=0.0642  improved=0.0569
+    40M_50N_10T: base=0.0558  improved=0.0531
+    50M_50N_15T: base=0.0953  improved=0.0951
+    50M_70N_15T: base=0.0852  improved=0.0848
+    70M_100N_15T: base=0.1045  improved=0.1043
+    mean_base=0.1357  mean_improved=0.1332  (best so far: 0.1332 at step 40)
+[IMPROVE] step 50/200 loss=0.0258 base=0.2385 -> improved=0.2117 lr=8.55e-05 (464s)
+[IMPROVE] step 60/200 loss=-0.1469 base=0.1153 -> improved=0.1024 lr=7.96e-05 (506s)
+[IMPROVE] step 70/200 loss=0.0125 base=0.0912 -> improved=0.1471 lr=7.30e-05 (563s)
+[IMPROVE] step 80/200 loss=0.0576 base=0.2372 -> improved=0.2278 lr=6.58e-05 (607s)
+--- [IMPROVE] zero-shot eval at step 80 ---
+    5M_5N_5T: base=0.1910  improved=0.1835
+    5M_7N_5T: base=0.2653  improved=0.2637
+    10M_15N_5T: base=0.2383  improved=0.2345
+    15M_15N_5T: base=0.1063  improved=0.1019
+    15M_20N_5T: base=0.1691  improved=0.1683
+    20M_30N_5T: base=0.2198  improved=0.2193
+    30M_30N_10T: base=0.0332  improved=0.0320
+    30M_40N_10T: base=0.0642  improved=0.0590
+    40M_50N_10T: base=0.0558  improved=0.0523
+    50M_50N_15T: base=0.0953  improved=0.0952
+    50M_70N_15T: base=0.0852  improved=0.0847
+    70M_100N_15T: base=0.1045  improved=0.1042
+    mean_base=0.1357  mean_improved=0.1332  (best so far: 0.1332 at step 40)
+[IMPROVE] step 90/200 loss=-0.4466 base=0.1454 -> improved=0.1464 lr=5.82e-05 (836s)
+[IMPROVE] step 100/200 loss=-0.1364 base=0.1657 -> improved=0.1610 lr=5.05e-05 (887s)
+[IMPROVE] step 110/200 loss=-0.0295 base=0.1416 -> improved=0.1470 lr=4.28e-05 (946s)
+[IMPROVE] step 120/200 loss=-0.0331 base=0.3863 -> improved=0.4623 lr=3.52e-05 (991s)
+--- [IMPROVE] zero-shot eval at step 120 ---
+    5M_5N_5T: base=0.1910  improved=0.1870
+    5M_7N_5T: base=0.2653  improved=0.2652
+    10M_15N_5T: base=0.2383  improved=0.2382
+    15M_15N_5T: base=0.1063  improved=0.1049
+    15M_20N_5T: base=0.1691  improved=0.1685
+    20M_30N_5T: base=0.2198  improved=0.2198
+    30M_30N_10T: base=0.0332  improved=0.0275
+    30M_40N_10T: base=0.0642  improved=0.0505
+    40M_50N_10T: base=0.0558  improved=0.0473
+    50M_50N_15T: base=0.0953  improved=0.0950
+    50M_70N_15T: base=0.0852  improved=0.0844
+    70M_100N_15T: base=0.1045  improved=0.1040
+    mean_base=0.1357  mean_improved=0.1327  (best so far: 0.1327 at step 120)
+[IMPROVE] step 130/200 loss=0.0264 base=0.1197 -> improved=0.1400 lr=2.80e-05 (1218s)
+[IMPROVE] step 140/200 loss=-0.0180 base=0.1885 -> improved=0.1790 lr=2.14e-05 (1258s)
+[IMPROVE] step 150/200 loss=-0.1805 base=0.3417 -> improved=0.3398 lr=1.55e-05 (1319s)
+[IMPROVE] step 160/200 loss=0.1280 base=0.1293 -> improved=0.1184 lr=1.05e-05 (1388s)
+--- [IMPROVE] zero-shot eval at step 160 ---
+    5M_5N_5T: base=0.1910  improved=0.1794
+    5M_7N_5T: base=0.2653  improved=0.2638
+    10M_15N_5T: base=0.2383  improved=0.2369
+    15M_15N_5T: base=0.1063  improved=0.1046
+    15M_20N_5T: base=0.1691  improved=0.1684
+    20M_30N_5T: base=0.2198  improved=0.2178
+    30M_30N_10T: base=0.0332  improved=0.0314
+    30M_40N_10T: base=0.0642  improved=0.0576
+    40M_50N_10T: base=0.0558  improved=0.0516
+    50M_50N_15T: base=0.0953  improved=0.0952
+    50M_70N_15T: base=0.0852  improved=0.0847
+    70M_100N_15T: base=0.1045  improved=0.1041
+    mean_base=0.1357  mean_improved=0.1329  (best so far: 0.1327 at step 120)
+[IMPROVE] step 170/200 loss=0.0486 base=0.3002 -> improved=0.2737 lr=6.40e-06 (1613s)
+[IMPROVE] step 180/200 loss=-0.1379 base=0.2287 -> improved=0.2305 lr=3.42e-06 (1664s)
+[IMPROVE] step 190/200 loss=-0.1953 base=0.1503 -> improved=0.1362 lr=1.61e-06 (1710s)
+[IMPROVE] step 200/200 loss=-0.0094 base=0.0445 -> improved=0.0438 lr=1.00e-06 (1765s)
+--- [IMPROVE] zero-shot eval at step 200 ---
+    5M_5N_5T: base=0.1910  improved=0.1794
+    5M_7N_5T: base=0.2653  improved=0.2638
+    10M_15N_5T: base=0.2383  improved=0.2369
+    15M_15N_5T: base=0.1063  improved=0.1046
+    15M_20N_5T: base=0.1691  improved=0.1680
+    20M_30N_5T: base=0.2198  improved=0.2160
+    30M_30N_10T: base=0.0332  improved=0.0314
+    30M_40N_10T: base=0.0642  improved=0.0578
+    40M_50N_10T: base=0.0558  improved=0.0515
+    50M_50N_15T: base=0.0953  improved=0.0952
+    50M_70N_15T: base=0.0852  improved=0.0847
+    70M_100N_15T: base=0.1045  improved=0.1041
+    mean_base=0.1357  mean_improved=0.1328  (best so far: 0.1327 at step 120)
+Saved final to result/Improve_multiscale_seed5_final_actor.pt
+Saved best (step 120, mean=0.1327) to result/Improve_multiscale_seed5_best_actor.pt

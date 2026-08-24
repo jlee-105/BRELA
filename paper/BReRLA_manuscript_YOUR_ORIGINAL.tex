@@ -1,0 +1,582 @@
+\documentclass{ieeeaccess}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{adjustbox}
+\usepackage{float}
+\usepackage{bm}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+\history{Date of publication xxxx 00, 0000, date of current version xxxx 00, 0000.}
+\doi{10.1109/ACCESS.2026.XXXXXXX}
+
+\title{Soft-Coupled Multi-Agent Reinforcement Learning for Dynamic Weapon-Target Assignment}
+
+\author{\uppercase{Jaejin Lee}\authorrefmark{1}}
+
+\address[1]{Intel Corporation, Chandler, AZ 85226, USA (e-mail: jaejin.lee@intel.com)}
+
+
+
+\markboth
+{Lee: BReRLA: Beam Search and Rollout Enhanced Reinforcement Learning for Dynamic Weapon-Target Assignment}
+{Lee: BReRLA: Beam Search and Rollout Enhanced Reinforcement Learning for Dynamic Weapon-Target Assignment}
+
+\corresp{Corresponding author: Jaejin Lee (e-mail: jaejin.lee@intel.com).}
+
+\begin{abstract}
+The Dynamic Weapon-Target Assignment Problem (DWTAP) is a critical and computationally challenging optimization problem in defense operations. We propose BReRLA (Beam search and Rollout enhanced Reinforcement Learning for dynamic weapon-target Assignment), a reinforcement learning framework that integrates a modified transformer architecture with beam search and rollout-based planning. Unlike purely greedy policies, BReRLA enhances inference by combining beam search exploration with two rollout strategies: pure rollout for smaller instances and truncated neural rollout for larger problems, thereby balancing solution quality and computational efficiency.
+
+BReRLA is trained using parallel multi-episodic REINFORCE on small-scale instances (5 weapons, 5 targets, 5 time steps) and generalizes effectively to significantly larger instances of up to 10×10×10 configurations. The framework incorporates realistic battlefield constraints including weapon reload times, ammunition limitations, and target availability windows across multiple time stages. Experimental results demonstrate that BReRLA achieves scalable real-time inference through greedy execution, while beam search with rollout improves solution quality with manageable computational overhead. Compared to commercial solvers, BReRLA maintains performance gaps of 6--17\% while achieving substantially faster inference times. These findings highlight BReRLA as an effective and scalable framework for dynamic assignment problems requiring both accuracy and real-time decision-making capability.
+\end{abstract}
+
+\begin{keywords}
+Beam search, combinatorial optimization, dynamic weapon-target assignment, Markov decision process, reinforcement learning, rollout algorithm, transformer
+\end{keywords}
+
+\titlepgskip=-21pt
+
+\maketitle
+
+\section{Introduction}
+\label{sec:introduction}
+
+\PARstart{T}{he} term Operational Research (OR) was first coined in 1940 by A.P. Rowe, a scientist at the British Air Ministry~\cite{britannica_operations_research}. During World War II, the British formed teams of scientists, mathematicians, and engineers tasked with analyzing and optimizing military operations. These teams addressed critical challenges such as optimizing bomber tactics~\cite{orhistory}. Within this context, the Weapon-Target Assignment Problem (WTAP) emerged as a central modeling challenge for defense applications. First proposed by Manne in 1958~\cite{manne1958target}, the WTAP has since remained an active research topic due to its relevance in diverse battlefield and strategic scenarios~\cite{ahuja2007exact}.
+
+The WTAP seeks to assign a set of weapons to a set of targets to minimize the expected residual value of the targets after engagement. In its original static form, the WTAP involves a one-time allocation of weapons of type $m \in M$ to targets $n \in N$, where each target has an associated value $V_n$, each weapon type has a limited inventory $A_m$, and the effectiveness of weapon-target pairings is characterized by a damage rate $P_{m,n}$.
+
+This paper extends the static WTAP into a Dynamic Weapon-Target Assignment Problem (DWTAP) by incorporating multiple time frames ($T > 1$) and operational constraints such as target availability windows and weapon reload times. In realistic combat settings, targets may only be exposed during specific intervals, and weapon systems often require reloading or maintenance between engagements. Modeling these temporal dynamics provides a richer and more practical representation of battlefield scenarios, allowing for adaptive decision-making over time. The full mathematical formulation of DWTAP is presented in Section~\ref{sec:problem}.
+
+%% TODO: motivate the real-time, repeated-decision nature of DWTAP (engagement windows
+%% close quickly; re-planning must keep pace, cf. the OODA decision-cycle framing already
+%% used in the receding-horizon DWTA literature~\cite{zhang2020efficient,zhang2020dynamic}).
+%% Find/justify a WTA-appropriate time budget from the defense literature -- do NOT reuse
+%% the 120s figure from the semiconductor companion paper~\cite{lee2026litho} without an
+%% independent, domain-specific justification. Deferred; revisit before submission.
+
+Due to its combinatorial structure, the WTAP belongs to the class of NP-hard problems~\cite{lloyd1986weapons}, implying that computational complexity grows rapidly with problem size. As with other classical NP-hard problems such as the Traveling Salesman Problem and the Vehicle Routing Problem, two main categories of approaches have been employed: exact optimization~\cite{ahuja2007exact,johansson2011mixed,lee2019real} and approximate methods~\cite{lee2003genetic,karasakal2009efficient,li2021novel}. Exact approaches guarantee optimality but are computationally infeasible for large-scale instances, while heuristics and metaheuristics offer faster solutions but often rely on domain-specific customization, limiting their adaptability.
+
+In response, reinforcement learning (RL) has emerged as a promising alternative. Unlike handcrafted heuristics, RL methods learn adaptive policies that generalize across different instances and scales. Recent advances in neural combinatorial optimization have demonstrated that RL can compete with or outperform classical heuristics and metaheuristics on a variety of assignment and scheduling problems~\cite{lee2024attention,kool2018attention,kwon2020pomo}.
+
+In this work, we introduce BReRLA (Beam search and Rollout enhanced Reinforcement Learning for dynamic weapon-target Assignment), a transformer-based RL framework for solving the DWTAP. Our method employs a modified transformer architecture to embed MDP states and trains the policy using parallel multi-episodic REINFORCE. To further enhance solution quality at inference, we integrate rollout-enhanced planning with beam search, including a truncated neural rollout that balances solution quality with computational efficiency.
+
+The main contributions of this study are summarized as follows:
+
+\begin{itemize}
+    \item \textbf{Realistic dynamic battlefield modeling}: Extension of WTAP to dynamic settings with multiple time steps, weapon reload constraints, ammunition limits, target availability windows, and weapon-target engagement compatibility ($Q_m$), reflecting platform-level operational restrictions absent from prior DWTAP formulations.
+
+    \item \textbf{A structural distinction for multi-agent combinatorial optimization}: We characterize DWTAP as a \emph{soft-coupled} multi-agent assignment problem, in which coordination among weapons arises from the nonlinear, multiplicative structure of the objective (Eq.~\eqref{eq:objective_function}) rather than from hard resource exclusivity as in routing- and scheduling-style multi-agent problems~\cite{parco2024}. We show that a parallel multi-pointer decoder without an explicit, learned conflict-resolution mechanism is sufficient to induce coordinated, non-wasteful target engagement in this setting.
+
+    \item \textbf{Rigorous, standardized benchmarking}: BReRLA is trained on small-scale DWTAP instances (5×5×5) but generalizes effectively to significantly larger instances (up to 10×10×10). We evaluate against exact (CPLEX), classical heuristic, metaheuristic, and standard neural combinatorial optimization baselines under a multi-seed, statistically reported evaluation protocol.
+
+    \item \textbf{Rollout-enhanced inference}: Building on rollout algorithms~\cite{bertsekas1997rollout} and simulation-guided beam search~\cite{choo2022sgbs}, we adapt beam search with pure and truncated neural rollout to DWTAP's time-windowed, resource-constrained action space, improving solution quality over greedy selection while offering a tunable trade-off between performance and runtime.
+\end{itemize}
+
+The remainder of this paper is organized as follows: Section~\ref{sec:related} reviews related work, Section~\ref{sec:problem} presents the problem formulation, Section~\ref{sec:mdp} details the MDP formulation, Section~\ref{sec:method} describes the proposed BReRLA methodology, Section~\ref{sec:results} reports experimental results, and Section~\ref{sec:conclusion} concludes with insights and future directions.
+
+\section{Related Work}
+\label{sec:related}
+
+The Weapon Target Assignment Problem (WTAP) was first introduced by~\cite{manne1958target} as a nonlinear integer programming problem in the operations research community and has since been actively researched due to its significant applicability in the military domain. Lloyd and Witsenhausen~\cite{lloyd1986weapons} demonstrated that the WTAP is an NP-hard problem. Until the 1970s, primary research focused on transforming the original WTAP into a solvable approximation problem, i.e., converting a nonlinear programming problem into a linear programming problem~\cite{day1966allocating, firstman1960approximating, ill1971linear, bracken1968selected, manne1958target, denbroeder1959optimum} by relaxing the nonlinear objective function and simplifying certain conditions, such as assuming that all weapons are identical~\cite{manne1958target, denbroeder1959optimum}. However, this oversimplified scenario fails to effectively capture the complexities of real battlefield environments.
+
+Recent studies have sought to address WTAPs without such simplifications to better reflect real battlefield situations, mainly in two directions: (1) exact solution approaches and (2) heuristic approaches. For the exact solution approach, empirical experiments were conducted in~\cite{johansson2009empirical} to determine the limit of the configuration of weapons and targets using exhaustive search. This study showed that the original WTAP can be solved within 15 minutes with nine weapons and eight targets, but it cannot be solved within an hour if one additional weapon or target is added. Kline et al.~\cite{kline2019weapon} utilized a branch-and-bound algorithm to solve a problem with 10 weapons and 10 targets of the original static WTAP. However, when the problem size increased, the computation failed to converge within seven days, demonstrating the challenge posed by this NP-hard problem. A notable study on the exact solution approach was conducted by Ahuja et al.~\cite{ahuja2007exact}, who proposed an exact algorithm to solve the original static WTAP using three different lower bounds with branch-and-bound algorithms. This study achieved global optimal solutions for up to 80 weapons and 80 targets in the original static WTAP within 24 hours. This seminal research turned medium-sized problems, previously considered unsolvable, into problems solvable optimally. Despite extensive research into exact solution approaches, no algorithms have yet been identified that can optimally solve large-scale variants of the original WTAP and DWTAP. This challenge has led researchers to focus on heuristic algorithms instead.
+
+Various heuristics and metaheuristics have been developed to address the WTAP. Methods such as the maximum marginal return, proposed by Kolitz and Eckler~\cite{kolitz1988analysis}, along with genetic algorithms, ant colony optimization, and simulated annealing~\cite{lee2002immunity,lee2003efficiently,durgut2017artificial,sonuc2017parallel,chang2018solving,metler1990suite}, aim to find good solutions in real-time. However, these methods often depend heavily on specific problem structures, which limits their effectiveness when applied to problems with different constraints and often necessitates development from scratch.
+
+To address these issues, researchers have begun applying learning-based algorithms to WTAP, inspired by the success of machine learning in various domains. For static WTAPs (SWTAPs), Wacholder~\cite{wacholder1989neural} introduced the first machine learning-based algorithm for the original WTAP using a neural network, marking a new avenue to apply learning-based approaches to WTAP. However, the method presented in this study has limitations due to its model structure, making the trained model applicable only to instances of the same size as those used during training.
+
+Meng et al.~\cite{meng2021deep}, Shin et al.~\cite{shin2020mean}, and Luo et al.~\cite{luo2021learning} applied deep Q-learning to static WTAP variants, broadening its scope to hypersonic missile targeting, radar-to-target assignment, and cost-aware formulations. However, the approaches of Shin et al.~\cite{shin2020mean} and Meng et al.~\cite{meng2021deep} suffer from the limitation that their neural network structures are still contingent on problem size, restricting their scalability and generalization. While Luo et al.~\cite{luo2021learning} proposed a model that utilizes a fixed number of input and output nodes, allowing it to handle problem sizes different from those encountered during training, the approach lacks several critical real-world constraints, such as ammunition limitations and target time windows.
+
+Na and Choi~\cite{na2023weapon} employed an actor-critic algorithm with a pointer network~\cite{vinyals2015pointer}, incorporating an attention mechanism similar to our state representation approach. Their method achieved impressive results compared to the mixed integer linear programming approach. However, a major drawback is the oversimplification that all weapons are assumed to be identical.
+
+Gaudet, Drozd, and Furfaro~\cite{gaudet2023} developed a deep reinforcement learning framework for optimizing weapons-to-target assignment in hypersonic strikes, utilizing Proximal Policy Optimization. Their approach demonstrated near-optimal performance with a 1000$\times$ speedup compared to traditional nonlinear integer programming methods. However, their policy network is designed to handle a maximum of only 12 weapons and 20 targets, limiting its scalability to larger, more complex scenarios.
+
+Regarding DWTAPs, most existing work simplifies the problem to maintain tractability. Zhang et al.~\cite{zhang2020efficient,zhang2020dynamic} decomposed a DWTAP into sequential SWTAPs solved at each time stage via a receding-horizon heuristic, assuming that solving each stage independently and near-optimally approximates the global optimum. Although this simplification makes each engagement more manageable by treating stages independently, it overlooks the interconnected nature of warfare solutions and does not leverage a learned, generalizable policy. In contrast, our approach solves DWTAP as a single multi-stage decision process without decomposing across time, using reinforcement learning to capture cross-stage dependencies while incorporating realistic military operation scenarios.
+
+Wu et al.~\cite{wu2022dynamic} introduced a dynamic target assignment model that assumes a specific use case involving ballistic missiles targeting a group of targets. They effectively linked the model to wargame simulations, providing a meaningful use case. They utilized a soft actor-critic reinforcement learning model. However, one limitation of their model is that its network structure depends on the number of weapons and targets. This dependency makes the model not size-agnostic, requiring retraining for each specific configuration.
+
+Yoon, Lee, and Cho~\cite{yoon2024reinforcement} presented a comprehensive RL framework for dynamic WTA (DWTA), applying both Deep Q-Network (DQN) and Actor-Critic (AC) algorithms. This work demonstrated the superiority of RL methods over exact algorithms, particularly for large-scale problems, emphasizing the scalability of RL approaches in dynamic combat environments. However, the presented model is also not scalable, similar to the approach of Wu et al.~\cite{wu2022dynamic}, and realistic scenarios are missing in this study, such as ammunition constraints and target time windows, which we incorporate.
+
+Hu, Zhang, Luo, and Chen~\cite{hu2024} applied multi-agent reinforcement learning (RL) for dynamic target assignment in Unmanned Surface Vehicles (USVs). They proposed a multi-agent actor-critic method that encodes state information using a recurrent neural network and an attention mechanism while employing multi-layer perceptrons for the policy and value networks. This approach is similar to ours in that it encodes the state in a higher dimension. However, their problem is significantly simpler than ours, as they assume all USVs are identical and their objective function does not have the nonlinearity typical of WTAP.
+
+As noted in U.S. Army doctrine, "Strategic allocation of available assets across the phases of an operation to achieve a desirable end state," DWTAP reflects more realistic battlefield scenarios than SWTAP through the integration of time dynamics. Despite the critical importance of DWTAP in capturing these dynamics, the limited research in this field motivates us to explore an effective solution framework that can address DWTAP at scale and in real time.
+
+\subsection{Inference-Time Search for Neural Combinatorial Optimization}
+
+Beyond training a construction policy, recent work improves solution quality at inference time without retraining. Rollout algorithms, introduced by Bertsekas et al.~\cite{bertsekas1997rollout}, use a base policy to estimate the cost-to-go of candidate actions through simulation, guaranteeing improvement over the base policy under mild conditions. Choo et al.~\cite{choo2022sgbs} combined this idea with beam search in simulation-guided beam search (SGBS), guiding a fixed-width tree search using both policy confidence and rollout simulation on routing problems, while Hottung et al.~\cite{hottung2022eas} instead adapt policy parameters per instance at test time. The beam-search-with-rollout inference strategy used in this work (Section~\ref{sec:method}, Section~\ref{sec:method}-E) builds directly on this line of work, adapting it to DWTAP's time-windowed, resource-constrained action space; it is a tool we employ rather than a claimed algorithmic contribution of this paper.
+
+\subsection{Multi-Agent Combinatorial Optimization}
+
+A separate line of work addresses problems in which multiple agents must act jointly at each decision epoch. Learned inter-agent communication has a long history in multi-agent RL: Sukhbaatar and Fergus~\cite{sukhbaatar2016commnet} introduced CommNet, in which agents broadcast and average learned messages, and Das et al.~\cite{das2019tarmac} introduced TarMAC, which uses attention so that each agent learns whom to address. Combined with pointer-network-style output heads~\cite{vinyals2015pointer}, these communication mechanisms provide a standard, general-purpose basis for simultaneous multi-agent action selection. Park et al.~\cite{park2021schedulenet} and Hu et al.~\cite{hu2024} apply multi-agent RL to scheduling and asset-assignment problems, respectively, but assume simple, identical-agent settings.
+
+Building on this lineage, Berto et al.~\cite{parco2024} recently proposed PARCO for multi-agent combinatorial optimization, combining transformer-based inter-agent communication and simultaneous multiple-pointer decoding with an additional, learned priority-based \emph{conflict handler} that resolves contention when multiple agents compete for the same resource (e.g., a shared customer node in vehicle routing). This conflict-resolution mechanism is PARCO's central addition beyond prior communication-based multi-agent architectures, and it is designed specifically for \emph{hard-coupled} problems, in which simultaneous access to a resource is infeasible by construction.
+
+DWTAP is structurally different: multiple weapons may legally engage the same target simultaneously, so there is no hard exclusivity to resolve. Instead, coordination in DWTAP arises from the nonlinear, multiplicative structure of the objective (Eq.~\eqref{eq:objective_function}), where the marginal value of an additional hit on an already-targeted asset diminishes — a \emph{soft-coupled} coordination problem driven by the shared objective rather than by discrete feasibility. This distinction motivates the architecture in Section~\ref{sec:method}: rather than adopting PARCO's conflict handler, we build on the standard communication-and-simultaneous-pointer-decoding lineage~\cite{sukhbaatar2016commnet,das2019tarmac,vinyals2015pointer} directly, and empirically test whether this simpler mechanism, without any explicit conflict resolution, is sufficient to induce efficient, non-wasteful target coverage in a soft-coupled setting (Section~\ref{sec:results}). PARCO thus serves as our point of comparison for the hard-coupled case rather than as a component we extend.
+
+\subsection{Neural Construction Architectures for Assignment-Structured and Large-Scale Problems}
+
+Beyond routing-specific architectures built around Euclidean coordinates, recent neural construction methods target problems defined by an arbitrary cost or compatibility matrix. Kwon et al.~\cite{kwon2021matrix} proposed MatNet, which directly encodes an asymmetric cost/compatibility matrix through dual-graph attention between two node types, achieving strong results on flexible flow-shop scheduling and asymmetric TSP without relying on coordinate-based embeddings. DWTAP's damage-rate matrix $P_{m,n}$ and engagement-compatibility sets $Q_m$ are naturally suited to this matrix-encoding view, and we adopt a related encoding for weapon-target compatibility (Section~\ref{sec:method}). Separately, Luo et al.~\cite{luo2023lehd} introduced a heavy-decoder architecture (LEHD) explicitly designed to generalize from small training instances to substantially larger test instances, directly relevant to BReRLA's own train-small/test-large protocol (Section~\ref{sec:results}-A); we compare against this scale-generalization behavior in our evaluation. Grinsztajn et al.~\cite{grinsztajn2023winner} further show that training a population of diverse policies, rather than a single policy, improves robustness across problem distributions, which informs our multi-seed evaluation protocol (Section~\ref{sec:results}). To standardize evaluation across these methods, we build our benchmarking pipeline (Section~\ref{sec:results}) on the RL4CO library~\cite{berto2023rl4co}, which provides reference implementations of AM~\cite{kool2018attention}, POMO~\cite{kwon2020pomo}, and related baselines under a unified training and evaluation protocol; recent surveys~\cite{mazyavkina2021reinforcement,bogyrbayeva2024survey} further contextualize the rapid growth of this subfield.
+
+\section{Problem Formulation}
+\label{sec:problem}
+
+Unlike static WTAP, the proposed Dynamic Weapon-Target Assignment Problem (DWTAP) is structured across discretized time steps, denoted as $t = 1, 2, \ldots, T$. In each time step $t$, at most one round of ammunition from each weapon $m$ can be assigned to a target $n$. This discretization enables the model to incorporate the dynamics of the battlefield and the availability of resources at each specific interval, thereby facilitating the sequential decision-making process. Within this framework, we consider realistic combat scenario constraints, such as weapon reload time, ammunition limitation, and target time windows.
+
+The objective is to minimize the total remaining target values, each denoted as $V_n$, by optimally assigning a set of weapons, denoted as $M$ (where $m = 1, 2, \ldots, M$), to a set of targets represented by $N$ (where $n = 1, 2, \ldots, N$). The assignment must adhere to the following constraints:
+\begin{itemize}
+    \item Each weapon $m$ can assign at most one round of ammunition to one target $n$ at each time step $t$, but multiple rounds from different weapons can be assigned to a single target simultaneously.
+    \item Each weapon, denoted as $m$, has a specified reload time $D_m$. After engaging a target, weapon $m$ must wait $D_m$ time units before it can be used again.
+    \item Each weapon $m$ has a limited amount of ammunition, represented by $A_m$, which must last across all time steps. Therefore, at any time $t$, weapon $m$ can assign ammunition only if it has not depleted its ammunition $A_m$.
+    \item Each target $n$ has a specific vulnerability window, from $t_{n, \text{start}}$ to $t_{n, \text{end}}$. A target can only be engaged during this time frame.
+    \item Each weapon $m$ has an engagement compatibility set $Q_m \subseteq N$, reflecting platform-level restrictions such as range, guidance mode, and target-type suitability; weapon $m$ may only be assigned to targets $n \in Q_m$.
+    \item The proportion of target $n$'s value reduction when hit by weapon $m$, denoted by $P_{m,n}$, quantifies how effectively weapon $m$ reduces the value $V_n$ of target $n$.
+\end{itemize}
+
+\subsection{Notation}
+\begin{table}[H]
+\centering
+\small
+\caption{Notations for the Mathematical Model}
+\label{tab:notation}
+\begin{tabular}{lp{6.5cm}}
+\hline
+\textbf{Sets} & \\
+$M$ & Set of weapons, indexed by $m = 1, \ldots, M$ \\
+$N$ & Set of targets, indexed by $n = 1, \ldots, N$ \\
+$T$ & Set of time stages, indexed by $t = 1, \ldots, T$ \\
+\hline
+\textbf{Parameters} & \\
+$V_n$ & Initial value of target $n$ \\
+$D_m$ & Reload time for weapon $m$ \\
+$A_m$ & Total ammunition for weapon $m$ \\
+$TW_n$ & Time window for target $n$ \\
+$Q_m$ & Engagement compatibility set for weapon $m$ ($Q_m \subseteq N$) \\
+$P_{m,n}$ & Value reduction proportion \\
+\hline
+\textbf{Decision Variables} & \\
+$x_{m,n,t}$ & Binary assignment variable \\
+$w_{m,t}$ & Remaining readiness time \\
+$a_{m,t}$ & Remaining ammunition \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsection{Optimization Model}
+
+The problem can be formulated as a nonlinear integer programming problem. The objective function is:
+
+\begin{equation}\label{eq:objective_function}
+    \min \sum_{n=1}^{N} V_{n} \prod_{t=1}^{T} \prod_{m=1}^{M} (1 - P_{m,n})^{x_{m,n,t}}
+\end{equation}
+
+Subject to constraints:
+
+\begin{equation}\label{eq:weapon_target_constraint}
+    \sum_{n=1}^{N} x_{m,n,t} \leq 1, \quad \forall m, t
+\end{equation}
+
+\begin{equation}\label{eq:wait_time_update}
+    w_{m,t+1} = \max\left(0,\ w_{m,t} - 1\right) + D_{m} \sum_{n=1}^{N} x_{m,n,t}, \quad \forall m, t
+\end{equation}
+
+\begin{equation}\label{eq:weapon_readiness}
+    x_{m,n,t} \leq 1 - \frac{w_{m,t}}{D_{m}}, \quad \forall m, n, t
+\end{equation}
+
+\begin{equation}\label{eq:ammunition_usage}
+    a_{m,t+1} = a_{m,t} - \sum_{n=1}^{N} x_{m,n,t}, \quad \forall m, t
+\end{equation}
+
+\begin{equation}\label{eq:ammunition_constraint}
+    a_{m,t} \geq x_{m,n,t}, \quad \forall m, n, t
+\end{equation}
+
+\begin{equation}\label{eq:target_time_window}
+    x_{m,n,t} = 0, \quad \text{if } t \notin TW_n, \quad \forall m, n
+\end{equation}
+
+\begin{equation}\label{eq:compatibility_constraint}
+    x_{m,n,t} = 0, \quad \text{if } n \notin Q_m, \quad \forall m, n, t
+\end{equation}
+
+\begin{equation}\label{eq:binary_assignment}
+    x_{m,n,t} \in \{0,1\}, \quad \forall m, n, t
+\end{equation}
+
+\begin{equation}\label{eq:wait_time_integer}
+    w_{m,t} \in \mathbb{Z}_{+}, \quad \forall m, t
+\end{equation}
+
+\begin{equation}\label{eq:wait_time_bounds}
+    0 \leq w_{m,t} \leq D_{m}, \quad \forall m, t
+\end{equation}
+
+\begin{equation}\label{eq:initial_availability}
+    w_{m,1} = 0, \quad \forall m
+\end{equation}
+
+\begin{equation}\label{eq:remaining_ammunition_integer}
+    a_{m,t} \in \mathbb{Z}_{+}, \quad \forall m, t
+\end{equation}
+
+\begin{equation}\label{eq:initial_ammunition}
+    a_{m,0} = A_m, \quad \forall m
+\end{equation}
+
+\section{Markov Decision Process Formulation}
+\label{sec:mdp}
+
+The DWTAP can be modeled as a sequential decision-making problem, where a weapon is assigned to a target at each time step with the goal of minimizing the total remaining target values. This sequential decision-making process can be effectively modeled as a Markov Decision Process (MDP)~\cite{bellman1957dynamic}.
+
+An MDP, $M$, is represented as a 5-tuple:
+\begin{equation}
+M = (S, A, P, R, \gamma)
+\end{equation}
+where $S$ represents states, $A$ denotes actions, $P$ is the transition probability, $R$ is the reward function, and $\gamma$ is the discount factor.
+
+The proposed DWTAP MDP is defined as follows:
+
+\begin{itemize}
+\item \textbf{State ($s_t$)}: The model considers $K = M \times N + 1$ assignments. The state of each weapon-target assignment at time step $t$ is:
+\begin{equation}
+\label{eq:state}
+s_t = [u_t; v_t; d_t; r_t; a_t; f_t; ws; we; p] \in \mathbb{R}^9
+\end{equation}
+where:
+\begin{itemize}
+    \item $u_t$: Weapon readiness indicator
+    \item $v_t$: Remaining target value
+    \item $d_t$: Remaining reload time
+    \item $r_t$: Remaining time to end
+    \item $a_t$: Remaining ammunition
+    \item $f_t$: Cumulative hits on target
+    \item $ws$: Earliest attack time
+    \item $we$: Latest attack time
+    \item $p$: Value reduction proportion
+\end{itemize}
+
+\item \textbf{Action ($a_t$)}: Binary assignment vector of size $K$:
+\begin{equation}
+    a_t = [a_{(1,1)}, \ldots, a_{(M,N)}, a_{K}]
+\end{equation}
+
+\item \textbf{Transition}: Deterministic with $P(s_{t+1} | s_t, a_t) = 1$.
+
+\item \textbf{Reward}:
+\begin{equation}
+\label{eq:reward}
+    R(s_{t+1} | s_t, a_t) = \frac{C(s_t) - C(s_{t+1})}{C(s_{0})}
+\end{equation}
+where $C(s_t)$ is the sum of target values at state $s_t$.
+\end{itemize}
+
+\section{Proposed Method: BReRLA}
+\label{sec:method}
+
+We propose BReRLA, a reinforcement learning framework for DWTAP that encodes state as a heterogeneous weapon-target graph (Section~\ref{sec:method}-A) and decodes actions with a \emph{parallel multi-pointer} policy (Section~\ref{sec:method}-B): at every time step, all currently-live weapons choose simultaneously, each from its own compatible-target set, rather than one (weapon,target) edge being selected per network call. No explicit conflict-resolution mechanism is used -- unlike hard-coupled multi-agent construction methods such as PARCO~\cite{parco2024}, DWTAP permits multiple weapons to legally engage the same target, so coordination is hypothesized to emerge from the shared graph embeddings alone (the soft-coupling hypothesis introduced in Section~\ref{sec:related}, tested empirically in Section~\ref{sec:results}). Training uses parallel multi-episodic REINFORCE with reward-to-go and potential-based reward shaping (Section~\ref{sec:method}-D). At inference time, solution quality is further improved with beam search and rollout adapted from~\cite{bertsekas1997rollout,choo2022sgbs} (Section~\ref{sec:method}-E). Fig.~\ref{fig:overall} illustrates the overall architecture.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\columnwidth]{figure/Overall.png}
+  \caption{Overall architecture of BReRLA showing training and inference processes.}
+  \label{fig:overall}
+\end{figure}
+
+\subsection{Heterogeneous Graph Encoding}
+\label{sec:encoding}
+
+The original per-pair state $\bm{s}_t = [u_t; v_t; d_t; r_t; a_t; f_t; ws; we; p] \in \mathbb{R}^9$ (Eq.~\eqref{eq:state}) decomposes naturally into three parts that do not all vary independently per (weapon,target) pair: features belonging only to weapon $m$ (readiness $u_t$, remaining reload $d_t$, remaining ammunition $a_t$), features belonging only to target $n$ (remaining value $v_t$, cumulative hits $f_t$, window bounds $ws,we$), and a single pairwise feature (damage rate $p = P_{m,n}$). We make this structure explicit with a heterogeneous graph: weapon nodes $\bm{x}_m^{\text{wpn}} \in \mathbb{R}^{4}$, target nodes $\bm{x}_n^{\text{tgt}} \in \mathbb{R}^{4}$, and edges $\bm{x}_{m,n}^{\text{edge}} \in \mathbb{R}^{1}$ carrying $P_{m,n}$, restricted to $n \in Q_m$ (Section~\ref{sec:problem}).
+
+Each node/edge type is linearly projected to a shared hidden dimension:
+\begin{equation}
+\bm{h}_m^{\text{wpn},(0)} = \bm{W}^{\text{wpn}}\bm{x}_m^{\text{wpn}} + \bm{b}^{\text{wpn}}, \quad
+\bm{h}_n^{\text{tgt},(0)} = \bm{W}^{\text{tgt}}\bm{x}_n^{\text{tgt}} + \bm{b}^{\text{tgt}}
+\end{equation}
+\begin{equation}
+\bm{h}_{m,n}^{\text{edge},(0)} = \bm{W}^{\text{edge}}\bm{x}_{m,n}^{\text{edge}} + \bm{b}^{\text{edge}}
+\end{equation}
+
+Message passing proceeds through $L$ layers. At layer $\ell$, the edge embedding is refreshed from its endpoints and its own previous value, then weapon and target embeddings aggregate messages from their incident edges via a GRU update (matching the communication mechanism of Section~\ref{sec:related}, in the lineage of~\cite{sukhbaatar2016commnet,das2019tarmac}):
+\begin{equation}
+\bm{h}_{m,n}^{\text{edge},(\ell)} = \tanh\!\left(\bm{W}_e\left[\bm{h}_m^{\text{wpn},(\ell-1)} \,\|\, \bm{h}_n^{\text{tgt},(\ell-1)} \,\|\, \bm{h}_{m,n}^{\text{edge},(\ell-1)}\right]\right)
+\end{equation}
+\begin{equation}
+\bm{h}_m^{\text{wpn},(\ell)} = \text{GRU}\!\left(\textstyle\sum_{n \in Q_m} \bm{W}_w\left[\bm{h}_m^{\text{wpn},(\ell-1)} \,\|\, \bm{h}_n^{\text{tgt},(\ell-1)} \,\|\, \bm{h}_{m,n}^{\text{edge},(\ell)}\right],\ \bm{h}_m^{\text{wpn},(\ell-1)}\right)
+\end{equation}
+and analogously for $\bm{h}_n^{\text{tgt},(\ell)}$, aggregating over weapons for which $n \in Q_m$. Because message passing runs over the full graph, every weapon's final embedding $\bm{h}_m^{\text{wpn},(L)}$ is informed by the state of every other weapon and target -- this is the channel through which coordination can occur without an explicit conflict-resolution step (Section~\ref{sec:method}-B).
+
+\subsection{Parallel Multi-Pointer Policy}
+\label{sec:parallel-decoder}
+
+Unlike a single global policy over all $M \times N$ (weapon,target) pairs (as in earlier neural WTAP/DWTAP formulations, e.g.~\cite{na2023weapon}), BReRLA decodes $M$ \emph{independent} distributions simultaneously, one per weapon, each over its own compatible targets plus a no-op:
+\begin{equation}
+\text{score}_{m,n} = \bm{w}_e^\top \, \text{Res}\!\left(\bm{h}_{m,n}^{\text{edge},(L)}\right), \quad n \in Q_m
+\end{equation}
+\begin{equation}
+\text{score}_{m,\text{noop}} = \bm{w}_0^\top \, \text{Res}\!\left(\bm{W}_0\left[\bm{h}_m^{\text{wpn},(L)} \,\|\, \bar{\bm{h}}^{\text{wpn}} \,\|\, \bar{\bm{h}}^{\text{tgt}}\right]\right)
+\end{equation}
+where $\text{Res}(\cdot)$ is a residual block, and $\bar{\bm{h}}^{\text{wpn}} = \frac{1}{M}\sum_m \bm{h}_m^{\text{wpn},(L)}$, $\bar{\bm{h}}^{\text{tgt}} = \frac{1}{N}\sum_n \bm{h}_n^{\text{tgt},(L)}$ are pooled global-context vectors, so each weapon's no-op decision is informed by system-wide state. The per-weapon policy is
+\begin{equation}
+\label{eq:parallel-policy}
+\pi_m(\cdot \mid s_t) = \text{softmax}\!\left(\left[\text{score}_{m,n}\right]_{n \in Q_m},\ \text{score}_{m,\text{noop}}\right)
+\end{equation}
+masked to targets currently available under the constraints of Section~\ref{sec:problem} (reload, ammunition, time window); no-op is always legal. All $M$ policies $\pi_1, \ldots, \pi_M$ are computed in a single forward pass and sampled independently, giving the joint action $a_t = (a_{1,t}, \ldots, a_{M,t})$ with
+\begin{equation}
+\log \pi_\theta(a_t \mid s_t) = \sum_{m=1}^{M} \log \pi_m(a_{m,t} \mid s_t).
+\end{equation}
+No learned conflict handler resolves cases where multiple weapons select the same target -- this is legal under the DWTAP constraints of Section~\ref{sec:problem}, and is precisely the soft-coupled setting distinguished from PARCO's hard-coupled design in Section~\ref{sec:related}.
+
+\subsection{Value Network}
+
+The critic shares the graph encoding of Section~\ref{sec:encoding} and pools to a scalar estimate:
+\begin{equation}
+v(s_t) = g_v\!\left(\bar{\bm{h}}^{\text{wpn},(L)} \,\|\, \bar{\bm{h}}^{\text{tgt},(L)} \,\|\, \bar{\bm{h}}^{\text{edge},(L)}\right)
+\end{equation}
+where $g_v(\cdot)$ is an MLP, $\bar{\bm{h}}^{\text{wpn},(L)}$ and $\bar{\bm{h}}^{\text{tgt},(L)}$ are unconditional means (a weapon's or target's own state, e.g. "currently reloading," is informative regardless of legality), and $\bar{\bm{h}}^{\text{edge},(L)}$ is a \emph{masked} mean over currently-legal (weapon,target) pairs only,
+\begin{equation}
+\bar{\bm{h}}^{\text{edge},(L)} = \frac{\sum_{m,n} \text{mask}_{m,n} \, \bm{h}_{m,n}^{\text{edge},(L)}}{\sum_{m,n} \text{mask}_{m,n}},
+\end{equation}
+so that currently-infeasible edges do not dilute the pooled representation used for value estimation.
+
+\subsection{Training: Reward-to-Go with Potential-Based Shaping}
+\label{sec:training}
+
+The per-step reward is unchanged from Eq.~\eqref{eq:reward} (using $C(s_t)$, the sum of remaining target values). Rather than crediting every step of an episode with the same whole-episode return, we use two standard, unbiased REINFORCE refinements. First, \emph{reward-to-go}: step $t$'s credit only reflects rewards realized at or after $t$,
+\begin{equation}
+G_t = \sum_{t'=t}^{T-1} \gamma^{t'-t}\, r_{t'}.
+\end{equation}
+Second, \emph{potential-based reward shaping}~\cite{ng1999shaping}, using the value network of Section~\ref{sec:method}-C as the potential $\Phi(s_t) := v(s_t)$ (detached from the actor's gradient) with $\Phi(s_T) := 0$:
+\begin{equation}
+r_t' = r_t + \gamma\, \Phi(s_{t+1}) - \Phi(s_t), \qquad
+G_t' = \sum_{t'=t}^{T-1} \gamma^{t'-t}\, r_{t'}'.
+\end{equation}
+Because $\sum_t \gamma^t r_t'$ telescopes to $\sum_t \gamma^t r_t + \Phi(s_0) - \gamma^T \Phi(s_T)$ -- a constant offset independent of the actions taken -- this shaping provably leaves the optimal policy unchanged~\cite{ng1999shaping}. It therefore remains a valid REINFORCE (not actor-critic) objective: unlike bootstrapping the return with $V(s_{t+1})$, an inaccurate critic cannot bias the result, only its variance. This directly addresses a difficulty specific to the no-op action (Section~\ref{sec:parallel-decoder}): its own immediate reward is always exactly $0$ (no target value changes), so under reward-to-go alone its credit depends entirely on distant future rewards; $\Phi$ gives it a same-step signal reflecting whether holding fire improved the estimated state value.
+
+The shaped return-to-go $G_t'$ is normalized per instance across the $P$ parallel rollouts (shared baseline, in the manner of~\cite{kwon2020pomo}):
+\begin{equation}
+\hat{A}_t = \frac{G_t' - \frac{1}{P}\sum_{p=1}^P G_t'^{(p)}}{\text{std}_p\!\left(G_t'^{(p)}\right)},
+\end{equation}
+and the actor is updated by
+\begin{equation}
+\nabla_\theta J(\pi_\theta) = \mathbb{E}\!\left[\sum_{t=0}^{T-1} \nabla_\theta \log \pi_\theta(a_t \mid s_t)\, \hat{A}_t\right],
+\end{equation}
+with $\log \pi_\theta(a_t\mid s_t)$ the joint per-weapon log-probability defined in Section~\ref{sec:parallel-decoder}. The critic is trained by regression toward the (unshaped) episode destruction ratio, as in the original single-decision formulation.
+
+\subsection{Inference: Beam Search with Rollout}
+
+At inference, BReRLA uses two strategies, adapted from~\cite{bertsekas1997rollout,choo2022sgbs} to DWTAP's time-windowed, resource-constrained action space; these are tools we employ, not a claimed contribution of this paper (Section~\ref{sec:related}).
+
+\textbf{Pure Rollout:} Selects the next joint action to minimize cost-to-go:
+\begin{equation}
+    a_{t+1} = \arg\min_{a_k \in A_{t+1}} \widetilde{J}(F_t \cup \{a_k\})
+\end{equation}
+
+\textbf{Beam Search with Rollout:} Maintains a beam of $\beta$ partial solutions:
+\begin{equation}
+    \mathcal{B}_{t+1} = \text{top-}\beta(\widetilde{J}(\mathcal{C}_{t+1}))
+\end{equation}
+
+\textbf{Truncated Neural Rollout:} Limits rollout to depth $\alpha$ and uses the value network for remaining cost-to-go estimation.
+
+%% TODO: the parallel decoder's branching factor at each beam step is now combinatorial
+%% across the M simultaneous per-weapon choices, rather than a single edge -- the beam
+%% search implementation needs to score/prune joint (not per-edge) candidates. Not yet
+%% implemented; the training-loop changes (Sections V-B, V-D) are verified (smoke-tested),
+%% this inference-time adaptation is not. Revisit before running Section VI experiments.
+
+\section{Experimental Results}
+\label{sec:results}
+
+\subsection{Training and Test Data}
+
+BReRLA was trained on (5,5,5) instances using the distributions in Table~\ref{tab:parameter_distributions}. Testing was performed on 12 configurations ranging from (5,5,5) to (10,10,10) as shown in Table~\ref{tab:problem_instance_scales}.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Parameter Distributions}
+\label{tab:parameter_distributions}
+\begin{tabular}{l|l}
+\hline
+\textbf{Attribute} & \textbf{Distribution} \\ \hline
+Target Value $V_n$ & $U(1, 10)$ \\
+Reload Time $D_m$ & $Z(1, 2)$ \\
+Ammunition $A_m$ & $Z(3, 5)$ \\
+Start Time $t_{n,\text{start}}$ & $Z(0, 3)$ \\
+End Time $t_{n,\text{end}}$ & 5 \\
+Damage Rate $P$ & $U(0.2, 0.7)$ \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Test Problem Configurations}
+\label{tab:problem_instance_scales}
+\begin{tabular}{c|c|c}
+\hline
+\textbf{Purpose} & \textbf{(M,N,T)} & \textbf{Instances} \\ \hline
+Optimality & (5,5,5) & 100 \\ \hline
+\multirow{11}{*}{Generalization} & (6,6,5) & 100 \\
+& (7,7,5) & 100 \\
+& (8,8,5) & 100 \\
+& (9,9,5) & 100 \\
+& (10,10,5) & 100 \\
+& (5,5,10) & 100 \\
+& (6,6,10) & 100 \\
+& (7,7,10) & 100 \\
+& (8,8,10) & 100 \\
+& (9,9,10) & 100 \\
+& (10,10,10) & 100 \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Hyperparameters}
+
+Table~\ref{tab:hyperparameters} shows the model configuration.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Hyperparameters}
+\label{tab:hyperparameters}
+\begin{tabular}{ll}
+\hline
+\textbf{Parameter} & \textbf{Value} \\ \hline
+Decoder Layers & 4 \\
+Embedding Dimension & 256 \\
+Number of Heads & 16 \\
+Feed-forward Dimension & 512 \\
+Learning Rate & $1 \times 10^{-4}$ \\
+Batch Size & 50 \\
+Rollout Depth $\alpha$ & 10 \\
+Beam Width $\beta$ & 4 \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Performance Measures and Baselines}
+
+Performance gap is measured as:
+\begin{equation}
+\text{Gap} = \frac{\text{avg}(\text{Obj}_{\text{model}}) - \text{avg}(\text{Obj}_{\text{base}})}{\text{avg}(\text{Obj}_{\text{base}})} \times 100\%
+\end{equation}
+
+Baselines include the exact solver CPLEX; classical heuristics (greedy marginal-return dispatch, and a genetic algorithm following our own prior WTAP work~\cite{lee2003genetic}); the sequential single-agent REINFORCE policy described in Section~\ref{sec:method}; and standard neural combinatorial optimization construction policies adapted to DWTAP -- the Attention Model (AM)~\cite{kool2018attention}, POMO~\cite{kwon2020pomo}, and MatNet~\cite{kwon2021matrix}, the latter chosen for its native support of the asymmetric weapon-target compatibility/damage-rate matrix ($P_{m,n}$, $Q_m$) central to our formulation. AM/POMO/MatNet baselines are trained and evaluated within the RL4CO framework~\cite{berto2023rl4co} under the same instance distributions and compute budget as BReRLA for a fair comparison.
+
+%% TODO: once experiments are run, replace this paragraph's forward-looking description with the finalized baseline list and report results in Tables~\ref{tab:performacne_gap_result}-\ref{tab:computation_time} (extended with AM/POMO/MatNet/GA columns) plus the target-dispersion coordination metric.
+
+\subsection{Comparison with Baselines}
+
+CPLEX achieved optimality in 66 out of 100 instances for (5,5,5) within 1 hour (Fig.~\ref{fig:n_opt}). For larger instances, CPLEX was limited to 600 seconds.
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\columnwidth]{figure/n_optimal.png}
+  \caption{CPLEX optimality results for (5,5,5): 66 optimal solutions, 34 feasible solutions.}
+  \label{fig:n_opt}
+\end{figure}
+
+\begin{table*}[htbp]
+\centering
+\small
+\caption{Performance Gap Against CPLEX (\%)}
+\label{tab:performacne_gap_result}
+\begin{tabular}{c|ccccc}
+\hline
+\textbf{Config} & \textbf{CPLEX} & \textbf{Heuristic} & \textbf{REINFORCE} & \textbf{Beam Trunc} & \textbf{Beam Roll} \\ \hline
+(5,5,5) & 0 & 38.8 & 17.8 & 8.9 & 6.30 \\ \hline
+(6,6,5) & 0 & 49.1 & 20.1 & 16.4 & 7.8 \\
+(7,7,5) & 0 & 46.8 & 17.1 & 15.95 & 5.48 \\
+(8,8,5) & 0 & 59.1 & 17.49 & 19.9 & 6.79 \\
+(9,9,5) & 0 & 59.4 & 17.4 & 17.9 & 7.67 \\
+(10,10,5) & 0 & 59.7 & 18.0 & 16.7 & 7.21 \\ \hline
+(5,5,10) & 0 & 76.4 & 48.7 & 22.8 & 11.28 \\
+(6,6,10) & 0 & 101 & 49.1 & 38.4 & 13.5 \\
+(7,7,10) & 0 & 74.5 & 48.4 & 29.7 & 9.74 \\
+(8,8,10) & 0 & 110 & 55.5 & 37.0 & 15.5 \\
+(9,9,10) & 0 & 87.8 & 49.0 & 28.1 & 15.1 \\
+(10,10,10) & 0 & 107 & 52.5 & 26.1 & 17.4 \\ \hline
+\end{tabular}
+\end{table*}
+
+\begin{table*}[htbp]
+\centering
+\small
+\caption{Computational Time (seconds)}
+\label{tab:computation_time}
+\begin{tabular}{c|ccccc}
+\hline
+\textbf{Config} & \textbf{CPLEX} & \textbf{Heuristic} & \textbf{REINFORCE} & \textbf{Beam Trunc} & \textbf{Beam Roll} \\ \hline
+(5,5,5) & 3600 & $<1$ & $<1$ & 2.0 & 6.30 \\ \hline
+(6,6,5) & 600 & $<1$ & $<1$ & 2.55 & 4.03 \\
+(7,7,5) & 600 & $<1$ & $<1$ & 3.36 & 6.52 \\
+(8,8,5) & 600 & 1.12 & $<1$ & 4.99 & 13.00 \\
+(9,9,5) & 600 & 1.51 & $<1$ & 7.80 & 22.96 \\
+(10,10,5) & 600 & 2.01 & $<1$ & 13.1 & 46.15 \\ \hline
+(5,5,10) & 600 & $<1$ & $<1$ & 3.93 & 8.1 \\
+(6,6,10) & 600 & 1.15 & $<1$ & 5.43 & 14.46 \\
+(7,7,10) & 600 & 1.7 & $<1$ & 8.12 & 24.88 \\
+(8,8,10) & 600 & 2.32 & $<1$ & 15.31 & 59.93 \\
+(9,9,10) & 600 & 3.3 & $<1$ & 24.8 & 111 \\
+(10,10,10) & 600 & 4.3 & $<1$ & 43 & 208 \\ \hline
+\end{tabular}
+\end{table*}
+
+Beam Rollout achieved the best performance with gaps of 6--17\% against CPLEX but with higher computational cost. Beam Truncated Rollout balanced solution quality and computational efficiency.
+
+\subsection{Ablation Study}
+
+Increasing beam width $\beta$ consistently reduced performance gaps (Figs.~\ref{fig:ablation_beam_width_5-5-5} and~\ref{fig:beam_depth}). Most improvement occurred between $\beta=1$ and $\beta=4$.
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\columnwidth]{figure/abation_beam_effect.png}
+  \caption{Effect of beam width for (5,5,5).}
+  \label{fig:ablation_beam_width_5-5-5}
+\end{figure}
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\columnwidth]{figure/Beam_5_10.png}
+  \caption{Effect of beam width for (5,5,10).}
+  \label{fig:beam_depth}
+\end{figure}
+
+Increasing rollout depth $\alpha$ improved quality with diminishing returns beyond depth 20 (Fig.~\ref{fig:ablation_depth}).
+
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\columnwidth]{figure/depth.png}
+  \caption{Effect of rollout depth.}
+  \label{fig:ablation_depth}
+\end{figure}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+We presented BReRLA, a reinforcement learning framework for DWTAP that balances solution quality and computational efficiency. Beam search with Rollout achieved 6--17\% performance gaps compared to CPLEX, while Beam Truncated Rollout reduced computational cost significantly. The framework demonstrates strong generalization from small training instances (5×5×5) to larger test instances (up to 10×10×10), highlighting its practical applicability for real-time decision-making in dynamic battlefield scenarios.
+
+Future work includes enhancing scalability for even larger instances and improving value network accuracy for better truncated rollout performance. Additionally, extending the framework to handle heterogeneous weapon systems and incorporating uncertainty in target behavior would further increase its practical relevance in real-world defense applications.
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+
+\begin{IEEEbiographynophoto}{Jaejin Lee}
+received the M.S. degree in Industrial Engineering from the University of Texas at Austin and the Ph.D. degree from Arizona State University, Tempe, AZ, USA, in 2025. He is currently a Data Scientist at Intel Corporation, Chandler, AZ, USA. His research interests include reinforcement learning for combinatorial optimization, dynamic resource allocation, and decision-making under uncertainty with applications in the semiconductor industry and defense systems.
+\end{IEEEbiographynophoto}
+
+\end{document}

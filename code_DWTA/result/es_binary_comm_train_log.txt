@@ -1,0 +1,23 @@
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+Using CUDA GPU
+[ES-BINARY-COMM] 1373953 parameters, population=30 evals/iter, sigma=0.02, lr=0.02, on M,N,T ~ U[5,7]
+[ES-BINARY-COMM] step 5/100 (7Mx6Nx5T) fitness(destruction)=0.9332 (219s)
+[ES-BINARY-COMM] step 10/100 (7Mx7Nx6T) fitness(destruction)=0.5266 (454s)
+--- [ES-BINARY-COMM] zero-shot eval at step 10 ---
+    5M_5N_5T: ESBinaryComm=0.4087
+    5M_7N_5T: ESBinaryComm=0.4436
+    10M_15N_5T: ESBinaryComm=0.4246
+    15M_15N_5T: ESBinaryComm=0.2397
+    15M_20N_5T: ESBinaryComm=0.3669
+    20M_30N_5T: ESBinaryComm=0.4338
+    30M_30N_10T: ESBinaryComm=0.0939
+    30M_40N_10T: ESBinaryComm=0.1929
+    40M_50N_10T: ESBinaryComm=0.1447
+    50M_50N_15T: ESBinaryComm=0.1637
+    50M_70N_15T: ESBinaryComm=0.1730
+    70M_100N_15T: ESBinaryComm=0.1800
+    mean_across_12_configs=0.2721  (best so far: 0.2721 at step 10)
+[ES-BINARY-COMM] step 15/100 (6Mx6Nx5T) fitness(destruction)=0.7075 (852s)

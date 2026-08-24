@@ -119,16 +119,20 @@ def _generate_training_instances(batch_size, max_time, num_weapons, num_targets,
     return assignment_encoding, weapon_target_probs
 
 
-def _generate_evaluation_instances(value, prob, TW, max_time, **kwargs):
+def _generate_evaluation_instances(value, prob, TW, max_time, amm=None, **kwargs):
     """
     Generate evaluation instances using provided parameters.
-    
+
     Args:
         value: Target values
         prob: Weapon-target probabilities
         TW: Target time windows
         max_time: Maximum simulation time
-        
+        amm: Per-weapon ammunition counts (None = full-ammo fallback, ratio 1.0
+            for every weapon -- matches this function's original behavior, but
+            differs from training's per-weapon-varying ratio; see brerla_code_status
+            memory for why this was previously a silent no-op via **kwargs).
+
     Returns:
         tuple: (assignment_encoding, weapon_to_target_prob)
     """
@@ -146,12 +150,15 @@ def _generate_evaluation_instances(value, prob, TW, max_time, **kwargs):
     
     # Convert inputs to tensors
     target_values = torch.tensor(value, device=DEVICE, dtype=torch.float32) / MAX_TARGET_VALUE
-    target_emerge_times = torch.tensor([tw[0] for tw in TW], device=DEVICE, dtype=torch.float32) / MAX_TIME
-    target_end_times = torch.tensor([tw[1] for tw in TW], device=DEVICE, dtype=torch.float32) / MAX_TIME
+    target_emerge_times = torch.tensor([tw[0] for tw in TW], device=DEVICE, dtype=torch.float32) / max_time
+    target_end_times = torch.tensor([tw[1] for tw in TW], device=DEVICE, dtype=torch.float32) / max_time
     weapon_target_probs = torch.tensor(prob, device=DEVICE, dtype=torch.float32)
     
     # Pre-compute ammunition ratios (scale to actual number of weapons)
-    amm_ratios = torch.tensor([4] * num_weapons, device=DEVICE, dtype=torch.float32) / 4
+    if amm is not None:
+        amm_ratios = torch.tensor(amm[:num_weapons], device=DEVICE, dtype=torch.float32) / max(amm[:num_weapons])
+    else:
+        amm_ratios = torch.tensor([4] * num_weapons, device=DEVICE, dtype=torch.float32) / 4
 
     # Build assignment encoding
     assignment_idx = 0
@@ -181,10 +188,10 @@ def _generate_evaluation_instances(value, prob, TW, max_time, **kwargs):
     return assignment_encoding, weapon_target_probs
 
 
-def input_generation(NUM_WEAPON, NUM_TARGET, value, prob, TW, max_time, batch_size, **kwargs):
+def input_generation(NUM_WEAPON, NUM_TARGET, value, prob, TW, max_time, batch_size, amm=None, **kwargs):
     """
     Generate input instances for DWTA problem.
-    
+
     Args:
         NUM_WEAPON, NUM_TARGET: Problem dimensions
         value: Target values (None for training, list for evaluation)
@@ -192,14 +199,15 @@ def input_generation(NUM_WEAPON, NUM_TARGET, value, prob, TW, max_time, batch_si
         TW: Target time windows (None for training, list for evaluation)
         max_time: Maximum simulation time
         batch_size: Batch size for training
+        amm: Per-weapon ammunition counts for evaluation (None = full-ammo fallback, ratio 1.0)
         alpha: Cost weight for conditional input (None = use COST_WEIGHT global)
-        
+
     Returns:
         tuple: (assignment_encoding, weapon_to_target_prob)
     """
     validate_hyperparameters()
-    
+
     if value is None:
         return _generate_training_instances(batch_size, max_time, NUM_WEAPON, NUM_TARGET, TW=TW)
     else:
-        return _generate_evaluation_instances(value, prob, TW, max_time)
+        return _generate_evaluation_instances(value, prob, TW, max_time, amm=amm)

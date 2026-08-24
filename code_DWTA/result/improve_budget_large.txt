@@ -1,0 +1,8 @@
+Using CUDA GPU
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+config           slots      Seq     base     K=30     K=60    K=120    K=250  beats Seq?
+5M_5N_5T           25   0.1694   0.1910   0.1806   0.1806   0.1806   0.1806          no
+5M_7N_5T           25   0.3071   0.2653   0.2593   0.2593   0.2593   0.2593         YES

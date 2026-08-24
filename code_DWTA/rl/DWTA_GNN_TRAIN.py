@@ -26,19 +26,43 @@ from common.TORCH_OBJECTS import *
 from common.utilities import Get_Logger, Average_Meter
 from common.DWTA_GNN import create_gnn_actor, create_gnn_critic
 from common.Dynamic_Instance_generation import input_generation
-from rl_rollout.DWTA_Simulator_rollout import Environment as RolloutEnv
+from common.DWTA_Simulator import Environment
 from torch import no_grad
 
 # Import from same directory (rl/)
 sys.path.append(os.path.dirname(__file__))
 from Dynamic_Sampling_GNN import self_play_gnn
 
+from eval_tiered_benchmark import eval_instance_parallel
+from eval_greedy_benchmark import eval_instance_greedy
+
+_PROGRESS_CONFIG = ("TEST_INSTANCE/20M_30N_5T.xlsx", 20, 30, 5)
+_PROGRESS_N = 10
+
+
+def _load_progress_instances():
+    fname, nw, nt, mt = _PROGRESS_CONFIG
+    df = pd.read_excel(fname)
+    instances = []
+    for i in range(min(_PROGRESS_N, len(df))):
+        row = df.iloc[i]
+        instances.append((
+            json.loads(row["V"]), np.array(json.loads(row["P"])), json.loads(row["TW"]),
+            json.loads(row["AMM"]), json.loads(row["PREP"]), json.loads(row["COST"]),
+        ))
+    return instances, nw, nt, mt
+
 
 class GNN_REINFORCETrainer:
     """GNN-based REINFORCE Trainer for DWTA problem."""
     
-    def __init__(self, output_dir=None):
-        """Initialize GNN REINFORCE trainer."""
+    def __init__(self, output_dir=None, ablation=None):
+        """Initialize GNN REINFORCE trainer.
+
+        ablation: None (full model) or one of 'no_critic', 'no_shaping',
+            'no_reward_to_go' -- see self_play_gnn's docstring.
+        """
+        self.ablation = ablation
         # Create output directory
         if output_dir is None:
             date_str = datetime.now().strftime("%Y%m%d")
@@ -88,7 +112,8 @@ class GNN_REINFORCETrainer:
             episode=TOTAL_EPISODE,
             temp=None,
             epoch=epoch,
-            logger=self.logger
+            logger=self.logger,
+            ablation=self.ablation,
         )
         # Log epoch configuration
         self.logger.info(
@@ -172,7 +197,13 @@ class GNN_REINFORCETrainer:
         self.logger.info(log_msg)
 
     def _evaluate_policy(self) -> float:
-        """Evaluate with fixed alpha=1.0, seed=42, 50 instances."""
+        """Evaluate with fixed alpha=1.0, seed=42, 50 instances. Uses the
+        current (non-stale) common.DWTA_Simulator.Environment and the
+        parallel actor's per-weapon mask/decoding -- NOT
+        rl_rollout.DWTA_Simulator_rollout (flat mask, incompatible shape
+        with the current per-weapon actor output; also flagged in the
+        revision plan as a less-refactored duplicate with a possibly-
+        inconsistent damage formula)."""
         EVAL_ALPHA = 1.0
         EVAL_N = 50
         EVAL_NW, EVAL_NT, EVAL_MT = 5, 5, 5
@@ -195,25 +226,19 @@ class GNN_REINFORCETrainer:
                 assignment_encoding = assignment_encoding.unsqueeze(1)
                 weapon_to_target_prob = weapon_to_target_prob.unsqueeze(1)
 
-                env = RolloutEnv(assignment_encoding=assignment_encoding,
-                                 weapon_to_target_prob=weapon_to_target_prob, max_time=EVAL_MT)
+                env = Environment(assignment_encoding=assignment_encoding,
+                                   weapon_to_target_prob=weapon_to_target_prob, max_time=EVAL_MT)
 
                 init_obj = env.current_target_value[:, :, 0:EVAL_NT].sum().item()
                 total_init += init_obj
 
                 for _ in range(EVAL_MT):
-                    for _ in range(EVAL_NW):
-                        mask = env.mask.clone()
-                        if (mask > 0).any():
-                            policy, _ = self.actor(env.assignment_encoding, env.weapon_to_target_prob, mask)
-                            flat = policy.view(-1, EVAL_NW * EVAL_NT + 1)
-                            selected_action = flat.argmax(dim=1).view(1, 1)
-                            if selected_action.item() < EVAL_NW * EVAL_NT:
-                                total_fires += 1
-                        else:
-                            selected_action = torch.tensor([[EVAL_NW * EVAL_NT]], device=DEVICE)
-                        total_decisions += 1
-                        env.update_internal_variables(selected_action=selected_action)
+                    policy, _ = self.actor(env.assignment_encoding, env.weapon_to_target_prob, env.mask_per_weapon)
+                    action = policy.argmax(dim=-1)  # [1, 1, W] greedy per-weapon pick
+                    fires_this_step = (action < EVAL_NT).sum().item()
+                    total_fires += fires_this_step
+                    total_decisions += EVAL_NW
+                    env.update_internal_variables_parallel(selected_actions=action)
                     env.time_update()
 
                 total_obj += env.current_target_value[:, :, 0:EVAL_NT].sum().item()
@@ -296,7 +321,13 @@ class GNN_REINFORCETrainer:
         """Main training loop."""
         self.logger.info("Starting GNN-based DWTA REINFORCE Training...")
         start_time = time.time()
-        
+
+        progress_instances, p_nw, p_nt, p_mt = _load_progress_instances()
+        greedy_objs = [eval_instance_greedy(V, P, TW, p_nw, p_nt, p_mt, amm, prep, cost)["objective"]
+                       for (V, P, TW, amm, prep, cost) in progress_instances]
+        greedy_mean = float(np.mean(greedy_objs))
+        self.logger.info(f"[PROGRESS] Greedy baseline on {_PROGRESS_CONFIG[0]} ({p_nw}x{p_nt}x{p_mt}, {len(progress_instances)} instances): objective={greedy_mean:.4f} (fixed reference)")
+
         for epoch in range(1, TOTAL_EPOCH + 1):
             epoch_start_time = time.time()
             
@@ -328,7 +359,7 @@ class GNN_REINFORCETrainer:
                 self.eval_no_action_ratios.append(getattr(self, 'last_eval_no_action_ratio', 0.0))
                 
                 self.logger.info(
-                    f"[EVAL] alpha=0.5 | RemVal={eval_avg:.2f} | "
+                    f"[EVAL] alpha=1.0 | RemVal={eval_avg:.2f} | "
                     f"Init={getattr(self, 'last_eval_init', 0.0):.2f} | "
                     f"Destr={getattr(self, 'last_eval_destruction', 0.0):.2%} | "
                     f"FireRate={getattr(self, 'last_eval_fire_ratio', 0.0):.2%}"
@@ -350,6 +381,16 @@ class GNN_REINFORCETrainer:
             if should_save:
                 self._save_checkpoint(epoch)
                 self.logger.info(f"Checkpoint saved at epoch {epoch}")
+
+            if epoch % 5 == 0:
+                self.actor.eval()
+                with no_grad():
+                    parallel_objs = [eval_instance_parallel(self.actor, V, P, TW, p_nw, p_nt, p_mt, amm, prep, cost)["objective"]
+                                      for (V, P, TW, amm, prep, cost) in progress_instances]
+                self.actor.train()
+                parallel_mean = float(np.mean(parallel_objs))
+                gap = parallel_mean - greedy_mean
+                self.logger.info(f"[PROGRESS] epoch {epoch}: Parallel={parallel_mean:.4f} vs Greedy={greedy_mean:.4f} (gap={gap:+.4f}, {'Parallel AHEAD' if gap < 0 else 'Greedy ahead'})")
         
         # Save final results
         self._save_final_results()
@@ -360,12 +401,39 @@ class GNN_REINFORCETrainer:
 
 def main():
     """Main training function."""
+    import argparse
+    import random as _random
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--seed', type=int, default=None,
+                         help='Random seed for reproducible multi-seed comparison runs.')
+    parser.add_argument('--ablation', type=str, default=None,
+                         help="Comma-separated combination of 'no_critic', 'no_shaping', "
+                              "'no_reward_to_go' to ablate (T3 ablation study), e.g. "
+                              "'no_critic,no_reward_to_go'.")
+    args = parser.parse_args()
+    if args.ablation is not None:
+        valid = {'no_critic', 'no_shaping', 'no_reward_to_go'}
+        given = set(args.ablation.split(','))
+        assert given <= valid, f"Unknown ablation flag(s): {given - valid}"
+
     print("Starting GNN-based DWTA REINFORCE Training...")
-    
-    # Create and run trainer
-    trainer = GNN_REINFORCETrainer()
+
+    if args.seed is not None:
+        torch.manual_seed(args.seed)
+        _random.seed(args.seed)
+        print(f"Seed set to {args.seed}")
+
+    if args.ablation is not None:
+        suffix = f"seed{args.seed}" if args.seed is not None else "seed0"
+        output_dir = f"GNN_TRAIN_ABL_{args.ablation.replace(',', '_')}_{suffix}"
+    elif args.seed is not None:
+        output_dir = f"GNN_TRAIN_seed{args.seed}"
+    else:
+        output_dir = None
+    trainer = GNN_REINFORCETrainer(output_dir=output_dir, ablation=args.ablation)
     trainer.train()
-    
+
     print("Training completed successfully!")
 
 

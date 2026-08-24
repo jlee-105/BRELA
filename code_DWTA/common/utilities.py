@@ -3,6 +3,7 @@ import os
 import datetime
 import pytz
 import re
+import math
 import numpy as np
 from .TORCH_OBJECTS import *
 from .Dynamic_HYPER_PARAMETER import *
@@ -172,3 +173,64 @@ def convert_tensor_based_on_percentile(before_value, percentile):
     output_tensor[mask_equal] = torch.tensor(random.choice([1, 0]), dtype=before_value.dtype)
 
     return output_tensor
+
+
+########################################
+# Coordination / soft-coupling metrics
+#
+# Operationalize "wasteful over-concentration of fire" (the failure mode
+# the parallel decoder's soft-coupling hypothesis is about, per
+# BReRLA_revision_plan.md item 11) from the shot log an eval rollout
+# produces. Pure functions over already-extracted Python scalars -- no
+# simulator changes needed, callers just log each shot's pre-shot target
+# value fraction and target index during rollout.
+########################################
+
+def compute_overkill_rate(pre_shot_value_fractions, threshold=0.1):
+    """
+    Fraction of shots fired at a target whose remaining value, immediately
+    before that shot, was already below `threshold` of its original value
+    (i.e. the target was already close to fully destroyed -- diminishing
+    returns per Eq. 1 -- so the shot was largely redundant).
+
+    Args:
+        pre_shot_value_fractions: list/iterable of floats in [0, 1], one per
+            shot, each = (target's remaining value just before this shot) /
+            (that target's original value).
+        threshold: fraction below which a target is considered "already
+            effectively dead" (default 0.1, matching the neutralization
+            discussion in DISCUSSION_NOTES.md).
+
+    Returns:
+        float in [0, 1]: wasted_shots / total_shots. 0.0 if no shots fired.
+    """
+    fractions = list(pre_shot_value_fractions)
+    if not fractions:
+        return 0.0
+    wasted = sum(1 for f in fractions if f < threshold)
+    return wasted / len(fractions)
+
+
+def compute_fire_dispersion(shot_counts_per_target):
+    """
+    Normalized entropy of shots-per-target within an episode, as a
+    general shape-of-coordination indicator: 0.0 = every shot landed on a
+    single target (fully concentrated), 1.0 = shots spread as evenly as
+    possible across all targets that received at least one shot.
+
+    Args:
+        shot_counts_per_target: list/iterable of per-target shot counts
+            (non-negative ints/floats), one entry per target.
+
+    Returns:
+        float in [0, 1]. 0.0 if no shots fired or only one target was
+        ever engaged (entropy undefined / degenerate).
+    """
+    counts = [c for c in shot_counts_per_target if c > 0]
+    total = sum(counts)
+    if total <= 0 or len(counts) <= 1:
+        return 0.0
+    probs = [c / total for c in counts]
+    entropy = -sum(p * math.log(p) for p in probs)
+    max_entropy = math.log(len(counts))
+    return entropy / max_entropy if max_entropy > 0 else 0.0

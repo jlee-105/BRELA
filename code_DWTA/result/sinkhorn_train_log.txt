@@ -1,0 +1,188 @@
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+Using CUDA GPU
+[COMM-SINKHORN-MULTISCALE] training on M,N,T ~ U[5,7] each, evaluating zero-shot on 12 held-out configs (moderate curriculum) every 20 steps, sinkhorn_iters=3
+[COMM-SINKHORN-MULTISCALE] step 20/400 actor_loss=2.4099 destruction=0.7624 sinkhorn_scale=0.0021 lr=4.97e-04 (19s)
+--- [COMM-SINKHORN-MULTISCALE] zero-shot eval at step 20 ---
+    5M_5N_5T: Parallel(raw)=0.5656  CommSinkhornSCoPE(auction)=0.3164
+    5M_7N_5T: Parallel(raw)=0.6320  CommSinkhornSCoPE(auction)=0.4238
+    10M_15N_5T: Parallel(raw)=0.7658  CommSinkhornSCoPE(auction)=0.3503
+    15M_15N_5T: Parallel(raw)=0.7376  CommSinkhornSCoPE(auction)=0.1805
+    15M_20N_5T: Parallel(raw)=0.8112  CommSinkhornSCoPE(auction)=0.3250
+    20M_30N_5T: Parallel(raw)=0.8610  CommSinkhornSCoPE(auction)=0.3615
+    30M_30N_10T: Parallel(raw)=0.6929  CommSinkhornSCoPE(auction)=0.0688
+    30M_40N_10T: Parallel(raw)=0.7865  CommSinkhornSCoPE(auction)=0.1828
+    40M_50N_10T: Parallel(raw)=0.8019  CommSinkhornSCoPE(auction)=0.1549
+    50M_50N_15T: Parallel(raw)=0.6592  CommSinkhornSCoPE(auction)=0.1348
+    50M_70N_15T: Parallel(raw)=0.7333  CommSinkhornSCoPE(auction)=0.1349
+    70M_100N_15T: Parallel(raw)=0.7872  CommSinkhornSCoPE(auction)=0.1472
+    mean_CommSinkhornSCoPE_across_12_configs=0.2317  (best so far: 0.2317 at step 20)
+[COMM-SINKHORN-MULTISCALE] step 40/400 actor_loss=2.0947 destruction=0.7053 sinkhorn_scale=0.0094 lr=4.88e-04 (164s)
+--- [COMM-SINKHORN-MULTISCALE] zero-shot eval at step 40 ---
+    5M_5N_5T: Parallel(raw)=0.4522  CommSinkhornSCoPE(auction)=0.1953
+    5M_7N_5T: Parallel(raw)=0.5870  CommSinkhornSCoPE(auction)=0.3024
+    10M_15N_5T: Parallel(raw)=0.7628  CommSinkhornSCoPE(auction)=0.2957
+    15M_15N_5T: Parallel(raw)=0.7534  CommSinkhornSCoPE(auction)=0.1290
+    15M_20N_5T: Parallel(raw)=0.7876  CommSinkhornSCoPE(auction)=0.2255
+    20M_30N_5T: Parallel(raw)=0.8070  CommSinkhornSCoPE(auction)=0.2872
+    30M_30N_10T: Parallel(raw)=0.6558  CommSinkhornSCoPE(auction)=0.0295
+    30M_40N_10T: Parallel(raw)=0.7298  CommSinkhornSCoPE(auction)=0.0669
+    40M_50N_10T: Parallel(raw)=0.7336  CommSinkhornSCoPE(auction)=0.0586
+    50M_50N_15T: Parallel(raw)=0.5738  CommSinkhornSCoPE(auction)=0.0964
+    50M_70N_15T: Parallel(raw)=0.6646  CommSinkhornSCoPE(auction)=0.0866
+    70M_100N_15T: Parallel(raw)=0.7290  CommSinkhornSCoPE(auction)=0.1055
+    mean_CommSinkhornSCoPE_across_12_configs=0.1566  (best so far: 0.1566 at step 40)
+[COMM-SINKHORN-MULTISCALE] step 60/400 actor_loss=-0.1512 destruction=0.7283 sinkhorn_scale=0.0225 lr=4.73e-04 (258s)
+--- [COMM-SINKHORN-MULTISCALE] zero-shot eval at step 60 ---
+    5M_5N_5T: Parallel(raw)=0.3849  CommSinkhornSCoPE(auction)=0.2316
+    5M_7N_5T: Parallel(raw)=0.4446  CommSinkhornSCoPE(auction)=0.3581
+    10M_15N_5T: Parallel(raw)=0.3848  CommSinkhornSCoPE(auction)=0.2688
+    15M_15N_5T: Parallel(raw)=0.2270  CommSinkhornSCoPE(auction)=0.1401
+    15M_20N_5T: Parallel(raw)=0.3687  CommSinkhornSCoPE(auction)=0.2256
+    20M_30N_5T: Parallel(raw)=0.4231  CommSinkhornSCoPE(auction)=0.2621
+    30M_30N_10T: Parallel(raw)=0.1123  CommSinkhornSCoPE(auction)=0.0463
+    30M_40N_10T: Parallel(raw)=0.1743  CommSinkhornSCoPE(auction)=0.1132
+    40M_50N_10T: Parallel(raw)=0.1469  CommSinkhornSCoPE(auction)=0.0715
+    50M_50N_15T: Parallel(raw)=0.1484  CommSinkhornSCoPE(auction)=0.1137
+    50M_70N_15T: Parallel(raw)=0.1545  CommSinkhornSCoPE(auction)=0.1018
+    70M_100N_15T: Parallel(raw)=0.1696  CommSinkhornSCoPE(auction)=0.1161
+    mean_CommSinkhornSCoPE_across_12_configs=0.1707  (best so far: 0.1566 at step 40)
+[COMM-SINKHORN-MULTISCALE] step 80/400 actor_loss=0.0770 destruction=0.8183 sinkhorn_scale=0.0347 lr=4.53e-04 (373s)
+--- [COMM-SINKHORN-MULTISCALE] zero-shot eval at step 80 ---
+    5M_5N_5T: Parallel(raw)=0.4086  CommSinkhornSCoPE(auction)=0.2984
+    5M_7N_5T: Parallel(raw)=0.4848  CommSinkhornSCoPE(auction)=0.4150
+    10M_15N_5T: Parallel(raw)=0.5621  CommSinkhornSCoPE(auction)=0.4172
+    15M_15N_5T: Parallel(raw)=0.4609  CommSinkhornSCoPE(auction)=0.2408
+    15M_20N_5T: Parallel(raw)=0.5588  CommSinkhornSCoPE(auction)=0.3739
+    20M_30N_5T: Parallel(raw)=0.6300  CommSinkhornSCoPE(auction)=0.4393
+    30M_30N_10T: Parallel(raw)=0.2220  CommSinkhornSCoPE(auction)=0.0899
+    30M_40N_10T: Parallel(raw)=0.3286  CommSinkhornSCoPE(auction)=0.1779
+    40M_50N_10T: Parallel(raw)=0.2814  CommSinkhornSCoPE(auction)=0.1429
+    50M_50N_15T: Parallel(raw)=0.2660  CommSinkhornSCoPE(auction)=0.1382
+    50M_70N_15T: Parallel(raw)=0.3155  CommSinkhornSCoPE(auction)=0.1645
+    70M_100N_15T: Parallel(raw)=0.3510  CommSinkhornSCoPE(auction)=0.1784
+    mean_CommSinkhornSCoPE_across_12_configs=0.2564  (best so far: 0.1566 at step 40)
+[COMM-SINKHORN-MULTISCALE] step 100/400 actor_loss=-0.1909 destruction=0.7326 sinkhorn_scale=0.0435 lr=4.28e-04 (564s)
+--- [COMM-SINKHORN-MULTISCALE] zero-shot eval at step 100 ---
+    5M_5N_5T: Parallel(raw)=0.4338  CommSinkhornSCoPE(auction)=0.3237
+    5M_7N_5T: Parallel(raw)=0.4846  CommSinkhornSCoPE(auction)=0.4147
+    10M_15N_5T: Parallel(raw)=0.4398  CommSinkhornSCoPE(auction)=0.3513
+    15M_15N_5T: Parallel(raw)=0.3259  CommSinkhornSCoPE(auction)=0.2049
+    15M_20N_5T: Parallel(raw)=0.4324  CommSinkhornSCoPE(auction)=0.3428
+    20M_30N_5T: Parallel(raw)=0.5278  CommSinkhornSCoPE(auction)=0.3830
+    30M_30N_10T: Parallel(raw)=0.1138  CommSinkhornSCoPE(auction)=0.0585
+    30M_40N_10T: Parallel(raw)=0.2002  CommSinkhornSCoPE(auction)=0.1246
+    40M_50N_10T: Parallel(raw)=0.1746  CommSinkhornSCoPE(auction)=0.1086
+    50M_50N_15T: Parallel(raw)=0.2032  CommSinkhornSCoPE(auction)=0.1588
+    50M_70N_15T: Parallel(raw)=0.2091  CommSinkhornSCoPE(auction)=0.1671
+    70M_100N_15T: Parallel(raw)=0.2411  CommSinkhornSCoPE(auction)=0.1791
+    mean_CommSinkhornSCoPE_across_12_configs=0.2348  (best so far: 0.1566 at step 40)
+[COMM-SINKHORN-MULTISCALE] step 120/400 actor_loss=-0.4113 destruction=0.7915 sinkhorn_scale=0.0515 lr=3.98e-04 (683s)
+--- [COMM-SINKHORN-MULTISCALE] zero-shot eval at step 120 ---
+    5M_5N_5T: Parallel(raw)=0.3946  CommSinkhornSCoPE(auction)=0.2748
+    5M_7N_5T: Parallel(raw)=0.4978  CommSinkhornSCoPE(auction)=0.4064
+    10M_15N_5T: Parallel(raw)=0.6152  CommSinkhornSCoPE(auction)=0.4286
+    15M_15N_5T: Parallel(raw)=0.5434  CommSinkhornSCoPE(auction)=0.2383
+    15M_20N_5T: Parallel(raw)=0.6185  CommSinkhornSCoPE(auction)=0.3702
+    20M_30N_5T: Parallel(raw)=0.6681  CommSinkhornSCoPE(auction)=0.4327
+    30M_30N_10T: Parallel(raw)=0.2737  CommSinkhornSCoPE(auction)=0.0696
+    30M_40N_10T: Parallel(raw)=0.3619  CommSinkhornSCoPE(auction)=0.1864
+    40M_50N_10T: Parallel(raw)=0.2835  CommSinkhornSCoPE(auction)=0.1533
+    50M_50N_15T: Parallel(raw)=0.3181  CommSinkhornSCoPE(auction)=0.1548
+    50M_70N_15T: Parallel(raw)=0.3842  CommSinkhornSCoPE(auction)=0.1845
+    70M_100N_15T: Parallel(raw)=0.4208  CommSinkhornSCoPE(auction)=0.1897
+    mean_CommSinkhornSCoPE_across_12_configs=0.2574  (best so far: 0.1566 at step 40)
+[COMM-SINKHORN-MULTISCALE] step 140/400 actor_loss=0.1302 destruction=0.7556 sinkhorn_scale=0.0574 lr=3.65e-04 (893s)
+--- [COMM-SINKHORN-MULTISCALE] zero-shot eval at step 140 ---
+    5M_5N_5T: Parallel(raw)=0.2353  CommSinkhornSCoPE(auction)=0.1910
+    5M_7N_5T: Parallel(raw)=0.3666  CommSinkhornSCoPE(auction)=0.2653
+    10M_15N_5T: Parallel(raw)=0.3804  CommSinkhornSCoPE(auction)=0.2383
+    15M_15N_5T: Parallel(raw)=0.2238  CommSinkhornSCoPE(auction)=0.1063
+    15M_20N_5T: Parallel(raw)=0.3385  CommSinkhornSCoPE(auction)=0.1691
+    20M_30N_5T: Parallel(raw)=0.4465  CommSinkhornSCoPE(auction)=0.2198
+    30M_30N_10T: Parallel(raw)=0.2404  CommSinkhornSCoPE(auction)=0.0332
+    30M_40N_10T: Parallel(raw)=0.3214  CommSinkhornSCoPE(auction)=0.0642
+    40M_50N_10T: Parallel(raw)=0.2464  CommSinkhornSCoPE(auction)=0.0558
+    50M_50N_15T: Parallel(raw)=0.2157  CommSinkhornSCoPE(auction)=0.0953
+    50M_70N_15T: Parallel(raw)=0.2616  CommSinkhornSCoPE(auction)=0.0852
+    70M_100N_15T: Parallel(raw)=0.2836  CommSinkhornSCoPE(auction)=0.1045
+    mean_CommSinkhornSCoPE_across_12_configs=0.1357  (best so far: 0.1357 at step 140)
+[COMM-SINKHORN-MULTISCALE] step 160/400 actor_loss=0.1989 destruction=0.7066 sinkhorn_scale=0.0634 lr=3.29e-04 (972s)
+--- [COMM-SINKHORN-MULTISCALE] zero-shot eval at step 160 ---
+    5M_5N_5T: Parallel(raw)=0.2370  CommSinkhornSCoPE(auction)=0.2224
+    5M_7N_5T: Parallel(raw)=0.4024  CommSinkhornSCoPE(auction)=0.2897
+    10M_15N_5T: Parallel(raw)=0.4571  CommSinkhornSCoPE(auction)=0.3495
+    15M_15N_5T: Parallel(raw)=0.2926  CommSinkhornSCoPE(auction)=0.1806
+    15M_20N_5T: Parallel(raw)=0.4730  CommSinkhornSCoPE(auction)=0.3097
+    20M_30N_5T: Parallel(raw)=0.5483  CommSinkhornSCoPE(auction)=0.3797
+    30M_30N_10T: Parallel(raw)=0.0991  CommSinkhornSCoPE(auction)=0.0571
+    30M_40N_10T: Parallel(raw)=0.2244  CommSinkhornSCoPE(auction)=0.1345
+    40M_50N_10T: Parallel(raw)=0.1753  CommSinkhornSCoPE(auction)=0.1142
+    50M_50N_15T: Parallel(raw)=0.2289  CommSinkhornSCoPE(auction)=0.1613
+    50M_70N_15T: Parallel(raw)=0.2351  CommSinkhornSCoPE(auction)=0.1491
+    70M_100N_15T: Parallel(raw)=0.2568  CommSinkhornSCoPE(auction)=0.1696
+    mean_CommSinkhornSCoPE_across_12_configs=0.2098  (best so far: 0.1357 at step 140)
+[COMM-SINKHORN-MULTISCALE] step 180/400 actor_loss=-0.2289 destruction=0.8870 sinkhorn_scale=0.0693 lr=2.91e-04 (1135s)
+--- [COMM-SINKHORN-MULTISCALE] zero-shot eval at step 180 ---
+    5M_5N_5T: Parallel(raw)=0.2766  CommSinkhornSCoPE(auction)=0.2628
+    5M_7N_5T: Parallel(raw)=0.4162  CommSinkhornSCoPE(auction)=0.3472
+    10M_15N_5T: Parallel(raw)=0.4315  CommSinkhornSCoPE(auction)=0.3469
+    15M_15N_5T: Parallel(raw)=0.2808  CommSinkhornSCoPE(auction)=0.2096
+    15M_20N_5T: Parallel(raw)=0.4228  CommSinkhornSCoPE(auction)=0.3162
+    20M_30N_5T: Parallel(raw)=0.4667  CommSinkhornSCoPE(auction)=0.3672
+    30M_30N_10T: Parallel(raw)=0.0635  CommSinkhornSCoPE(auction)=0.0315
+    30M_40N_10T: Parallel(raw)=0.1126  CommSinkhornSCoPE(auction)=0.0660
+    40M_50N_10T: Parallel(raw)=0.0729  CommSinkhornSCoPE(auction)=0.0444
+    50M_50N_15T: Parallel(raw)=0.1386  CommSinkhornSCoPE(auction)=0.1090
+    50M_70N_15T: Parallel(raw)=0.1563  CommSinkhornSCoPE(auction)=0.1248
+    70M_100N_15T: Parallel(raw)=0.1598  CommSinkhornSCoPE(auction)=0.1383
+    mean_CommSinkhornSCoPE_across_12_configs=0.1970  (best so far: 0.1357 at step 140)
+[COMM-SINKHORN-MULTISCALE] step 200/400 actor_loss=0.1723 destruction=0.8301 sinkhorn_scale=0.0740 lr=2.52e-04 (1255s)
+--- [COMM-SINKHORN-MULTISCALE] zero-shot eval at step 200 ---
+    5M_5N_5T: Parallel(raw)=0.2635  CommSinkhornSCoPE(auction)=0.2779
+    5M_7N_5T: Parallel(raw)=0.4148  CommSinkhornSCoPE(auction)=0.3384
+    10M_15N_5T: Parallel(raw)=0.4458  CommSinkhornSCoPE(auction)=0.3418
+    15M_15N_5T: Parallel(raw)=0.2916  CommSinkhornSCoPE(auction)=0.2094
+    15M_20N_5T: Parallel(raw)=0.4314  CommSinkhornSCoPE(auction)=0.3191
+    20M_30N_5T: Parallel(raw)=0.4951  CommSinkhornSCoPE(auction)=0.3708
+    30M_30N_10T: Parallel(raw)=0.0694  CommSinkhornSCoPE(auction)=0.0357
+    30M_40N_10T: Parallel(raw)=0.1156  CommSinkhornSCoPE(auction)=0.0723
+    40M_50N_10T: Parallel(raw)=0.0976  CommSinkhornSCoPE(auction)=0.0605
+    50M_50N_15T: Parallel(raw)=0.1641  CommSinkhornSCoPE(auction)=0.1342
+    50M_70N_15T: Parallel(raw)=0.1724  CommSinkhornSCoPE(auction)=0.1362
+    70M_100N_15T: Parallel(raw)=0.1861  CommSinkhornSCoPE(auction)=0.1489
+    mean_CommSinkhornSCoPE_across_12_configs=0.2038  (best so far: 0.1357 at step 140)
+[COMM-SINKHORN-MULTISCALE] step 220/400 actor_loss=-0.5212 destruction=0.8115 sinkhorn_scale=0.0774 lr=2.14e-04 (1369s)
+--- [COMM-SINKHORN-MULTISCALE] zero-shot eval at step 220 ---
+    5M_5N_5T: Parallel(raw)=0.3103  CommSinkhornSCoPE(auction)=0.2804
+    5M_7N_5T: Parallel(raw)=0.4578  CommSinkhornSCoPE(auction)=0.3765
+    10M_15N_5T: Parallel(raw)=0.4885  CommSinkhornSCoPE(auction)=0.3558
+    15M_15N_5T: Parallel(raw)=0.3161  CommSinkhornSCoPE(auction)=0.2055
+    15M_20N_5T: Parallel(raw)=0.4501  CommSinkhornSCoPE(auction)=0.3268
+    20M_30N_5T: Parallel(raw)=0.5100  CommSinkhornSCoPE(auction)=0.3708
+    30M_30N_10T: Parallel(raw)=0.1027  CommSinkhornSCoPE(auction)=0.0389
+    30M_40N_10T: Parallel(raw)=0.1509  CommSinkhornSCoPE(auction)=0.0661
+    40M_50N_10T: Parallel(raw)=0.0892  CommSinkhornSCoPE(auction)=0.0393
+    50M_50N_15T: Parallel(raw)=0.1566  CommSinkhornSCoPE(auction)=0.1070
+    50M_70N_15T: Parallel(raw)=0.1713  CommSinkhornSCoPE(auction)=0.1080
+    70M_100N_15T: Parallel(raw)=0.1826  CommSinkhornSCoPE(auction)=0.1224
+    mean_CommSinkhornSCoPE_across_12_configs=0.1998  (best so far: 0.1357 at step 140)
+[COMM-SINKHORN-MULTISCALE] step 240/400 actor_loss=0.2303 destruction=0.7345 sinkhorn_scale=0.0796 lr=1.76e-04 (1511s)
+--- [COMM-SINKHORN-MULTISCALE] zero-shot eval at step 240 ---
+    5M_5N_5T: Parallel(raw)=0.2734  CommSinkhornSCoPE(auction)=0.2653
+    5M_7N_5T: Parallel(raw)=0.4422  CommSinkhornSCoPE(auction)=0.3398
+    10M_15N_5T: Parallel(raw)=0.4737  CommSinkhornSCoPE(auction)=0.3466
+    15M_15N_5T: Parallel(raw)=0.3075  CommSinkhornSCoPE(auction)=0.2037
+    15M_20N_5T: Parallel(raw)=0.4339  CommSinkhornSCoPE(auction)=0.3218
+    20M_30N_5T: Parallel(raw)=0.5045  CommSinkhornSCoPE(auction)=0.3672
+    30M_30N_10T: Parallel(raw)=0.0797  CommSinkhornSCoPE(auction)=0.0667
+    30M_40N_10T: Parallel(raw)=0.1339  CommSinkhornSCoPE(auction)=0.1048
+    40M_50N_10T: Parallel(raw)=0.0979  CommSinkhornSCoPE(auction)=0.0777
+    50M_50N_15T: Parallel(raw)=0.1807  CommSinkhornSCoPE(auction)=0.1672
+    50M_70N_15T: Parallel(raw)=0.1737  CommSinkhornSCoPE(auction)=0.1367
+    70M_100N_15T: Parallel(raw)=0.1918  CommSinkhornSCoPE(auction)=0.1475
+    mean_CommSinkhornSCoPE_across_12_configs=0.2121  (best so far: 0.1357 at step 140)
+[COMM-SINKHORN-MULTISCALE] step 260/400 actor_loss=-0.0700 destruction=0.9273 sinkhorn_scale=0.0820 lr=1.40e-04 (1645s)
+--- [COMM-SINKHORN-MULTISCALE] zero-shot eval at step 260 ---

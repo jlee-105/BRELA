@@ -103,12 +103,6 @@ class Environment:
         # Weapon availability tracking
         self.all_weapon_NOT_done = torch.tensor(True).to(DEVICE)
         
-        # Pre-compute weapon indices for reuse
-        self.weapon_indices = torch.arange(0, self.actual_num_weapons, device=DEVICE)
-        self.possible_weapons = self.weapon_indices[None, None, :].expand(
-            self.batch_size, self.para_size, self.actual_num_weapons
-        ).clone()
-
         # Pre-compute action indices for reuse
         self.action_indices = torch.arange(0, self.actual_num_weapons*self.actual_num_targets, device=DEVICE)
         self.available_actions = self.action_indices[None, None, :].expand(
@@ -148,9 +142,20 @@ class Environment:
 
         # Weapon wait time
         self.weapon_wait_time = torch.full(
-            size=(self.batch_size, self.para_size, self.actual_num_weapons), 
+            size=(self.batch_size, self.para_size, self.actual_num_weapons),
             fill_value=0.0
         ).to(DEVICE)
+
+        # possible_weapons: which weapons may legally act this round (ready + has
+        # ammo). Bug fixed 2026-08-06: this used to be initialized to the weapon's
+        # own index (0,1,2,...), then checked via `possible_weapons <= 0` --
+        # meaning weapon index 0 was always wrongly treated as unavailable for the
+        # entire first round of every episode, for every decoder/baseline that
+        # shares this Environment class. Now computed the same way
+        # _batch_update_time_dependent_components recomputes it every subsequent
+        # round, so round 0 is consistent with all later rounds.
+        possible_weapons_mask = (self.weapon_wait_time <= 0) & (self.ammunition_availability > 0)
+        self.possible_weapons = possible_weapons_mask.long()
 
     def _initialize_target_availability(self):
         """Initialize target availability tracking."""
@@ -304,7 +309,12 @@ class Environment:
         
         # Update weapon status
         self.weapon_availability[batch_id, par_id, weapon_index] = 0
-        self.weapon_wait_time[batch_id, par_id, weapon_index] = self.prep_time_per_weapon[weapon_index]
+        # +1: the same-round time_update() call immediately decrements this by 1
+        # (it runs once per round regardless of who fired), so without the +1 the
+        # weapon would only sit out D_m-1 rounds instead of D_m -- matches the
+        # manuscript's Eq. (4)-(5)/w_{m,t+1}=D_m formulation and opt/SCIP.py's
+        # `for delta in range(1, min(W[m]+1, T-t))` reload constraint.
+        self.weapon_wait_time[batch_id, par_id, weapon_index] = self.prep_time_per_weapon[weapon_index] + 1
 
     def _batch_update_ammunition(self, batch_id, par_id, weapon_index):
         """Update ammunition count for selected weapon."""
@@ -371,7 +381,33 @@ class Environment:
         # Vectorized time left update
         time_left_normalized = self.time_left / MAX_TIME
         encoding_view[:, :, :, :, TIME_LEFT_FEATURE_INDEX] = time_left_normalized
-        
+
+        # Vectorized target (remaining) value update. Without this, the actor's
+        # input never reflects damage already inflicted -- TARGET_VALUE_INDEX was
+        # only ever set once at __init__ time from the ORIGINAL value, so every
+        # decision throughout the whole episode saw every target as fully intact
+        # regardless of how much had actually been destroyed. Confirmed missing by
+        # comparing against rl_rollout/DWTA_Simulator_rollout.py, which does write
+        # this back every update. This silently blinded the policy to its own
+        # (and every other weapon's) prior hits, on every round, for the entire
+        # episode -- independent of decoder architecture or credit-assignment
+        # style, matching the persistent Greedy-vs-RL gap observed all session.
+        #
+        # current_target_value's last dim is actually num_weapons*num_targets
+        # (one redundant copy per weapon, from the original edge-list encoding),
+        # but _batch_update_target_values only ever writes target_index in
+        # [0, num_targets) -- i.e. only the "weapon 0" slice is kept accurate;
+        # the other weapons' redundant copies are stale leftovers from __init__.
+        # Must slice to the accurate [:, :, :num_targets] region before
+        # broadcasting back out to all weapons, not use the raw tensor as-is.
+        true_target_value = self.current_target_value[:, :, :self.actual_num_targets]
+        target_value_normalized = (
+            true_target_value.unsqueeze(2).expand(
+                self.batch_size, self.para_size, self.actual_num_weapons, self.actual_num_targets
+            ) / MAX_TARGET_VALUE
+        )
+        encoding_view[:, :, :, :, TARGET_VALUE_INDEX] = target_value_normalized
+
         # Safe write-back: avoid overlapping in-place ops
         new_assignment_encoding = self.assignment_encoding.clone()
         new_assignment_encoding[:, :, :-1, :] = encoding_view.reshape(
