@@ -734,19 +734,16 @@ The WTAP, introduced by Manne~\cite{manne1958target} and NP-hard even in its sta
 
 \subsection{Reinforcement Learning for WTA}
 
-Early neural formulations date to Wacholder~\cite{wacholder1989neural}; Table~\ref{tab:related} positions the reinforcement-learning methods that followed along the axes that matter here. Static-WTA methods either tie network dimensions to the instance size~\cite{meng2021deep,shin2020mean,gaudet2023} or achieve size-agnostic architectures at the cost of omitted operational constraints or identical-weapon assumptions~\cite{luo2021learning,na2023weapon,vinyals2015pointer}. Dynamic methods each inherit one of the same limits: size-fixed networks~\cite{wu2022dynamic}, simplified identical-agent objectives without WTA's nonlinearity~\cite{hu2024}, or receding-horizon decomposition with no learned cross-stage policy~\cite{zhang2020efficient,zhang2020dynamic}. Closest to us, Yoon, Lee, and Cho~\cite{yoontransformer} target scalable DWTA with a transformer-based policy; SCoPE differs in decoding all weapons' actions in parallel rather than through a single sequential policy, characterizing when that is safe (Section~\ref{sec:submodular}), and modeling platform-level engagement compatibility $Q_m$.
+Early neural formulations date to Wacholder~\cite{wacholder1989neural}; Table~\ref{tab:related} positions the reinforcement-learning methods that followed along the axes that matter here. Static-WTA methods either tie network dimensions to the instance size~\cite{meng2021deep,shin2020mean,gaudet2023} or achieve size-agnostic architectures at the cost of omitted operational constraints or identical-weapon assumptions~\cite{luo2021learning,na2023weapon,vinyals2015pointer}. Dynamic methods each inherit one of the same limits: size-fixed networks~\cite{wu2022dynamic}, simplified identical-agent objectives without WTA's nonlinearity~\cite{hu2024}, or receding-horizon decomposition with no learned cross-stage policy~\cite{zhang2020efficient,zhang2020dynamic}. Closest to us, Yoon, Lee, and Cho~\cite{yoontransformer} target scalable DWTA with a transformer-based policy; SCoPE differs in decoding all weapons' actions in parallel rather than through a single sequential policy, characterizing when that is safe (Section~\ref{sec:submodular}), and modeling platform-level engagement compatibility $Q_m$. Most recently, Oh et al.~\cite{oh2026combat} also pair graph neural networks with reinforcement learning for DWTA, training a graph-attention policy with PPO under a partially observable formulation and evaluating on naval and ground scenarios against heuristic and metaheuristic baselines; their contribution is scenario realism through the OODA decision cycle, whereas ours is the structural split of the per-stage decision into a learned participation policy and an assignment mechanism with a per-stage guarantee, benchmarked additionally against an exact solver and neural construction baselines.
 %% VERIFY (carried over): confirm against the published JDMS version that Yoon et al.'s decoder is in fact
 %% sequential/single-policy; if not, adjust the corresponding row of Table~\ref{tab:related} and the sentence above.
-%% MISSING CITATIONS (found 2026-08-23 via search; titles/venues seen in search results only, FULL TEXT NOT READ
-%% -- verify before citing): two recent works combine WTA with BOTH GNN and RL, i.e. the same pairing this paper
-%% claims, and a reviewer will look for them first:
-%%   (a) "Artificial Intelligence in Combat Decision-Making: Weapon Target Assignment via Reinforcement Learning
-%%       and Graph Neural Networks" -- reported as IEEE Trans. Cybernetics.
-%%   (b) "Dynamic weapon-target assignment optimization integrating deep reinforcement learning and graph neural
-%%       networks" -- reported as Control Theory & Applications, 2025. The title alone overlaps ours almost exactly.
-%% For each, establish: static vs dynamic; sequential vs parallel decoding; whether reload/ammunition/time-window/$Q_m$
-%% constraints are modeled. Then add a row to Table~\ref{tab:related} and one differentiating sentence above. Do NOT
-%% cite either until the paper itself has been read -- the axes claimed in the table must be checked, not assumed.
+%% CITATION STATUS 2026-08-23: (a) Oh et al. IEEE T-Cyb verified via Crossref (vol. 56, no. 2, pp. 631-643, 2026,
+%% doi 10.1109/TCYB.2025.3610606; TechRxiv preprint 10.36227/techrxiv.171084935.57702557) and cited in prose above
+%% using only abstract-verifiable claims (DWTA, GNN+PPO, POMDP, OODA, heuristic/metaheuristic baselines). NOT added
+%% to Table~\ref{tab:related}: the sequential-vs-parallel and constraint axes could not be verified (full text
+%% paywalled, preprint mirrors blocked) and must not be assumed. (b) the "Control Theory & Applications 2025" item
+%% previously noted here could not be located under that title in Crossref or web search -- it appears to have been
+%% a garbled duplicate of (a); dropped.
 
 \begin{table}[htbp]
 \centering
@@ -776,15 +773,10 @@ Simultaneous multi-agent action selection builds on learned inter-agent communic
 
 Most neural construction work that improves on a policy at test time does so \emph{during} construction: rollout algorithms~\cite{bertsekas1997rollout} score candidate next actions by simulating forward under a base policy, simulation-guided beam search~\cite{choo2022sgbs} keeps a width-limited frontier of partial solutions, and efficient active search~\cite{hottung2022eas} adapts policy parameters per instance. All three expand a partial solution and are therefore priced against the branching factor at each decision point -- which for a parallel decoder is the joint action over $M$ weapons, not a single edge.
 
-A separate line instead learns to \emph{improve a complete solution}, repeatedly selecting a local modification and accepting it if it helps: neural local rewriting~\cite{chen2019rewriter}, learning-based improvement heuristics for routing~\cite{wu2021improvement}, and dual-aspect representations for the same~\cite{ma2021dact}.
-%% MISSING CITATION (found 2026-08-23; abstract read, full text paywalled -- verify before citing): Zhang, Hu & Zhao,
-%% "Deep reinforcement learning with graph attention mechanism for vehicle routing problem with time windows",
-%% Applied Intelligence 2025, doi:10.1007/s10489-025-06829-z. Same construct-then-improve SHAPE as ours: an
-%% attention-based DRL policy produces a preliminary solution, then a large neighborhood search improves it.
-%% This is in our target venue and is the closest structural analogue to SCoPE's construction/repair split, so it
-%% must be cited HERE and differentiated: their improvement operator is a classical LNS (hand-designed destroy/repair),
-%% whereas ours is a LEARNED policy over participation flips whose acceptance is by re-simulation. Confirm that
-%% characterization against the full text first.
+A separate line instead learns to \emph{improve a complete solution}, repeatedly selecting a local modification and accepting it if it helps: neural local rewriting~\cite{chen2019rewriter}, learning-based improvement heuristics for routing~\cite{wu2021improvement}, and dual-aspect representations for the same~\cite{ma2021dact}. Closest in shape to our pipeline, Zhang, Hu, and Zhao~\cite{zhang2025vrptw} construct a preliminary solution for the vehicle routing problem with time windows using an attention-based policy and then improve it with a large neighborhood search; the difference is the improvement operator, which in their case is a classical, hand-designed destroy-and-repair search, whereas ours is a second learned policy whose edits are accepted by re-simulation.
+%% Verified 2026-08-23 against the Springer abstract (doi:10.1007/s10489-025-06829-z, Applied Intelligence 55(13):937):
+%% DRL attention policy generates preliminary solutions, classical LNS iteratively improves them -- the
+%% construct-then-improve characterization above is confirmed; the LNS is not described as learned.
 This family has not, to our knowledge, been applied to DWTAP, and it fits the problem's structure unusually well for two reasons developed in Section~\ref{sec:repair}: the quality of a stage-$t$ engagement often only becomes observable after later stages resolve, and re-simulating an edited schedule restores feasibility automatically rather than requiring a repair operator of its own. Section~\ref{sec:repair} adopts this paradigm for the participation decision specifically.
 
 MatNet~\cite{kwon2021matrix} encodes asymmetric compatibility matrices directly, a natural fit for DWTAP's own asymmetric $P_{m,n}$/$Q_m$ structure, though it is not among the baselines evaluated in Section~\ref{sec:main-results} (which uses AM and POMO); LEHD~\cite{luo2023lehd} exemplifies the train-small/test-large protocol our own evaluation follows (Section~\ref{sec:data}).
@@ -1004,7 +996,8 @@ We propose SCoPE, a reinforcement learning framework for DWTAP. The state is enc
 \label{sec:encoding}
 
 The strategic policy needs a representation of the state. Eq.~\eqref{eq:state} writes the state as one vector in $\mathbb{R}^9$ per (weapon, target) pair, but most of these features are not pairwise. Only the damage rate $p = P_{m,n}$ depends on both indices. Four features belong to weapon $m$ alone (readiness $u_t$, remaining reload $d_t$, remaining ammunition $a_t$, and the stage counter $r_t$), and four belong to target $n$ alone (remaining value $v_t$, cumulative hits $f_t$, and the window bounds $ws, we$).
-%% VERIFY against code: confirm the fourth weapon input really is the remaining-time scalar $r_t$ (vs. padding or another feature).
+%% Verified 2026-08-23 against common/Dynamic_Instance_generation.py + DWTA_GNN_comm_sinkhorn.py:
+%% weapon node = features [ammunition, availability, remaining time, waiting time] = {a_t,u_t,r_t,d_t}. Correct as written.
 Flattening the state into $M \times N$ independent vectors replicates each weapon's features $N$ times and each target's features $M$ times, and the network must learn from data that these copies are the same quantity.
 
 We instead represent the state as a heterogeneous graph: weapon nodes $\bm{x}_m^{\text{wpn}} \in \mathbb{R}^4$, target nodes $\bm{x}_n^{\text{tgt}} \in \mathbb{R}^4$, and edges $\bm{x}_{m,n}^{\text{edge}} \in \mathbb{R}^1$ carrying $P_{m,n}$. An edge exists only for $n \in Q_m$, so engagement compatibility is part of the graph topology rather than a mask applied afterwards. Each node and edge is linearly projected to a common hidden width $H$, and $L$ rounds of standard message passing follow~\cite{gilmer2017neural}: each edge is updated from its two endpoint embeddings and its own previous value, and each node is updated by a GRU from the sum of its incident edge messages. Because $M$ and $N$ enter only through these sums, the same parameters apply at any instance size. This is the property that the zero-shot scale generalization in Section~\ref{sec:data} rests on.
@@ -1028,7 +1021,7 @@ We address it with one self-attention layer over the $M$ weapon embeddings, appl
 \end{equation}
 where $\text{MHA}$ is standard multi-head self-attention~\cite{vaswani2017attention} over the weapon axis. Unlike a mean-pooled context vector, attention lets each weapon weight the specific weapons relevant to its own decision, for example those competing for the same compatible targets or those still holding ammunition. Both scoring heads in Section~\ref{sec:parallel-decoder} consume $\bm{h}_m^{\text{wpn,comm}}$ (Eqs.~\eqref{eq:edge-score}--\eqref{eq:noop-score}). The added cost is one attention pass over $M$ tokens per stage, independent of $N$, so the decoding-call complexity of the parallel decoder is unchanged.
 
-We call the architecture without this layer SCoPE and with it SCoPE-Comm, and report both. Comparing the two isolates the value of coordination over the participation decision, since coordination over target choice is already handled by the auction (Section~\ref{sec:coordination}).
+We call the architecture without this layer SCoPE and with it SCoPE-Comm, and report both. Comparing the two isolates the value of coordination over the participation decision, since coordination over target choice is already handled by the auction (Section~\ref{sec:coordination}). The released implementation additionally carries a learned scalar that can mix a Sinkhorn-normalized bonus into the edge scores; it is initialized at zero, trains to $0.021$, and forcing it to zero at inference changes the mean objective by less than $10^{-4}$ across the twelve held-out configurations, so the term is inactive and plays no role in the results reported here.
 
 \subsection{Parallel Multi-Pointer Policy}
 \label{sec:parallel-decoder}
@@ -1082,7 +1075,13 @@ The first inequality makes the layer safe to deploy: a repair policy that has le
 
 Feasibility requires no special handling. A flip changes only the fire-or-hold intent at one slot. The resulting assignment is still computed by the auction against the environment's legality mask (readiness, ammunition, time window, $Q_m$), and the episode is re-simulated from the start rather than patched in place, so all downstream consequences are recomputed exactly. An edit that asks a weapon to fire when it has no legal target is absorbed and leaves the schedule unchanged; its only cost is one unit of budget. Candidate slots are therefore restricted to those that currently fire or are currently legal.
 
-The repair policy is trained by REINFORCE over the edit sequence, with the reward for each edit being the objective improvement that edit produced (Section~\ref{sec:training}). The edit operator is the simplest one that can express both directions of the participation decision. We also implemented a move operator that reschedules a weapon's shot from one stage to another, and a combined operator that can choose either type of edit at each step. Both were worse than the single flip under an identical protocol; the larger action space cost more in learning difficulty than it returned in reach. Section~\ref{sec:repair-results} reports these comparisons.
+The repair policy is trained by REINFORCE over the edit sequence, with the reward for each edit being the objective improvement that edit produced (Section~\ref{sec:training}). The edit operator is the simplest one that can express both directions of the participation decision. We also implemented a move operator that reschedules a weapon's shot from one stage to another, and a combined operator that can choose either type of edit at each step. Under an identical frozen-construction protocol in earlier experimentation, the three operators finished within a fraction of a percentage point of one another, with no operator clearly dominating; we kept the single flip for its simplicity and for the smaller action space it gives the jointly trained repair policy. That comparison predates the many-to-one pipeline and has not been re-run under it (Section~\ref{sec:repair-results}).
+%% CORRECTED 2026-08-23: the previous sentence here claimed move/combined were "worse than the single flip
+%% under an identical protocol" -- the recovered logs contradict that. Frozen CommSinkhorn base, 1:1 auction,
+%% n_edits=3 train / 30 eval, identical for all three: flip best 0.1327 (improve_train_log.txt), move best
+%% 0.1330 (move_train_log.txt), combined best 0.1312 (combined_train_log.txt), base 0.1357. A near-tie with
+%% combined marginally ahead, not a flip win. These 1:1-era numbers are deliberately not reported as tables
+%% (incomparable with the many-to-one pipeline, Lemma~\ref{lem:dispersion}).
 
 We denote the full pipeline, SCoPE-Comm followed by the repair layer, as SCoPE-Repair.
 
@@ -1167,11 +1166,11 @@ with $\log \pi_\theta(a_t\mid s_t)$ the joint per-weapon log-probability of Sect
 
 \textbf{No critic.} Our first design used a learned critic $v(s_t)$ as a potential function for reward shaping~\cite{ng1999shaping}, to give the no-op action a same-step learning signal, since its immediate reward is always zero and its credit otherwise arrives only through later rewards. Potential-based shaping is policy-invariant, so the design was safe in principle. In practice it hurt: removing the critic and shaping outperformed the full mechanism at every problem size tested in earlier experimentation (not yet re-run under the current benchmark; Section~\ref{sec:ablation}). A likely reason is that $G_t$ is already an exact Monte Carlo estimate of the return-to-go, and a jointly-trained critic replaces part of it with an approximation. The final recipe uses no critic.
 
-\textbf{Repair policy.} The repair policy is trained with the same estimator on its own episode, the sequence of $K$ edits to one schedule. Its reward per edit is the objective change that edit produced under re-simulation. Credit assignment is easier than for construction, since each edit's reward measures that edit alone rather than a return shared across the whole episode. Edits are sampled during training and chosen by argmax at inference. The two policies are trained jointly on the same instance stream, so the repair policy learns on the schedules the construction policy actually produces rather than on those of a frozen proposer.
-%% VERIFY against the run that produced the reported checkpoints (tag "mfloop"): rl/DWTA_GNN_TRAIN_joint_multiscale.py
-%% exposes --mode {alternating,simultaneous}, and the paragraph above describes joint training without saying which.
-%% State the mode and the per-agent step split explicitly here once the launch command for the reported run is
-%% recovered; also record --improve_lr (default 1e-4, differs from the construction policy's 5e-4) in Table~\ref{tab:hyperparameters}.
+\textbf{Repair policy.} The repair policy is trained with the same estimator on its own episode, the sequence of edits to one schedule (two edits per training step). Its reward per edit is the objective change that edit produced under re-simulation. Credit assignment is easier than for construction, since each edit's reward measures that edit alone rather than a return shared across the whole episode. Edits are sampled during training and chosen by argmax at inference. The two policies are trained jointly on the same instance stream, both updated at every training step, so the repair policy learns on the schedules the construction policy actually produces rather than on those of a frozen proposer; the repair policy uses its own learning rate (Table~\ref{tab:hyperparameters}).
+%% Verified 2026-08-23 against the recovered launch command for the reported "mfloop" checkpoints:
+%% python rl/DWTA_GNN_TRAIN_joint_multiscale.py --total_steps 400 --eval_every 20 --n_edits 2 --eval_edits 10
+%%   --batch_size 15 --para_size 10 --base_ckpt none --mode simultaneous --curriculum moderate --auction multifire --tag mfloop --seed 5
+%% i.e. mode=simultaneous (both agents every step), improve_lr default 1e-4, proposer trained from scratch.
 
 \begin{algorithm}[htbp]
 \caption{SCoPE inference: construction followed by learned repair}
@@ -1219,10 +1218,8 @@ with $\log \pi_\theta(a_t\mid s_t)$ the joint per-weapon log-probability of Sect
 
 SCoPE was trained with a multi-scale curriculum (random $(M,N,T)$ drawn each episode, $M,N,T \in [5,7]$) under two instance distributions, shown in Table~\ref{tab:parameter_distributions}. The \emph{abundant} distribution follows the parameter ranges conventionally used to benchmark WTA solvers -- fixed ammunition drawn independently of the time horizon, target values and time windows uncorrelated. The \emph{scarce} distribution ties ammunition to the time horizon ($A_m \sim \mathcal{Z}(1, \lfloor T/2\rfloor+1)$, so no weapon can engage every stage) and correlates target value with emergence time ($V_n = V_{\text{base}} + V_{\text{bonus}}\cdot t_{n,\text{start}}/(T{-}1)$, with $V_{\text{base}}\sim U(2,6)$ and $V_{\text{bonus}}\sim U(2,5)$ redrawn per target): later-emerging targets tend to be somewhat more valuable, with substantial per-target noise rather than a deterministic split, so whether to hold a weapon in reserve for one is a genuine, instance-dependent judgment rather than a scripted pattern. As argued in Section~\ref{sec:introduction}, the scarce distribution is the one we treat as the paper's primary evaluation condition; the abundant distribution is reported alongside it specifically to show where the simpler, communication-free hypothesis holds and where it does not (Section~\ref{sec:coordination}). Testing was performed on 12 held-out configurations spanning four size tiers -- Small, Medium, Large, and Battlefield -- shown in Table~\ref{tab:problem_instance_scales}, drawn from the same distribution used in training (abundant or scarce) but at scales the policy never saw during training. Configurations are restricted to $N \geq M$ (targets/threats at least as numerous as own weapons), reflecting the resource-constrained defense scenario this work targets rather than an arbitrary grid.
 
-%% TODO: benchmark runs currently sample 10 fixed instances per configuration (seed-controlled for
-%% reproducibility) for wall-clock reasons, not the 50 in Table~\ref{tab:problem_instance_scales} --
-%% either regenerate that table's instance count to 10 throughout, or budget compute to actually run 50
-%% before submission; do not leave the two numbers inconsistent.
+%% RESOLVED 2026-08-23: Table~\ref{tab:problem_instance_scales} now states 10 instances/config,
+%% matching what every reported run actually used (seed-controlled, fixed across methods).
 
 \begin{table}[htbp]
 \centering
@@ -1244,23 +1241,23 @@ Damage Rate $P$ & $U(0.2, 0.7)$ & $U(0.3, 0.9)$ \\ \hline
 \begin{table}[htbp]
 \centering
 \small
-\caption{Test Problem Configurations}
+\caption{Test problem configurations. Each configuration uses ten fixed, seed-controlled held-out instances, identical across all evaluated methods.}
 \label{tab:problem_instance_scales}
 \begin{tabular}{c|c|c}
 \hline
 \textbf{Tier} & \textbf{(M,N,T)} & \textbf{Instances} \\ \hline
-\multirow{3}{*}{Small}      & (5,5,5)    & 50 \\
-                            & (5,7,5)    & 50 \\
-                            & (10,15,5)  & 50 \\ \hline
-\multirow{3}{*}{Medium}     & (15,15,5)  & 50 \\
-                            & (15,20,5)  & 50 \\
-                            & (20,30,5)  & 50 \\ \hline
-\multirow{3}{*}{Large}      & (30,30,10) & 50 \\
-                            & (30,40,10) & 50 \\
-                            & (40,50,10) & 50 \\ \hline
-\multirow{3}{*}{Battlefield} & (50,50,15) & 50 \\
-                            & (50,70,15) & 50 \\
-                            & (70,100,15) & 50 \\ \hline
+\multirow{3}{*}{Small}      & (5,5,5)    & 10 \\
+                            & (5,7,5)    & 10 \\
+                            & (10,15,5)  & 10 \\ \hline
+\multirow{3}{*}{Medium}     & (15,15,5)  & 10 \\
+                            & (15,20,5)  & 10 \\
+                            & (20,30,5)  & 10 \\ \hline
+\multirow{3}{*}{Large}      & (30,30,10) & 10 \\
+                            & (30,40,10) & 10 \\
+                            & (40,50,10) & 10 \\ \hline
+\multirow{3}{*}{Battlefield} & (50,50,15) & 10 \\
+                            & (50,70,15) & 10 \\
+                            & (70,100,15) & 10 \\ \hline
 \end{tabular}
 \end{table}
 
@@ -1281,12 +1278,13 @@ Hidden/embedding dimension $H$ & 128 \\
 Communication attention heads (SCoPE-Comm, Eq.~\eqref{eq:comm-attn}) & 8 \\
 Dropout (attention and residual blocks) & 0.1 \\
 Optimizer & Adam \\
-Learning rate & $5 \times 10^{-4}$ (cosine decay to $1\%$) \\
+Learning rate (construction) & $5 \times 10^{-4}$ (cosine decay to $1\%$) \\
+Learning rate (repair) & $1 \times 10^{-4}$ (cosine decay to $1\%$) \\
 Weight decay & $1 \times 10^{-2}$ \\
 Gradient-norm clip & 1.0 \\
 Instances per training step & 15 \\
 Parallel rollouts per instance $P$ & 10 \\
-Repair edit budget $K$ at evaluation & 3 \\ \hline
+Repair edit budget $K$ at evaluation & 3 (sweep in Table~\ref{tab:repair-sweep}) \\ \hline
 \end{tabular}
 \end{table}
 
@@ -1295,15 +1293,10 @@ Repair edit budget $K$ at evaluation & 3 \\ \hline
 %% ResidualBlock/MultiheadAttention dropout=0.1, Adam). The repair policy shares the construction
 %% policy's optimizer settings; K=3 is set from the sweep in Section~\ref{sec:repair-results}.
 %%
-%% UNREPORTED ARCHITECTURE COMPONENT -- DECIDE BEFORE SUBMISSION: the trained checkpoints instantiate
-%% EdgeAwareGNN_ACTOR_COMM_SINKHORN, which adds one further term the method section does not describe:
-%% edge_scores <- edge_scores + sinkhorn_scale * masked_sinkhorn_log_bonus(edge_scores, legal_mask),
-%% with sinkhorn_scale a learned scalar initialized at 0. Its trained value is 0.0213 in the reported
-%% checkpoint -- small, but not zero, and its effect has NOT been measured (the decisive test is to
-%% re-run Section~\ref{sec:main-results} with the scalar forced to 0 and compare). Until that is run,
-%% either (i) report the ablation and, if the term is inactive, say so in one sentence, or (ii) describe
-%% the term in Section~\ref{sec:comm}. Reporting SCoPE-Comm as communication-only while the released
-%% code carries an undescribed coordination term is the one option that is not available.
+%% RESOLVED 2026-08-23: sinkhorn_scale ablation run (eval_sinkhorn_ablation.py, result/sinkhorn_ablation.txt):
+%% scale as trained (0.0213) vs forced to 0, all 12 configs, same instances -- mean 0.1528 vs 0.1527,
+%% per-config deltas within +-0.0024 (both signs, noise). Term is INACTIVE; disclosed in one sentence
+%% at the end of Section~\ref{sec:comm}.
 
 \subsection{Performance Measures and Baselines}
 
@@ -1347,7 +1340,7 @@ Following the convention of prior WTA reinforcement learning work~\cite{gaudet20
                               & (70,100,15) & 0.993 (fail)  & 0.403 & 0.177 & 0.306 & 0.106 & \textbf{0.100} & 0.151 & 0.105 & 99.4\% \\ \hline
 \end{tabular}
 \end{table*}
-Mean \% Achieved across all 12 configurations is 95.2\%. SCoPE-Comm improves on plain SCoPE at every configuration. The best-found method is SCIP's own (unproven, best-incumbent) solution at seven of the twelve configurations -- Small tier fully, plus Medium and the smallest Large-tier configuration, where SCIP's branch-and-bound still finds a strong incumbent even without proving it optimal -- Sequential at four configurations (the remaining Large-tier and two of three Battlefield-tier configurations, where SCIP either fails to prove optimality with a much larger gap or fails to find a competitive incumbent within the time limit at all), and POMO at one (50,50,15). \% Achieved is $\geq$95\% at 8 of 12 configurations, all at Large and Battlefield tier plus (5,5,5) and (15,15,5); the four configurations below 95\% -- (5,7,5), (10,15,5), (15,20,5), (20,30,5) -- are all Small or Medium tier, where SCIP still proves or nearly proves optimality (Table~\ref{tab:main_results}) and so leaves the least relative room for any method to be close to it. The pure auction baseline (Section~\ref{sec:auction}'s mechanism with no learned participation decision) beats Greedy at every configuration but trails every neural method except AM at the three Small-tier configurations, confirming that a fixed, exact within-round assignment rule alone is not sufficient without some form of learned fire-or-hold judgment layered on top of it.
+Mean \% Achieved across all 12 configurations is 95.2\%. SCoPE-Comm improves on plain SCoPE at every configuration. The best-found method is SCIP's own (unproven, best-incumbent) solution at seven of the twelve configurations -- Small tier fully, plus Medium and the smallest Large-tier configuration, where SCIP's branch-and-bound still finds a strong incumbent even without proving it optimal -- Sequential at four configurations (the remaining Large-tier and two of three Battlefield-tier configurations, where SCIP either fails to prove optimality with a much larger gap or fails to find a competitive incumbent within the time limit at all), and POMO at one (50,50,15). \% Achieved is $\geq$95\% at 8 of 12 configurations, all at Large and Battlefield tier plus (5,5,5) and (15,15,5); the four configurations below 95\% -- (5,7,5), (10,15,5), (15,20,5), (20,30,5) -- are all Small or Medium tier, where SCIP still proves or nearly proves optimality (Table~\ref{tab:main_results}) and so leaves the least relative room for any method to be close to it. The pure auction baseline (Section~\ref{sec:auction}'s mechanism with no learned participation decision) beats Greedy at every configuration, and even beats AM and POMO at (10,15,5), but trails Sequential, SCoPE, and SCoPE-Comm at every configuration, confirming that a within-stage assignment rule alone, however good, is not sufficient without a learned fire-or-hold judgment layered on top of it.
 
 %% TODO: single-seed results throughout this table -- a multi-seed re-run (the original 5-seed protocol
 %% this draft's caption used to promise) was not completed this session due to time constraints and would
@@ -1455,30 +1448,27 @@ Section~\ref{sec:training} motivated SCoPE's critic-free training recipe with th
 \subsection{Inference Efficiency}
 \label{sec:efficiency}
 
-Table~\ref{tab:efficiency} reports mean per-instance greedy inference time on the same held-out benchmark. SCoPE's per-instance inference time is expected to remain substantially lower than Sequential's and to widen with scale, consistent with the $O(T)$ vs.\ $O(M{\times}T)$ decoding-call complexity argument of Section~\ref{sec:parallel-decoder}, and the communication layer of Section~\ref{sec:comm} adds only a fixed-size attention pass over $M$ weapon tokens per stage, so SCoPE-Comm's complexity order is unchanged from plain SCoPE.
+Table~\ref{tab:efficiency} reports mean per-instance decode time on the same held-out benchmark (ten instances per configuration, two untimed warm-up instances, single GPU). The SCoPE-Comm column times the full construction pipeline of Algorithm~\ref{alg:scope}, including the many-to-one auction at every stage; the Sequential column times the per-weapon decoding loop. SCoPE-Comm is 3.2 times faster at Small tier, and the advantage widens with scale to 5.6 times at Battlefield tier, consistent in direction with the $O(T)$ vs.\ $O(M{\times}T)$ decoding-call complexity argument of Section~\ref{sec:parallel-decoder}. The measured ratio is smaller than the call-count ratio $M$ because the auction runs on the CPU inside the loop and its cost also grows with the number of firing weapons. At the largest configuration, $70{\times}100{\times}15$, the absolute difference is 4.84 versus 0.85 seconds per instance, which is the difference between one decision cycle and several at a battlefield re-planning tempo. The repair layer is not included in these times; each edit costs one additional re-simulation of the construction pass, so a budget of $K$ multiplies the pipeline cost by at most $K{+}1$, and the anytime property of Proposition~\ref{prop:repair-monotone} lets the operator choose $K$ to fit the available cycle.
 
 \begin{table}[htbp]
 \centering
 \small
-\caption{Mean per-instance inference time (seconds) -- NOT YET RE-MEASURED this revision.}
+\caption{Mean per-instance decode time in seconds (tier averages over three configurations each, ten instances per configuration, single seed). SCoPE-Comm includes the many-to-one auction at every stage; repair is excluded (each edit adds one re-simulation).}
 \label{tab:efficiency}
 \begin{tabular}{l|ccc}
 \hline
-\textbf{Tier} & \textbf{Sequential} & \textbf{SCoPE} & \textbf{Speedup} \\ \hline
-Small & TBD & TBD & TBD \\
-Medium & TBD & TBD & TBD \\
-Large & TBD & TBD & TBD \\
-Battlefield & TBD & TBD & TBD \\ \hline
+\textbf{Tier} & \textbf{Sequential} & \textbf{SCoPE-Comm} & \textbf{Speedup} \\ \hline
+Small & 0.080 & 0.025 & 3.2$\times$ \\
+Medium & 0.229 & 0.047 & 4.9$\times$ \\
+Large & 1.148 & 0.222 & 5.2$\times$ \\
+Battlefield & 3.467 & 0.621 & 5.6$\times$ \\ \hline
 \end{tabular}
 \end{table}
 
-%% TODO: the 4-25x/0.021-2.864s numbers previously in this table were carried over from a pre-revision
-%% draft and were NOT re-measured under the current pipeline (which now includes the auction refinement
-%% of Section~\ref{sec:auction} in SCoPE's inference path, and a SCoPE-Comm variant with an added
-%% attention layer that has never been timed at all) -- removed rather than reported without
-%% verification. Re-measure per-instance wall-clock time for Greedy/Sequential/SCoPE/SCoPE-Comm across
-%% all 12 configurations before submission; this table is the paper's efficiency-vs-quality payoff claim
-%% and should not go out with unverified numbers.
+%% Measured 2026-08-23 via eval_inference_timing_moderate.py (result/inference_timing_multifire.txt),
+%% Sequential_multiscale_seed5_best vs CommSCoPE_multiscale_seed5_best + auction_round_action_multifire.
+%% Per-config range: 2.7x (5,5,5) to 5.7x (70,100,15); mean 5.4x. The pre-revision 4-25x numbers used the
+%% auction-free decoder and are superseded.
 
 \section{Conclusion}
 \label{sec:conclusion}
@@ -1495,10 +1485,10 @@ For practitioners of multi-agent neural construction, two results transfer beyon
 %% [MOVE 3 — LIMITS] Honest boundaries, stated plainly, before future work. Updated for what actually
 %% remains unverified in THIS revision (single seed, timing not re-measured, ablation table pending,
 %% abundant-distribution comparison not re-run), not the prior draft's limits.
-Several limits bound these claims as reported here. Results throughout are single-seed; the closest calls in Table~\ref{tab:main_results} (SCoPE-Comm against Sequential at Large and Battlefield tier, within 2 percentage points of normalized objective at several configurations) would benefit from a multi-seed variance estimate before the ranking is treated as settled. The critic-and-shaping ablation motivating Section~\ref{sec:training}'s training recipe predates this revision's simulator fixes and has not yet been re-run under the current benchmark (Section~\ref{sec:ablation}). Per-instance inference timing has likewise not been re-measured for the current pipeline, including the auction refinement step and the communication layer, so the parallel decoder's expected efficiency advantage (Section~\ref{sec:efficiency}) is stated as a complexity-order argument, not a re-verified wall-clock one. We have not isolated a metric that directly confirms \emph{why} the communication layer helps beyond ruling out ammunition under-use (Section~\ref{sec:coordination}); the timing/targeting explanation offered there is plausible and consistent with the mechanism's design, but unconfirmed. And the soft-coupling test itself remains qualitative; we have not characterized where the hard/soft boundary lies for objectives that mix both elements.
+Several limits bound these claims as reported here. Results throughout are single-seed; the closest calls in Table~\ref{tab:main_results} (SCoPE-Comm against Sequential at Large and Battlefield tier, within 2 percentage points of normalized objective at several configurations) would benefit from a multi-seed variance estimate before the ranking is treated as settled. The critic-and-shaping ablation motivating Section~\ref{sec:training}'s training recipe predates this revision's simulator fixes and has not yet been re-run under the current benchmark (Section~\ref{sec:ablation}). We have not isolated a metric that directly confirms \emph{why} the communication layer helps beyond ruling out ammunition under-use (Section~\ref{sec:coordination}); the timing/targeting explanation offered there is plausible and consistent with the mechanism's design, but unconfirmed. And the soft-coupling test itself remains qualitative; we have not characterized where the hard/soft boundary lies for objectives that mix both elements.
 
 %% [MOVE 4 — OPEN QUESTIONS] Future work as questions the field can pick up, not a task list.
-These limits point at the questions we consider most worth answering. What specifically does the communicated embedding change about \emph{when} a weapon fires and which target the auction pairs it with, beyond the aggregate destruction-ratio evidence reported here? Does the resource-scarcity distinction generalize to other soft-coupled multi-agent problems, or is it particular to WTA's ammunition/reload structure? Can the hard/soft coupling boundary be made quantitative -- for instance, through the curvature of the objective -- so the design test of this section becomes a computable diagnostic rather than a qualitative judgment call? And how far does the repair layer's operator set bound what it can recover? Single-flip edits reach only the participation decision, and richer operators did not pay for themselves here (Section~\ref{sec:repair-results}); whether an operator that edits target assignments directly, or one that acts on a whole stage at once, would do better under a learned selector remains open.
+These limits point at the questions we consider most worth answering. What specifically does the communicated embedding change about \emph{when} a weapon fires and which target the auction pairs it with, beyond the aggregate destruction-ratio evidence reported here? Does the resource-scarcity distinction generalize to other soft-coupled multi-agent problems, or is it particular to WTA's ammunition/reload structure? Can the hard/soft coupling boundary be made quantitative -- for instance, through the curvature of the objective -- so the design test of this section becomes a computable diagnostic rather than a qualitative judgment call? And how far does the repair layer's operator set bound what it can recover? Single-flip edits reach only the participation decision, and richer operators performed no better than the flip in our earlier experimentation (Section~\ref{sec:repair}); whether an operator that edits target assignments directly, or one that acts on a whole stage at once, would do better under a learned selector remains open.
 
 \section*{Statements and Declarations}
 

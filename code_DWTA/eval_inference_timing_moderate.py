@@ -14,7 +14,7 @@ from common.DWTA_GNN_sequential import create_gnn_actor_sequential
 from common.TORCH_OBJECTS import DEVICE
 from common.Dynamic_Instance_generation import input_generation
 from common.DWTA_Simulator import Environment
-from common.auction_refinement import auction_round_action
+from common.auction_refinement import auction_round_action_multifire
 from common.temporal_dilemma_generator_moderate import generate_moderate_temporal_instance
 from eval_tiered_benchmark import patch_globals
 
@@ -64,7 +64,7 @@ def time_sequential(actor, V, P, TW, nw, nt, mt, amm, prep, cost):
 
 @torch.no_grad()
 def time_ours(actor, V, P, TW, nw, nt, mt, amm, prep, cost):
-    """SCoPE-Comm actor forward + 1:1 auction refinement, our full pipeline."""
+    """SCoPE-Comm actor forward + many-to-one auction, our full construction pipeline."""
     patch_globals(nw, nt, mt, amm, prep, cost)
     ae, wtp = input_generation(NUM_WEAPON=nw, NUM_TARGET=nt, value=V, prob=P, TW=TW,
                                 max_time=mt, batch_size=1, alpha=1.0, amm=amm)
@@ -80,7 +80,7 @@ def time_ours(actor, V, P, TW, nw, nt, mt, amm, prep, cost):
         policy, _ = actor(env.assignment_encoding, env.weapon_to_target_prob, env.mask_per_weapon)
         policy_choice = policy[:, :, :nw, :].argmax(dim=-1)
         must_fire = policy_choice < nt
-        action = auction_round_action(remaining_value, prob, legal_mask, must_fire=must_fire)
+        action = auction_round_action_multifire(remaining_value, prob, legal_mask, must_fire=must_fire)
         env.update_internal_variables_parallel(selected_actions=action)
         env.time_update()
     _sync()

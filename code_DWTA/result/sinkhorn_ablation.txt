@@ -1,0 +1,25 @@
+Using CUDA GPU
+[OK] All hyperparameters validated successfully!
+   Problem size: 5W x 5T, MAX_TIME=5
+   Model: EMBEDDING_DIM=128, HEAD_NUM=8
+   Training: 200 epochs, 5 episodes/epoch
+trained sinkhorn_scale = 0.021333
+
+config            as trained     scale=0       delta
+5M_5N_5T             0.2486      0.2486     +0.0000
+5M_7N_5T             0.3213      0.3213     +0.0000
+10M_15N_5T             0.2911      0.2911     +0.0000
+15M_15N_5T             0.1215      0.1227     +0.0012
+15M_20N_5T             0.2150      0.2168     +0.0018
+20M_30N_5T             0.2599      0.2575     -0.0024
+30M_30N_10T             0.0153      0.0141     -0.0012
+30M_40N_10T             0.0361      0.0362     +0.0001
+40M_50N_10T             0.0298      0.0307     +0.0009
+50M_50N_15T             0.0972      0.0971     -0.0001
+50M_70N_15T             0.0869      0.0882     +0.0013
+70M_100N_15T             0.1103      0.1082     -0.0021
+
+MEAN                  0.1528      0.1527     -0.0000
+
+(delta ~ 0 means the Sinkhorn term is inactive and can be reported as such;
+ a nonzero delta means the term must be described in the architecture section.)
