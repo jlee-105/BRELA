@@ -611,7 +611,7 @@
 \RequirePackage{fix-cm}
 \documentclass[smallcondensed]{svjour3}
 \smartqed
-\usepackage{natbib}
+\usepackage[numbers]{natbib}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{graphicx}
 \usepackage{textcomp}
@@ -623,11 +623,8 @@
 \usepackage{adjustbox}
 \usepackage{float}
 \usepackage{bm}
-
-\newtheorem{proposition}{Proposition}
-\newtheorem{lemma}{Lemma}
-\newtheorem{corollary}{Corollary}
-\newtheorem{remark}{Remark}
+\usepackage{url}
+% svjour3 already defines proposition/lemma/corollary/remark environments; do not \newtheorem them again.
 
 \journalname{Applied Intelligence}
 
@@ -662,10 +659,15 @@ platform-level engagement compatibility. We propose SCoPE (Simultaneous
 COmmitment with Parallel rEpair): a heterogeneous
 weapon-target graph encoder feeding a parallel multi-pointer decoder, in
 which all weapons commit their actions simultaneously at every stage; a
-price-based auction that refines which target each firing weapon engages;
-and a weapon-to-weapon self-attention (communication) layer that lets each
+many-to-one auction that assigns targets to the firing weapons by greedy
+marginal value, with a provable per-stage approximation guarantee;
+a weapon-to-weapon self-attention (communication) layer that lets each
 weapon's fire-or-hold decision, not just its target choice, condition on a
-learned summary of every other weapon's state that stage. Trained only on
+learned summary of every other weapon's state that stage; and a learned
+repair policy that revisits the completed schedule, flips individual
+fire-or-hold decisions, re-simulates, and keeps the best result, which by
+construction cannot degrade the schedule it is given and reduces the mean
+objective by a further 13\% relative across all tested configurations. Trained only on
 small instances (5--7 weapons, targets, and stages) with reward-to-go
 REINFORCE, a shared parallel-rollout baseline, and no critic, SCoPE
 generalizes zero-shot to held-out instances as large as 70 weapons, 100
@@ -693,7 +695,7 @@ that optimum.
 \label{sec:introduction}
 
 %% [MOVE 1 — TENSION] Open with the finding that contradicts field intuition, not with history.
-Multi-agent construction methods for combinatorial optimization treat simultaneous decision-making as a coordination problem to be engineered away: when several agents commit at once, the standard response is to add a learned conflict handler or a communication protocol so that they do not collide~\cite{parco2024,sukhbaatar2016commnet,das2019tarmac}. On the dynamic weapon-target assignment problem (DWTAP), whether this is necessary turns out to depend on a property of the \emph{instance}, not just the problem class: how scarce weapon resources are relative to the threats they face. Under resource-abundant instances -- the regime conventionally used to benchmark WTA solvers -- $M$ weapons choosing their targets simultaneously, refined only by a price-based auction that resolves which target each already-firing weapon should engage, match a fully sequential decoder closely, with no learned coordination mechanism of any kind. Under resource-scarce instances -- where ammunition and platforms are genuinely limited, and holding fire for a better opportunity later is a live option -- the same architecture falls substantially behind sequential decoding instead. We show this is not a failure of the underlying hypothesis but an incomplete one: the auction coordinates \emph{which} target a firing weapon should engage, not \emph{whether} it should fire at all, and it is exactly that second, participation-level coordination that resource scarcity makes consequential. Diagnosing this gap instance by instance against exact-solver output, and closing it with a single added communication layer, is the subject of this paper.
+Multi-agent construction methods for combinatorial optimization treat simultaneous decision-making as a coordination problem to be engineered away: when several agents commit at once, the standard response is to add a learned conflict handler or a communication protocol so that they do not collide~\cite{parco2024,sukhbaatar2016commnet,das2019tarmac}. On the dynamic weapon-target assignment problem (DWTAP), whether this is necessary turns out to depend on a property of the \emph{instance}, not just the problem class: how scarce weapon resources are relative to the threats they face. Under resource-abundant instances -- the regime conventionally used to benchmark WTA solvers -- $M$ weapons choosing their targets simultaneously, refined only by a marginal-value auction that resolves which target each already-firing weapon should engage, match a fully sequential decoder closely, with no learned coordination mechanism of any kind. Under resource-scarce instances -- where ammunition and platforms are genuinely limited, and holding fire for a better opportunity later is a live option -- the same architecture falls substantially behind sequential decoding instead. We show this is not a failure of the underlying hypothesis but an incomplete one: the auction coordinates \emph{which} target a firing weapon should engage, not \emph{whether} it should fire at all, and it is exactly that second, participation-level coordination that resource scarcity makes consequential. Diagnosing this gap instance by instance against exact-solver output, and closing it with a single added communication layer, is the subject of this paper.
 
 %% [MOVE 2 — STAKES] Minimal problem definition + why speed is not optional, plus why scarcity is the
 %% realistic regime rather than an artificially hard edge case.
@@ -707,7 +709,7 @@ Existing approaches sit on the wrong side of that constraint in different ways. 
 Our central claim is structural, and has two parts. First, whether simultaneous decoding needs a coordination mechanism at all depends on the \emph{type of coupling} between agents, not the number of agents: in routing- and scheduling-style problems, agents contend for resources that admit one owner -- coupling is \emph{hard}, and a conflict handler is doing real work -- while in DWTAP, multiple weapons may legally engage the same target, and what disciplines them is the multiplicative, diminishing-returns objective, under which piling onto an already-doomed target is merely unprofitable rather than infeasible. Coupling here is \emph{soft}. Second, soft coupling is necessary but not sufficient for zero-communication parallel decoding to be safe: an auction that resolves target contention among already-firing weapons leaves the prior, participation-level decision -- fire or hold -- entirely uncoordinated, and under resource scarcity that omission is measurable. We show -- theoretically (Section~\ref{sec:submodular}) and empirically (Section~\ref{sec:coordination}) -- that restoring coordination at this level requires only a lightweight, single-pass communication mechanism, not a return to sequential decoding.
 
 %% [MOVE 5 — WHAT WE DO] Land on the system + the second finding, then the (unchanged) bullets.
-We instantiate this claim in SCoPE (Simultaneous COmmitment with Parallel rEpair): a heterogeneous weapon-target graph encoder feeding $M$ simultaneous per-weapon pointer policies (Section~\ref{sec:parallel-decoder}), refined at inference by a price-based auction restricted to deciding \emph{which} target each already-firing weapon engages (Section~\ref{sec:auction}), and augmented with a weapon-to-weapon self-attention layer that lets each weapon's fire-or-hold decision, not just its target choice, condition on a learned summary of every other weapon's state this stage (Section~\ref{sec:comm}). Trained end-to-end with reward-to-go REINFORCE and a shared parallel-rollout baseline on small instances only (5--7 weapons, targets, and stages), the policy generalizes zero-shot to held-out instances an order of magnitude larger. The training recipe itself contains this paper's third empirically-grounded finding: adding a learned critic with potential-based reward shaping -- our original design -- consistently \emph{hurt} held-out generalization, and the final recipe uses no critic at all (Sections~\ref{sec:training}, \ref{sec:ablation}).
+We instantiate this claim in SCoPE (Simultaneous COmmitment with Parallel rEpair): a heterogeneous weapon-target graph encoder feeding $M$ simultaneous per-weapon pointer policies (Section~\ref{sec:parallel-decoder}), refined at inference by a many-to-one marginal-value auction restricted to deciding \emph{which} target each already-firing weapon engages (Section~\ref{sec:auction}), and augmented with a weapon-to-weapon self-attention layer that lets each weapon's fire-or-hold decision, not just its target choice, condition on a learned summary of every other weapon's state this stage (Section~\ref{sec:comm}). Trained end-to-end with reward-to-go REINFORCE and a shared parallel-rollout baseline on small instances only (5--7 weapons, targets, and stages), the policy generalizes zero-shot to held-out instances an order of magnitude larger. The training recipe itself contains this paper's third empirically-grounded finding: adding a learned critic with potential-based reward shaping -- our original design -- consistently \emph{hurt} held-out generalization, and the final recipe uses no critic at all (Sections~\ref{sec:training}, \ref{sec:ablation}).
 
 The main contributions of this study are summarized as follows:
 
@@ -735,8 +737,10 @@ The WTAP, introduced by Manne~\cite{manne1958target} and NP-hard even in its sta
 \subsection{Reinforcement Learning for WTA}
 
 Early neural formulations date to Wacholder~\cite{wacholder1989neural}; Table~\ref{tab:related} positions the reinforcement-learning methods that followed along the axes that matter here. Static-WTA methods either tie network dimensions to the instance size~\cite{meng2021deep,shin2020mean,gaudet2023} or achieve size-agnostic architectures at the cost of omitted operational constraints or identical-weapon assumptions~\cite{luo2021learning,na2023weapon,vinyals2015pointer}. Dynamic methods each inherit one of the same limits: size-fixed networks~\cite{wu2022dynamic}, simplified identical-agent objectives without WTA's nonlinearity~\cite{hu2024}, or receding-horizon decomposition with no learned cross-stage policy~\cite{zhang2020efficient,zhang2020dynamic}. Closest to us, Yoon, Lee, and Cho~\cite{yoontransformer} target scalable DWTA with a transformer-based policy; SCoPE differs in decoding all weapons' actions in parallel rather than through a single sequential policy, characterizing when that is safe (Section~\ref{sec:submodular}), and modeling platform-level engagement compatibility $Q_m$. Most recently, Oh et al.~\cite{oh2026combat} also pair graph neural networks with reinforcement learning for DWTA, training a graph-attention policy with PPO under a partially observable formulation and evaluating on naval and ground scenarios against heuristic and metaheuristic baselines; their contribution is scenario realism through the OODA decision cycle, whereas ours is the structural split of the per-stage decision into a learned participation policy and an assignment mechanism with a per-stage guarantee, benchmarked additionally against an exact solver and neural construction baselines.
-%% VERIFY (carried over): confirm against the published JDMS version that Yoon et al.'s decoder is in fact
-%% sequential/single-policy; if not, adjust the corresponding row of Table~\ref{tab:related} and the sentence above.
+%% NOTE 2026-08-23: JDMS full text inaccessible (SAGE 403); published abstract (framework "ARFA") does not
+%% disambiguate sequential vs simultaneous decoding. The single-sequential-policy characterization stands on
+%% the co-author's (J. Lee's) own description in this manuscript's Method overview; final confirmation at
+%% proof stage costs one glance at the published paper. Bib entry updated with year 2025 + doi.
 %% CITATION STATUS 2026-08-23: (a) Oh et al. IEEE T-Cyb verified via Crossref (vol. 56, no. 2, pp. 631-643, 2026,
 %% doi 10.1109/TCYB.2025.3610606; TechRxiv preprint 10.36227/techrxiv.171084935.57702557) and cited in prose above
 %% using only abstract-verifiable claims (DWTA, GNN+PPO, POMDP, OODA, heuristic/metaheuristic baselines). NOT added
@@ -974,7 +978,8 @@ f_t(S^{\text{auc}}_t) \;\geq\; \tfrac12\,\text{OPT}_t(F).
 First, the auction's bid equals the exact marginal gain of $f_t$. Let $S$ be the allocation so far and $S_{n'}$ the weapons already assigned to target $n'$. Adding $(m',n')$ changes only the $n'$ summand of Eq.~\eqref{eq:round-obj}:
 \begin{align*}
 f_t(S \cup \{(m',n')\}) - f_t(S)
-&= V_{n'}\rho_{n'}^{(t)}\Big[\textstyle\prod_{m \in S_{n'}}(1-P_{m,n'}) - \prod_{m \in S_{n'} \cup \{m'\}}(1-P_{m,n'})\Big] \\
+&= V_{n'}\rho_{n'}^{(t)}\Big[\textstyle\prod_{m \in S_{n'}}(1-P_{m,n'}) \\
+&\qquad\qquad - \textstyle\prod_{m \in S_{n'} \cup \{m'\}}(1-P_{m,n'})\Big] \\
 &= V_{n'}\rho_{n'}^{(t)} \Big(\textstyle\prod_{m \in S_{n'}}(1-P_{m,n'})\Big)\big[1-(1-P_{m',n'})\big] \\
 &= V_{n'}\rho_{n'}^{(t)}\,\sigma_{n'}\,P_{m',n'} \;=\; b_{m',n'},
 \end{align*}
@@ -1323,6 +1328,7 @@ Following the convention of prior WTA reinforcement learning work~\cite{gaudet20
 \scriptsize
 \caption{Main results on the \emph{scarce} (primary) distribution, 12 held-out configurations: normalized remaining-value objective (lower is better), single seed, ten fixed test instances per configuration. SCIP entries note instances solved to proven optimality within the 600s limit; below Medium tier SCIP frequently fails to prove optimality (and at Battlefield scale fails to find a competitive incumbent at all), so it is not treated as ground truth there. Every neural method (AM, POMO, Sequential, SCoPE, SCoPE-Comm) is evaluated at its best held-out checkpoint (Section~\ref{sec:main-results}), not its final training step. \% Achieved (Eq.~\eqref{eq:achieved}) is SCoPE-Comm against the best-found value among all seven other methods, per configuration.}
 \label{tab:main_results}
+\begin{adjustbox}{max width=\textwidth}
 \begin{tabular}{c|c|c|ccccccc|c}
 \hline
 \textbf{Tier} & \textbf{Config} & \textbf{SCIP} & \textbf{Greedy} & \textbf{Auction} & \textbf{AM} & \textbf{POMO} & \textbf{Sequential} & \textbf{SCoPE} & \textbf{SCoPE-Comm} & \textbf{\% Ach.} \\ \hline
@@ -1339,6 +1345,7 @@ Following the convention of prior WTA reinforcement learning work~\cite{gaudet20
                               & (50,70,15)  & 0.992 (fail)  & 0.390 & 0.171 & 0.268 & 0.099 & \textbf{0.080} & 0.137 & 0.087 & 99.3\% \\
                               & (70,100,15) & 0.993 (fail)  & 0.403 & 0.177 & 0.306 & 0.106 & \textbf{0.100} & 0.151 & 0.105 & 99.4\% \\ \hline
 \end{tabular}
+\end{adjustbox}
 \end{table*}
 Mean \% Achieved across all 12 configurations is 95.2\%. SCoPE-Comm improves on plain SCoPE at every configuration. The best-found method is SCIP's own (unproven, best-incumbent) solution at seven of the twelve configurations -- Small tier fully, plus Medium and the smallest Large-tier configuration, where SCIP's branch-and-bound still finds a strong incumbent even without proving it optimal -- Sequential at four configurations (the remaining Large-tier and two of three Battlefield-tier configurations, where SCIP either fails to prove optimality with a much larger gap or fails to find a competitive incumbent within the time limit at all), and POMO at one (50,50,15). \% Achieved is $\geq$95\% at 8 of 12 configurations, all at Large and Battlefield tier plus (5,5,5) and (15,15,5); the four configurations below 95\% -- (5,7,5), (10,15,5), (15,20,5), (20,30,5) -- are all Small or Medium tier, where SCIP still proves or nearly proves optimality (Table~\ref{tab:main_results}) and so leaves the least relative room for any method to be close to it. The pure auction baseline (Section~\ref{sec:auction}'s mechanism with no learned participation decision) beats Greedy at every configuration, and even beats AM and POMO at (10,15,5), but trails Sequential, SCoPE, and SCoPE-Comm at every configuration, confirming that a within-stage assignment rule alone, however good, is not sufficient without a learned fire-or-hold judgment layered on top of it.
 
@@ -1475,7 +1482,7 @@ Battlefield & 3.467 & 0.621 & 5.6$\times$ \\ \hline
 
 %% [MOVE 1 — CLOSE THE LOOP] The intro opened by asking when communication-free parallel decoding is
 %% safe. Answer with the actual (two-sided) empirical finding, not the earlier draft's one-sided one.
-This paper opened by asking when simultaneous, communication-free decoding is safe on DWTAP. The answer is conditional, and the condition is empirically load-bearing rather than a footnote: under resource-abundant instances, a parallel decoder with no learned coordination mechanism, refined only by a fixed price-based auction over already-firing weapons, is close to sufficient -- consistent with the soft-coupling argument of Section~\ref{sec:related}, since contention there is merely unprofitable, not infeasible. Under resource-scarce instances -- the regime we argue is the realistic one -- it is not: the auction has no channel through which one weapon's tentative commitment to fire can influence another's, and that omission costs real performance once weapons and ammunition are genuinely limited (Table~\ref{tab:main_results}, plain SCoPE trailing Sequential by up to 36\% relative objective at Medium scale). What restores near-parity is not a return to sequential decoding, but a single weapon-to-weapon self-attention layer added before the existing scoring heads (Section~\ref{sec:comm}), closing the gap to a mean 95.2\% of best-found value across twelve held-out scales -- at the same decoding-call complexity order as the communication-free decoder.
+This paper opened by asking when simultaneous, communication-free decoding is safe on DWTAP. The answer is conditional, and the condition is empirically load-bearing rather than a footnote: under resource-abundant instances, a parallel decoder with no learned coordination mechanism, refined only by a fixed marginal-value auction over already-firing weapons, is close to sufficient -- consistent with the soft-coupling argument of Section~\ref{sec:related}, since contention there is merely unprofitable, not infeasible. Under resource-scarce instances -- the regime we argue is the realistic one -- it is not: the auction has no channel through which one weapon's tentative commitment to fire can influence another's, and that omission costs real performance once weapons and ammunition are genuinely limited (Table~\ref{tab:main_results}, plain SCoPE trailing Sequential by up to 36\% relative objective at Medium scale). What restores near-parity is not a return to sequential decoding, but a single weapon-to-weapon self-attention layer added before the existing scoring heads (Section~\ref{sec:comm}), closing the gap to a mean 95.2\% of best-found value across twelve held-out scales -- at the same decoding-call complexity order as the communication-free decoder.
 
 %% [MOVE 2 — SO WHAT] Give the reader a transferable test, not a recap. Now includes the diagnostic
 %% discipline (measure before you fix) as part of the transferable result, since the ammo-utilization
@@ -1485,7 +1492,7 @@ For practitioners of multi-agent neural construction, two results transfer beyon
 %% [MOVE 3 — LIMITS] Honest boundaries, stated plainly, before future work. Updated for what actually
 %% remains unverified in THIS revision (single seed, timing not re-measured, ablation table pending,
 %% abundant-distribution comparison not re-run), not the prior draft's limits.
-Several limits bound these claims as reported here. Results throughout are single-seed; the closest calls in Table~\ref{tab:main_results} (SCoPE-Comm against Sequential at Large and Battlefield tier, within 2 percentage points of normalized objective at several configurations) would benefit from a multi-seed variance estimate before the ranking is treated as settled. The critic-and-shaping ablation motivating Section~\ref{sec:training}'s training recipe predates this revision's simulator fixes and has not yet been re-run under the current benchmark (Section~\ref{sec:ablation}). We have not isolated a metric that directly confirms \emph{why} the communication layer helps beyond ruling out ammunition under-use (Section~\ref{sec:coordination}); the timing/targeting explanation offered there is plausible and consistent with the mechanism's design, but unconfirmed. And the soft-coupling test itself remains qualitative; we have not characterized where the hard/soft boundary lies for objectives that mix both elements.
+Several limits bound these claims as reported here. Results throughout are single-seed; the closest calls in Table~\ref{tab:main_results} (SCoPE-Comm against Sequential at Large and Battlefield tier, within 2 percentage points of normalized objective at several configurations) would benefit from a multi-seed variance estimate before the ranking is treated as settled. The critic-and-shaping ablation motivating Section~\ref{sec:training}'s training recipe predates this revision's simulator fixes and has not yet been re-run under the current benchmark (Section~\ref{sec:ablation}); the same is true of the resource-abundant comparison invoked in the Introduction and at the top of this section, whose parallel-versus-sequential parity numbers come from experiments before those fixes. We have not isolated a metric that directly confirms \emph{why} the communication layer helps beyond ruling out ammunition under-use (Section~\ref{sec:coordination}); the timing/targeting explanation offered there is plausible and consistent with the mechanism's design, but unconfirmed. And the soft-coupling test itself remains qualitative; we have not characterized where the hard/soft boundary lies for objectives that mix both elements.
 
 %% [MOVE 4 — OPEN QUESTIONS] Future work as questions the field can pick up, not a task list.
 These limits point at the questions we consider most worth answering. What specifically does the communicated embedding change about \emph{when} a weapon fires and which target the auction pairs it with, beyond the aggregate destruction-ratio evidence reported here? Does the resource-scarcity distinction generalize to other soft-coupled multi-agent problems, or is it particular to WTA's ammunition/reload structure? Can the hard/soft coupling boundary be made quantitative -- for instance, through the curvature of the objective -- so the design test of this section becomes a computable diagnostic rather than a qualitative judgment call? And how far does the repair layer's operator set bound what it can recover? Single-flip edits reach only the participation decision, and richer operators performed no better than the flip in our earlier experimentation (Section~\ref{sec:repair}); whether an operator that edits target assignments directly, or one that acts on a whole stage at once, would do better under a learned selector remains open.
@@ -1496,7 +1503,7 @@ These limits point at the questions we consider most worth answering. What speci
 
 \textbf{Funding:} No funding was received for this work.
 
-\textbf{Data Availability:} The test instances, trained model checkpoints, and evaluation code are available at [REPO URL].
+\textbf{Data Availability:} The test instances, trained model checkpoints, and evaluation code are available at \url{https://github.com/jlee-105/BRELA}.
 
 %% BIB CHECK: the following keys were introduced or retained by this revision and MUST exist in references.bib:
 %% fisher1978analysis, shao2024deepseekmath, ng1999shaping, hottung2022eas, parco2024, sukhbaatar2016commnet,

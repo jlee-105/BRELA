@@ -4,3 +4,9 @@ __pycache__/
 *.pyo
 .ipynb_checkpoints/
 venv/
+*.aux
+*.log
+*.blg
+*.bbl
+*.xdv
+*.out
